@@ -1,0 +1,59 @@
+
+
+# Python-specific files
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Dependency directories
+node_modules/
+__pycache__/
+pip/
+pipenv/
+*.egg-info/
+dist/
+build/
+lib/
+libs/
+bin/
+include/
+
+# Compiled Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# macOS system files
+.DS_Store
+
+# Jupyter Notebook temporary files
+.ipynb_checkpoints/
+
+# Environment configuration
+.env
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Personal configuration files
+*.swp
+*.swo
+*.ini
+*.config
+
+# Dependency lock files
+yarn.lock
+package-lock.json
+Pipfile.lock
+
+# Local development files
+*.sqlite
