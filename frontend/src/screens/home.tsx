@@ -1,16 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { useFonts } from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RootStackParamList } from './types'
+import SignUpScreen from './signup';
+import { useNavigation } from '@react-navigation/native';
+import AppNavigation from '../components/appNavigation';
+import { StackNavigationProp } from "@react-navigation/stack";
+import { Button } from 'react-native';
+import { RootStackParamList } from '../components/types';
 
-
+export type StackNavigation = StackNavigationProp<RootStackParamList>;
 export default function HomeScreen() {
+  const navigation = useNavigation<StackNavigation>();
+  
+
   return (
   <View style={styles.container}>
     <Text style={{ fontFamily: 'Montserrat', fontSize: 30 }}> Carbon Track </Text>
-    <StatusBar style="auto" />
+    <Button title="Sign Up!" onPress={() => navigation.navigate('SignUp')} />
   </View>
   );
 }
