@@ -41,3 +41,4 @@ psycopg2.binary==2.9.7
 cohere~=4.26.1
 imblearn~=0.0
 pandas==2.1.0
+flask_login==0.6.2
