@@ -23,6 +23,7 @@ include/
 # Compiled Python files
 *.pyc
 *.pyo
+*.xml
 __pycache__/
 
 # macOS system files
