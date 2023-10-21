@@ -1,17 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../components/types'
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation } from '@react-navigation/native';
 
+export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function SignUp() {
+  const navigation = useNavigation<StackNavigation>();
+
   return (
-  <View style={styles.container}>
-    <Text style={{ fontFamily: 'Montserrat', fontSize: 30, color: '243E36' }}> Sign Up! </Text>
-    <StatusBar style="auto" />
-  </View>
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <View style={{paddingHorizontal: 20}}>
+
+        <View style={{alignItems: 'center',}}>
+          <Text style={{ fontFamily: 'Montserrat', fontSize: 30, marginBottom: 30}}> Sign Up </Text>
+        </View>
+
+        <TouchableOpacity style={{backgroundColor: '#2E3E36', padding: 18, borderRadius: 10, marginBottom: 20,}}onPress={() => navigation.navigate('DashBoard')}> 
+          <Text style={{textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#fff',}}> Sign Up</Text>
+        </TouchableOpacity>
+        
+      </View>
+    </View>
   );
 }
 
