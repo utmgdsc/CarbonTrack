@@ -12,5 +12,6 @@ Insert any relevant media that showcases your change.
 
 - [ ] I have performed a self-review of my code
 - [ ] I have requested for code review from at least one team mate and our mentor
-- [ ] I have locally tested my changes and addresesd any bugs
+- [ ] I have locally tested my changes and addresesed any bugs
 - [ ] All naming standards are followerd (i.e branch, commits, title)
+- [ ] I have informed the team via discord that the task is ready for review & appropriately updated Trello
