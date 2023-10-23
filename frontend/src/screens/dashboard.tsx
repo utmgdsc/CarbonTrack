@@ -7,9 +7,18 @@ import { RootStackParamList } from '../components/types'
 
 
 export default function DashBoardScreen() {
+  const [loaded] = useFonts({
+    Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
+    Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
   <View style={styles.container}>
-    <Text style={{ fontFamily: 'Montserrat', fontSize: 30, color: '#243E36' }}> DashBoard </Text>
+    <Text style={{ fontFamily: 'Montserrat', fontSize: 30, fontWeight: '700', color: '#243E36' }}> DashBoard </Text>
     <StatusBar style="auto" />
   </View>
   );
