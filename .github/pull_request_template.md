@@ -8,8 +8,8 @@ Insert any relevant media that showcases your change.
 
 [21](https://trello.com/c/REPLACEME)
 
-
 ## Checklist before requesting a review
+
 - [ ] I have performed a self-review of my code
 - [ ] I have requested for code review from at least one team mate and our mentor
 - [ ] I have locally tested my changes and addresesd any bugs
