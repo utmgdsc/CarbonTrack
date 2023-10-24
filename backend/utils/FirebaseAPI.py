@@ -1,0 +1,26 @@
+from pprint import pprint
+
+import os
+import firebase_admin
+from firebase_admin import auth
+from firebase_admin.auth import UserInfo
+
+
+cred = firebase_admin.credentials.Certificate(os.environ.get("FIREBASE"))
+APP = firebase_admin.initialize_app(cred)
+
+
+class FirebaseAPI:
+
+    @staticmethod
+    def get_user(google_uid: str) -> any:
+        return firebase_admin.auth.get_user(google_uid)
+
+    @staticmethod
+    def verify_google_token(id_token: str) -> dict:
+        return firebase_admin.auth.verify_id_token(id_token=id_token, check_revoked=True)
+
+
+if __name__ == '__main__':
+    d = FirebaseAPI.verify_google_token("eyJhbGciOiJSUzI1NiIsImtpZCI6IjU0NWUyNDZjNTEwNmExMGQ2MzFiMTA0M2E3MWJiNTllNWJhMGM5NGQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BR05teXhZNHlNc0ZPc2NfUEhoTktFWDBYcnhoTko1U2s0bEltQ0NmX3BVVD1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS90ZXh0dG9xcmNvZGUiLCJhdWQiOiJ0ZXh0dG9xcmNvZGUiLCJhdXRoX3RpbWUiOjE2ODU4MzczNDQsInVzZXJfaWQiOiJOUzEwcThic050VUp6TVI0a1piRUJIejJtcFoyIiwic3ViIjoiTlMxMHE4YnNOdFVKek1SNGtaYkVCSHoybXBaMiIsImlhdCI6MTY4NTgzNzM0NCwiZXhwIjoxNjg1ODQwOTQ0LCJlbWFpbCI6InlhemFuQGFsZmFqcnVsYmFzc2VtLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTE3MzE5MDgwNDE1NDQ3MDM3OTc2Il0sImVtYWlsIjpbInlhemFuQGFsZmFqcnVsYmFzc2VtLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.iYC_MAZ-fmnot7af_vJmVGyGcxicLCsor_8dYDOAHmpCPGFvpM7ru0b_Epqfi_94RLfA20FseSsZNANAzHtMrOQMOQOkFaxQi3MHianJ8kVevmoFZN_2j5IHR1IknkfDTg6FdGYQsuW9EW6COwZ2vWoIjInwpRmZOb1KTFs71_HkRX88dMVVH_ELblwNo6s-sjVAJaO462vzC3SpJ1c3uZcBJufzZTZySG-VvjqfGzBKEayIb_JdGy6fJxffwXRynM_FJCItfJVuzuaZ1eLqAcBgCY3lBIKAWtKH0eykdBoe3DXy36n19yTlQAJ9a9H-Cjh_SFR83TtoWDH6Izr_3g")
+    print(d)

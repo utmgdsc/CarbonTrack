@@ -16,6 +16,7 @@ def get_db(database_name: str) -> Database:
         with open('secrets.json') as secret_json:
             secret_json = json.load(secret_json)
             _DB_URI = secret_json.get('DB_URI')
+            os.environ.setdefault('FIREBASE', secret_json.get('FIREBASE'))
 
     _cluster: MongoClient = MongoClient(_DB_URI)
     _db: Database = _cluster[database_name]
