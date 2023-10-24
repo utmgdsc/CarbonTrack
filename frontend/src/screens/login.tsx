@@ -1,3 +1,4 @@
+import React, {useContext, useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput,} from 'react-native';
 import { useFonts } from 'expo-font';
@@ -14,6 +15,21 @@ export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function LogInScreen() {
   const navigation = useNavigation<StackNavigation>();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const checkInput = () => {
+    if (!email.trim()) {
+      alert('Please Enter Valid Email');
+      return;
+    }
+    if (!password.trim()) {
+      alert('Please Enter Password');
+      return;
+    }
+    navigation.navigate('DashBoard');
+  };
 
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
@@ -33,17 +49,27 @@ export default function LogInScreen() {
           <Image
           style={styles.icon}
           source={require('../../assets/email-icon.png')}/>
-          <TextInput placeholder='Email ID' style={{flex:1, paddingVertical:0,}} keyboardType='email-address'/>
+          <TextInput 
+              placeholder='Email ID' 
+              style={{flex:1, paddingVertical:0,}} 
+              onChangeText={(value) => setEmail(value)} 
+              keyboardType='email-address'/>
         </View>
 
         <View style={styles.textbox}>
           <Image
           style={styles.icon}
           source={require('../../assets/lock-icon.png')}/>
-          <TextInput placeholder='Password' style={{flex:1, paddingVertical:0,}} secureTextEntry={true}/>
+          <TextInput 
+            placeholder='Password' 
+            style={{flex:1, paddingVertical:0,}} 
+            onChangeText={(value) => setPassword(value)} 
+            secureTextEntry={true}/>
         </View>
 
-        <TouchableOpacity style={{backgroundColor: '#2E3E36', padding: 18, borderRadius: 10, marginBottom: 20,}}onPress={() => navigation.navigate('DashBoard')}> 
+        <TouchableOpacity 
+          style={{backgroundColor: '#2E3E36', padding: 18, borderRadius: 10, marginBottom: 20,}}
+          onPress={checkInput}> 
           <Text style={{textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#fff',}}> Log In</Text>
         </TouchableOpacity>
 
@@ -54,7 +80,21 @@ export default function LogInScreen() {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.footer}>Or log in with </Text>
+        <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 30,}}>
+          <View style={{flex: 1, height: 1, backgroundColor: '#4B8552'}} />
+          <View>
+            <Text style={{
+              textAlign: 'center',
+              color: '#4B8552',
+              fontFamily: 'Montserrat',
+              fontSize: 18,
+              marginHorizontal: 5,}}>
+                Or log in with 
+            </Text>
+          </View>
+          <View style={{flex: 1, height: 1, backgroundColor: '#4B8552'}} />
+        </View>
+
         <TouchableOpacity 
           onPress={() => {}}
           style={{alignItems: 'center', justifyContent: 'center'}}>
