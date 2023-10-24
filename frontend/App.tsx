@@ -14,7 +14,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontFamily: 'Montserrat', fontSize: 30 }}>Carbon Track </Text>
+      <Text style={{ fontFamily: 'Montserrat', fontSize: 25 }}>Carbon Track </Text>
 
       <StatusBar style="auto" />
     </View>
