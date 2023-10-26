@@ -46,7 +46,6 @@
     "@types/react-navigation": "^3.4.0",
     "react-native-svg-transformer": "^1.1.0",
     "typescript": "^5.1.3"
-
   },
   "private": true
 }
