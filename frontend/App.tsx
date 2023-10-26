@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
@@ -12,9 +11,6 @@ import { Sign } from 'crypto';
 import SignUpScreen from './src/screens/signup';
 import AppNavigation from './src/components/appNavigation'
 
-
-
 export default function App(){
   return <AppNavigation/>;
 }
-

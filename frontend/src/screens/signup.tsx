@@ -28,8 +28,8 @@ export default function SignUp() {
           <Text style={{ fontFamily: 'Montserrat', fontSize: 30, marginBottom: 30, fontWeight: '700'}}> Sign Up </Text>
         </View>
 
-        <TouchableOpacity style={{backgroundColor: '#2E3E36', padding: 18, borderRadius: 10, marginBottom: 20,}}onPress={() => navigation.navigate('DashBoard')}> 
-          <Text style={{textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#fff',}}> Sign Up</Text>
+        <TouchableOpacity style={{backgroundColor: '#2E3E36', padding: 18, borderRadius: 10, marginBottom: 20,}}onPress={() => navigation.navigate('Form')}> 
+          <Text style={{textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#fff',}}> Next </Text>
         </TouchableOpacity>
         
       </View>

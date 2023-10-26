@@ -10,7 +10,6 @@ import { useNavigation } from '@react-navigation/native';
 import Svg, { Circle } from 'react-native-svg';
 import SVGImg from '../../assets/google.svg';
 
-
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function LogInScreen() {
