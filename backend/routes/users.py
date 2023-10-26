@@ -29,7 +29,6 @@ def create_user() -> Response:
     user = User.from_json(request.get_json()['user']).to_json(for_mongodb=True)
     inserted_id = CarbonTrackDB.users_coll.insert_one(user).inserted_id
     user = User.from_json(CarbonTrackDB.users_coll.find_one({"_id": inserted_id})).to_json()
-    print(inserted_id)
     return user
 
 @users.route("/user/<user_id>", methods=['DELETE'])
