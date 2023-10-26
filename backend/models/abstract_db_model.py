@@ -4,6 +4,9 @@ DB Model
 All class that are storable in the db must inherit from this abstract class
 """
 from __future__ import annotations
+
+import json
+
 from bson import ObjectId
 
 
@@ -14,11 +17,11 @@ class DB_MODEL:
     def __init__(self, oid: ObjectId) -> None:
         self.oid = ObjectId(oid)
 
-    def to_json(self) -> dict:
+    def to_json(self, for_mongodb: bool = False) -> json:
         raise NotImplementedError
 
     @staticmethod
-    def from_json(doc: dict) -> DB_MODEL:
+    def from_json(doc: json) -> DB_MODEL:
         raise NotImplementedError
 
     def __repr__(self) -> str:

@@ -4,7 +4,7 @@ from pymongo.collection import Collection
 from pymongo.database import Database
 
 # Imports
-from mongodb_api.mongodb import get_db
+from mongodb_api.secrets import get_db
 
 
 # Get DB From Cluster
