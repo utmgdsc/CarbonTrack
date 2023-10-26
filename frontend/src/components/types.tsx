@@ -3,6 +3,7 @@ export type RootStackParamList = {
     LogIn: undefined; 
     SignUp: undefined;
     DashBoard: undefined;
+    Form: undefined;
 };
 
 // const RootStack = createStackNavigator<RootStackParamList>();
