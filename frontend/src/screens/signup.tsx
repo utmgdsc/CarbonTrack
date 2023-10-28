@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../components/types'
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from '@react-navigation/native';
+import SVGImg from '../../assets/google.svg';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -35,6 +36,13 @@ export default function SignUp() {
         </View>
         <TouchableOpacity style={{backgroundColor: '#2E3E36', padding: 18, borderRadius: 10, marginBottom: 20,}}onPress={() => navigation.navigate('Form')}> 
           <Text style={{textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#fff',}}> Next </Text>
+        </TouchableOpacity>
+
+        {/* new */}
+        <TouchableOpacity 
+          onPress={() => {}}
+          style={{alignItems: 'center', justifyContent: 'center'}}>
+          <SVGImg width={45} height={45} />
         </TouchableOpacity>
         
       </View>
