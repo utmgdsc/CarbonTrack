@@ -13,6 +13,7 @@ from bson import json_util
 class User(DB_MODEL):
     oid: ObjectId
     full_name: str
+    email: str
 
     def __init__(self, oid: ObjectId, full_name: str) -> None:
         super().__init__(oid)
@@ -22,6 +23,7 @@ class User(DB_MODEL):
         res = {
             '_id': self.oid,
             'full_name': self.full_name,
+            'email': self.email
         }
         if for_mongodb:
             return res
@@ -32,6 +34,7 @@ class User(DB_MODEL):
         return User(
             oid=ObjectId(doc["_id"]),
             full_name=doc["full_name"],
+            email=doc["email"]
         )
 
     def __repr__(self) -> str:
