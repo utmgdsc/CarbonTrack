@@ -59,3 +59,4 @@ Pipfile.lock
 
 # Secrets
 *secrets.json
+firebase.json
