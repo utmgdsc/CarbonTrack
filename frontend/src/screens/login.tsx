@@ -8,8 +8,10 @@ import { RootStackParamList } from '../components/types'
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Circle } from 'react-native-svg';
-// import SVGImg from '../../assets/google.svg';
 import GoogleSVG from '../../assets/toSVG';
+import firebaseService from '../utilities/firebase';
+
+
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -28,7 +30,17 @@ export default function LogInScreen() {
       alert('Please Enter Password');
       return;
     }
-    navigation.navigate('DashBoard');
+    handleLogIn();
+  };
+
+  const handleLogIn = async () => {
+    try{
+        await firebaseService.signInUser(email, password);
+        navigation.navigate('DashBoard');
+    } catch(error) {
+      alert("Incorrect Email or password");
+    }
+    
   };
 
   const [loaded] = useFonts({
