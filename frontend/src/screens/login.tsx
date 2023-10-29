@@ -8,7 +8,8 @@ import { RootStackParamList } from '../components/types'
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Circle } from 'react-native-svg';
-import SVGImg from '../../assets/google.svg';
+// import SVGImg from '../../assets/google.svg';
+import GoogleSVG from '../../assets/toSVG';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -97,7 +98,7 @@ export default function LogInScreen() {
         <TouchableOpacity 
           onPress={() => {}}
           style={{alignItems: 'center', justifyContent: 'center'}}>
-          <SVGImg width={45} height={45} />
+          <GoogleSVG width={45} height={45} />
         </TouchableOpacity>
         
       </View>

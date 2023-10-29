@@ -10,6 +10,7 @@ import LogInScreen from './src/screens/login';
 import { Sign } from 'crypto';
 import SignUpScreen from './src/screens/signup';
 import AppNavigation from './src/components/appNavigation'
+import firebaseService from './src/utilities/firebase';
 
 export default function App(){
   return <AppNavigation/>;

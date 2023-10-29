@@ -6,4 +6,9 @@ export type RootStackParamList = {
     Form: undefined;
 };
 
+export type GoogleSVGType = {
+    width: number;
+    height: number;
+}
+
 // const RootStack = createStackNavigator<RootStackParamList>();
