@@ -11,13 +11,13 @@ from flask import Blueprint, Response, jsonify, request
 from models.user import User
 from mongodb_api.carbon_track_db import CarbonTrackDB
 from bson import json_util
-
+from routes import carbon_auth
 
 users = Blueprint('/users', __name__)
 
 
 @users.route("/user/<user_id>", methods=['GET'])
-@carbon_auth.auth.login_required
+#@carbon_auth.auth.login_required
 def get_user(user_id: str) -> Response:
     query = {"_id": ObjectId(user_id)}
     item = CarbonTrackDB.users_coll.find_one(query)
