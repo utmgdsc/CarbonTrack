@@ -12,6 +12,7 @@ from models.user import User
 from mongodb_api.carbon_track_db import CarbonTrackDB
 from bson import json_util
 
+from routes import carbon_auth
 
 users = Blueprint('/users', __name__)
 
@@ -31,6 +32,7 @@ def create_user() -> Response:
     inserted_id = CarbonTrackDB.users_coll.insert_one(user).inserted_id
     user = User.from_json(CarbonTrackDB.users_coll.find_one({"_id": inserted_id})).to_json()
     return user
+
 
 @users.route("/user/<user_id>", methods=['DELETE'])
 def delete_user(user_id: str) -> Response:
