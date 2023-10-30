@@ -24,13 +24,15 @@ const firebaseService = {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       console.log('User created:', userCred.user);
     } catch(error) {
-      alert("Invalid input bithc");
+      alert("Invalid input");
       }
   },
 
   signInUser: async (email: string, password: string) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+      console.log('User logged in:', userCred.user);
+      console.log('User token:', userCred.user.getIdToken());
       // User has been signed in successfully, you can optionally return some data or handle it here
     } catch (error) {
       throw error; // Rethrow the error to handle it in your component
