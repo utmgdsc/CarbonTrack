@@ -15,9 +15,10 @@ class User(DB_MODEL):
     full_name: str
     email: str
 
-    def __init__(self, oid: ObjectId, full_name: str) -> None:
+    def __init__(self, oid: ObjectId, full_name: str, email: str) -> None:
         super().__init__(oid)
         self.full_name = str(full_name)
+        self.email = str(email)
 
     def to_json(self, for_mongodb: bool = False) -> json:
         res = {

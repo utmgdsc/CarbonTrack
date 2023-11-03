@@ -119,45 +119,45 @@ export default function LogInScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    header: {
-      fontFamily: 'Montserrat', 
-      fontSize: 30, 
-      fontWeight: '700', 
-      marginBottom: 30,
-      color: '#2E3E36',
-    },
-    icon: {
-      width: 24,
-      height: 24,
-      marginRight: 5,
-    },
-    textbox: {
-      flexDirection: 'row',
-      borderBottomColor: '#ccc',
-      borderBottomWidth: 1,
-      paddingBotton: 8,
-      marginBottom: 25,
-    },
-    footer: {
-      textAlign: 'center',
-      color: '#4B8552',
-      marginBottom: 30,
-      fontFamily: 'Montserrat',
-      fontSize: 18,
-    },
-    footerBold: {
-      textAlign: 'center',
-      color: '#2E3E36',
-      marginBottom: 30,
-      fontFamily: 'Montserrat',
-      fontWeight: 'bold',
-      fontSize: 18,
-    }
-  });
+  container: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  header: {
+    color: '#2E3E36', 
+    fontFamily: 'Montserrat', 
+    fontSize: 30, 
+    fontWeight: '700',
+    marginBottom: 30,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 5,
+  },
+  textbox: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    marginBottom: 25,
+    paddingBotton: 8,
+  },
+  footer: {
+    color: '#4B8552',
+    fontFamily: 'Montserrat',
+    fontSize: 18,
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  footerBold: {
+    color: '#2E3E36',
+    fontFamily: 'Montserrat',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    textAlign: 'center',
+  }
+});
   

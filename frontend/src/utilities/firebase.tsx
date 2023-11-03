@@ -1,7 +1,7 @@
-import * as firebase from 'firebase/app';
 import { initializeApp,  } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,  } from 'firebase/auth';
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import {createUser} from "../APIs/UsersAPI";
+import ObjectID from "bson-objectid";
 
 
 // Your web app's Firebase configuration
@@ -29,21 +29,11 @@ const firebaseService = {
   },
 
   signInUser: async (email: string, password: string) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // User has been signed in successfully, you can optionally return some data or handle it here
-    } catch (error) {
-      throw error; // Rethrow the error to handle it in your component
-    }
+    await signInWithEmailAndPassword(auth, email, password);
   },
 
   signOutUser: async () => {
-    try {
       await signOut(auth);
-      // User has been signed out successfully, you can optionally return some data or handle it here
-    } catch (error) {
-      throw error; // Rethrow the error to handle it in your component
-    }
   },
 };
 
