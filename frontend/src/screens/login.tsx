@@ -36,7 +36,7 @@ export default function LogInScreen() {
   const handleLogIn = async () => {
     try{
         await firebaseService.signInUser(email, password);
-        navigation.navigate('DashBoard');
+        navigation.navigate('Forum');
     } catch(error) {
       alert("Incorrect Email or password");
     }

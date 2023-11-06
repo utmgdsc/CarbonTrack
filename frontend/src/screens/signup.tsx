@@ -52,7 +52,7 @@ export default function SignUp() {
         full_name: fullName,
         email
       })
-      navigation.navigate('Form');
+      navigation.navigate('Forum');
     } catch (error) {
       console.error('Error when creating User:', error);
     }

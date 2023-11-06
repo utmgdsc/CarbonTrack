@@ -3,7 +3,7 @@ export type RootStackParamList = {
     LogIn: undefined; 
     SignUp: undefined;
     DashBoard: undefined;
-    Form: undefined;
+    Forum: undefined;
 };
 
 export type GoogleSVGType = {
