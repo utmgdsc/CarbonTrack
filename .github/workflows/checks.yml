@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          repository: CSC301H5/finalprojectw23-jason-s-juniors
+          repository: utmgdsc/CarbonTrack
       - name: Install packages
         run: |
           cd frontend
