@@ -1,0 +1,20 @@
+---
+name: Checks
+
+on: [push]
+
+jobs:
+  frontend-test:
+    name: Frontend
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: CSC301H5/finalprojectw23-jason-s-juniors
+      - name: Install packages
+        run: |
+          cd frontend
+          npm install
+          npm install -g eslint
+          eslint --init
