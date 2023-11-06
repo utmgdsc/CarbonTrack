@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useFonts } from 'expo-font';
+// import { StyleSheet, Text, View } from 'react-native';
+// import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RootStackParamList } from './types';
+import type { RootStackParamList } from './types';
 import HomeScreen from '../screens/home';
 import LogInScreen from '../screens/login';
 import SignUpScreen from '../screens/signup';
@@ -14,7 +14,7 @@ import Form from '../screens/forum';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 
- const AppNavigation = () => {
+ const AppNavigation = ():JSX.Element => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
