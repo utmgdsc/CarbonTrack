@@ -1,15 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-// import SignUpScreen from './signup';
 import { useNavigation } from '@react-navigation/native';
-// import AppNavigation from '../components/appNavigation';
 import type { StackNavigationProp } from "@react-navigation/stack";
-// import { Button } from 'react-native';
 import type { RootStackParamList } from '../components/types';
-// import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function HomeScreen(): JSX.Element {
@@ -38,15 +33,11 @@ export default function HomeScreen(): JSX.Element {
       <TouchableOpacity style={styles.logInButtoning} onPress={() => {navigation.navigate('SignUp');}}> 
         <Text style={styles.logInButtoningText}> Log In</Text>
       </TouchableOpacity>
-      
     </View>
-  </View>
-  
   );
 }
 
 const styles = StyleSheet.create({
-
   buttoningText:{
     color: Colors.WHITE,
     fontFamily: 'Montserrat', 
@@ -93,7 +84,6 @@ const styles = StyleSheet.create({
     fontWeight: '700', 
     marginBottom: 30
   }
-
 
   });
   

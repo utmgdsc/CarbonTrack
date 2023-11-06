@@ -8,6 +8,7 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react-native/all",
+    "plugin:etc/recommended",
     "prettier"
   ],
   "parserOptions": {
@@ -17,9 +18,12 @@
       "jsx": true
     }
   },
-  "plugins": ["react", "react-hooks", "react-native", "prettier"],
+  "plugins": ["react", "react-hooks", "react-native", "prettier", "etc"],
   "rules": {
     "semi": "off",
-    "react-native/no-inline-styles": 2
+    "react-native/no-inline-styles": 2,
+    "react-native/sort-styles": "off",
+    "react/react-in-jsx-scope": "off",
+    "etc/no-commented-out-code": "error"
   }
 }
