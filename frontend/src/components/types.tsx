@@ -4,6 +4,8 @@ export type RootStackParamList = {
     SignUp: undefined;
     DashBoard: undefined;
     Forum: undefined;
+    FoodForum: undefined;
+    EnergyForum: undefined;
 };
 
 export type GoogleSVGType = {

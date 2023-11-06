@@ -33,7 +33,7 @@ export default function Forum() {
         console.log('Selected options:', selectedOptions);
         // You can perform additional actions here, e.g., submit data to a server.
       } else {
-        console.log('Please select at least one option.');
+        alert('Please select at least one option.');
       }
     };
 
@@ -52,13 +52,14 @@ export default function Forum() {
     <Text style={styles.question}>Which carbon metrics would you like to track? </Text>
 
     {options.map((option) => (
-        <View key={option.value}>
+        <View key={option.value} style={styles.checkboxContainer}>
           <Checkbox.Item
             status={selectedOptions.includes(option.value) ? 'checked' : 'unchecked'}
             onPress={() => handleOptionChange(option.value)}
             label={option.label}
             color="#2E3E36"
             labelStyle={styles.answer}
+            style={styles.checkboxItem}
           />
         </View>
       ))}
@@ -77,10 +78,10 @@ export default function Forum() {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+      flex: 1, 
+      justifyContent: 'center', 
+      paddingHorizontal: 30,
+      backgroundColor: '#E0EEC6'
     },
     header: {
       fontFamily: 'Montserrat', 
@@ -92,7 +93,8 @@ const styles = StyleSheet.create({
       fontFamily: 'Montserrat', 
       fontSize: 25, 
       fontWeight: '700', 
-      color: '#243E36' 
+      color: '#243E36', 
+      marginBottom: 20,
     },
     answer: {
       fontFamily: 'Montserrat', 
@@ -111,5 +113,14 @@ const styles = StyleSheet.create({
       fontWeight: '700', 
       fontSize: 16, 
       color: '#fff',
-    }
+    },
+    checkboxContainer: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginBottom: 10,
+    },
+    checkboxItem: {
+      flexDirection: 'row-reverse', // Reverses the direction, placing the checkbox on the left
+      justifyContent: 'flex-start', // Aligns the checkbox to the left
+    },
   });
