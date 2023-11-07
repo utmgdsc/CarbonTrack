@@ -1,15 +1,12 @@
 import React, {useState} from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput,} from 'react-native';
 import { useFonts } from 'expo-font';
-
 import type { RootStackParamList } from '../components/types'
 import type { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from '@react-navigation/native';
-// import Svg, { Circle } from 'react-native-svg';
 import GoogleSVG from '../../assets/toSVG';
 import firebaseService from '../utilities/firebase';
 import Colors from '../../assets/colorConstants';
-// import SignUp from './signup';
 
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;

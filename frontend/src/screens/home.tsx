@@ -1,11 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import AppNavigation from '../components/appNavigation';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Button } from 'react-native';
-import { RootStackParamList } from '../components/types';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '../components/types';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
@@ -33,7 +30,7 @@ export default function HomeScreen(): JSX.Element {
         <Text style={styles.buttoningText}> Sign Up</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.logInButtoning} onPress={() => {navigation.navigate('SignUp');}}> 
+      <TouchableOpacity style={styles.logInButtoning} onPress={() => {navigation.navigate('LogIn');}}> 
         <Text style={styles.logInButtoningText}> Log In</Text>
       </TouchableOpacity>
     </View>

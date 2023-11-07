@@ -2,12 +2,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { RootStackParamList } from '../components/types'
 import Colors from '../../assets/colorConstants';
-// import { Colors } from 'react-native/Libraries/NewAppScreen';
-
 
 export default function Forum():JSX.Element {
   const [loaded] = useFonts({

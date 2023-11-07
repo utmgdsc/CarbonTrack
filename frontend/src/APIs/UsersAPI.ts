@@ -6,27 +6,26 @@ const routeName = "/users";
 
 
 export const getUser = async (userID: ObjectID): Promise<undefined | User> => {
-    return await FLASK_HTTPS.get(routeName + "/user/" + userID.str)
-        .then((res) => {
-            return res.data as User
-        })
-        .catch((res) => {
-            console.log(res)
-            return undefined;
-        })
-}
+    try{
+        const res =  await FLASK_HTTPS.get(routeName + "/user/" + userID.str);
+        return res.data as User
+    } catch (error){
+        console.error(error);
+        return undefined;
+    }
+};
 
 export const createUser = async (user: User): Promise<undefined | User> => {
-    return await FLASK_HTTPS.put(routeName + "/user",
+    try {
+        const res = await FLASK_HTTPS.put(routeName + "/user",
         {
             user
         })
-        .then((res) => {
-            return res.data as User
-        }).catch((res) => {
-            console.log(res)
-            return undefined;
-        })
+        return res.data as User;
+    } catch (error){
+        console.error(error);
+        return undefined;
+    }
 }
 
 

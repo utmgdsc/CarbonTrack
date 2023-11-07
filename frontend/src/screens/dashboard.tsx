@@ -3,10 +3,6 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { RootStackParamList } from '../components/types'
-
 
 export default function DashBoardScreen():JSX.Element {
   const [loaded] = useFonts({

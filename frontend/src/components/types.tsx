@@ -11,5 +11,3 @@ export interface GoogleSVGType {
     width: number;
     height: number;
 }
-
-// const RootStack = createStackNavigator<RootStackParamList>();
