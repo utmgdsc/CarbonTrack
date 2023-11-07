@@ -6,7 +6,7 @@ on: [push]
 jobs:
   frontend-test:
     name: Frontend
-    runs-on: ubuntu-latest
+    runs-on: pyth
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -23,11 +23,17 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          repository: utmgdsc/CarbonTrack
+          python-version: "3.11"
+
       - name: Install Requirements
         run: |
           cd backend
           pip install -r requirements.txt
-          ruff .
+
+      - name: Run linter
+        run: ruff .
