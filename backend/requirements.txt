@@ -60,7 +60,7 @@ lxml==4.9.3
 MarkupSafe==2.1.2
 msgpack==1.0.7
 multidict==6.0.4
-numpy==1.26.0
+numpy
 packaging==23.1
 pandas==2.1.0
 parse==1.19.1
