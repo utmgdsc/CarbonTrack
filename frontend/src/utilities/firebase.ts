@@ -1,5 +1,7 @@
+// import { useNavigation } from '@react-navigation/native';
 import { initializeApp,  } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,  } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, initializeAuth } from 'firebase/auth';
+// import { type StackNavigationProp } from '@react-navigation/stack';
 
 const firebaseConfig = {
     apiKey: "AIzaSyA8d5XfMBK2X4Udf-pD9vWHS1SYeex8Qo4",
@@ -12,7 +14,20 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// import { type RootStackParamList } from '../components/types';
+// export type StackNavigation = StackNavigationProp<RootStackParamList>;
+// const navigation = useNavigation<StackNavigation>();
+
 const firebaseService = {
+
+  getFirebaseUser: async () => {
+    const user = getAuth().currentUser;
+    if (user) {
+      return user
+    } else {
+      
+    }
+  },
   
   createUser: async (email: string, password: string) => {
     try{

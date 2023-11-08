@@ -25,6 +25,15 @@ def get_user(user_id: str) -> Response:
     return jsonify({'user': item})
 
 
+@users.route("/user_email/<email>", methods=['GET'])
+# @carbon_auth.auth.login_required
+def get_user_by_email(email: str) -> Response:
+    query = {"email": email}
+    item = CarbonTrackDB.users_coll.find_one(query)
+    item = User.from_json(item).to_json()
+    return jsonify({'user': item})
+
+
 @users.route("/user", methods=['PUT'])
 def create_user() -> Response:
     user = User.from_json(request.get_json()['user']).to_json(for_mongodb=True)

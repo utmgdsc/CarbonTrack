@@ -52,7 +52,7 @@ export default function SignUp(): JSX.Element{
           full_name: fullName,
           email
         });
-        navigation.navigate('Form');
+        navigation.navigate('DashBoard');
       } catch (error) {
         console.error('Error when creating User:', error);
       }
