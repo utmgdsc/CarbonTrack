@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-import { User } from '../models/User';
+import { type User } from '../models/User';
 import { GetLoggedInUser } from '../APIs/UsersAPI';
-import ObjectID from 'bson-objectid';
 
 export default function DashBoardScreen(): JSX.Element {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -15,19 +14,16 @@ export default function DashBoardScreen(): JSX.Element {
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
-  useEffect(() => {
-    GetLoggedInUser().then((res) => {
-      setUser(res!)
+  useEffect( () => {
+    // TODO
+    void GetLoggedInUser().then((res) => {
+      setUser(res)
     });
   }, [loaded])
 
-  if (!loaded || user == undefined) {
+  if (!loaded || user === undefined) {
     return <></>;
   }
-
-  console.log("User " + user)
-  console.log("User " + user.full_name)
-  console.log("User " + user.email)
 
   return (
     <View style={styles.container}>

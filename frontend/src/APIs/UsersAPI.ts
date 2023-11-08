@@ -8,7 +8,11 @@ const routeName = "/users";
 
 export const GetLoggedInUser = async (): Promise<undefined | User> => {
     const firebaseUser = await firebaseService.getFirebaseUser()
-    return getUserByEmail(firebaseUser?.email!)
+    if (firebaseUser != null) {
+        if (firebaseUser.email != null) {
+            return await getUserByEmail(firebaseUser.email)
+        }
+    }
 };
 
 
