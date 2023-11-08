@@ -18,6 +18,7 @@ class User(DB_MODEL):
     friends: list[str]
     score: int
 
+
     def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], score:int) -> None:
         super().__init__(oid)
         self.full_name = str(full_name)
