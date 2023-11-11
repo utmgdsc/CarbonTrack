@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import * as React from 'react';
-import { type StackNavigationProp } from "@react-navigation/stack";
+import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../components/types';
 import { useFonts } from 'expo-font';
+import Colors from '../../assets/colorConstants';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -15,29 +16,26 @@ export default function FoodForum(): JSX.Element {
   if (!loaded) {
     return <></>;
   }
-  
+
   return (
-  <View style={styles.container}>
-      <Text style={styles.header}>
-        Calculate your food intake:
-      </Text>
-  </View>
-  
+    <View style={styles.container}>
+      <Text style={styles.header}>Calculate your food intake:</Text>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1, 
-        justifyContent: 'center', 
-        paddingHorizontal: 30,
-        backgroundColor: '#E0EEC6'
-    },
-    header: {
-        color: '#2E3E36', 
-        fontFamily: 'Montserrat', 
-        fontSize: 30, 
-        fontWeight: '700',
-        marginBottom: 30,
-      },
-  });
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 30,
+    backgroundColor: Colors.LIGHTFGREEN,
+  },
+  header: {
+    color: Colors.DARKGREEN,
+    fontFamily: 'Montserrat',
+    fontSize: 30,
+    fontWeight: '700',
+    marginBottom: 30,
+  },
+});
