@@ -1,35 +1,65 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../components/types'
+import Colors from '../../assets/colorConstants';
+import { type User } from '../models/User';
+import { GetLoggedInUser } from '../APIs/UsersAPI';
+
+export default function DashBoardScreen(): JSX.Element {
+  const [user, setUser] = useState<User | undefined>(undefined);
 
 
-export default function DashBoardScreen() {
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
-  if (!loaded) {
-    return null;
+  useEffect( () => {
+    // TODO
+    void GetLoggedInUser().then((res) => {
+      setUser(res)
+    });
+  }, [loaded])
+
+  if (!loaded || user === undefined) {
+    return <></>;
   }
 
   return (
-  <View style={styles.container}>
-    <Text style={{ fontFamily: 'Montserrat', fontSize: 30, fontWeight: '700', color: '#243E36' }}> DashBoard </Text>
-    <StatusBar style="auto" />
-  </View>
+    <View style={styles.container}>
+      <Image
+        source={{ uri: 'https://lh3.googleusercontent.com/a/ACg8ocJ18KmHRL67wcG46K48ZT_Q7DUlLr7nk8xICk5KEMdLUEoq=s96-c' }}
+        style={styles.profilePicture}
+      />
+      <Text style={styles.name}>{user?.full_name}</Text>
+      <Text style={styles.email}>{user?.email}</Text>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
-  
+  container: {
+    alignItems: 'center',
+    backgroundColor: Colors.WHITE,
+    flex: 1,
+    justifyContent: 'center',
+  },
+  profilePicture: {
+    width: 100,
+    height: 100,
+    borderRadius: 50, // Make the image circular
+  },
+  name: {
+    color: Colors.DARKLIMEGREEN,
+    fontFamily: 'Montserrat',
+    fontSize: 24,
+    fontWeight: '700',
+    marginTop: 16, // Add spacing between the elements
+  },
+  email: {
+    color: Colors.DARKLIMEGREEN,
+    fontFamily: 'Montserrat',
+    fontSize: 16,
+    marginTop: 8, // Add spacing between the elements
+  },
+});

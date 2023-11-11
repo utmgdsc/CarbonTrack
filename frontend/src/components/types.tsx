@@ -1,4 +1,4 @@
-export type RootStackParamList = {
+export interface RootStackParamList {
     Home: undefined;
     LogIn: undefined; 
     SignUp: undefined;
@@ -7,11 +7,10 @@ export type RootStackParamList = {
     FoodForum: undefined;
     EnergyForum: undefined;
     TransportationForum: undefined;
+    [key: string]: undefined;
 };
 
-export type GoogleSVGType = {
+export interface GoogleSVGType {
     width: number;
     height: number;
 }
-
-// const RootStack = createStackNavigator<RootStackParamList>();

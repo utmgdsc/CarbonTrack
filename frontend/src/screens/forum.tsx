@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import { useFonts } from 'expo-font';
+import Colors from '../../assets/colorConstants';
 import React, { useState } from 'react';
 import { Button, Checkbox} from 'react-native-paper';
 import { RootStackParamList } from '../components/types'
@@ -43,7 +44,7 @@ export default function Forum() {
   });
 
   if (!loaded) {
-    return null;
+    return <></>;
   }
 
   return (
@@ -123,4 +124,9 @@ const styles = StyleSheet.create({
       flexDirection: 'row-reverse', // Reverses the direction, placing the checkbox on the left
       justifyContent: 'flex-start', // Aligns the checkbox to the left
     },
+    textStylez: { 
+      color: Colors.DARKLIMEGREEN, 
+      fontFamily: 'Montserrat', 
+      fontSize: 30, 
+      fontWeight: '700', }
   });

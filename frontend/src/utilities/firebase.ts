@@ -1,10 +1,6 @@
 import { initializeApp,  } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,  } from 'firebase/auth';
-import {createUser} from "../APIs/UsersAPI";
-import ObjectID from "bson-objectid";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyA8d5XfMBK2X4Udf-pD9vWHS1SYeex8Qo4",
     authDomain: "carbon-track-system.firebaseapp.com",
@@ -17,14 +13,20 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const firebaseService = {
+
+  getFirebaseUser: async () => {
+    const user = getAuth().currentUser;
+    if (user != null) {
+      return user
+    }
+  },
   
   createUser: async (email: string, password: string) => {
     try{
-      // const auth = getAuth();
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       console.log('User created:', userCred.user);
     } catch(error) {
-      alert("Invalid input bithc");
+      alert("Error occured making your account.");
       }
   },
 
