@@ -11,6 +11,7 @@ import DashBoardScreen from '../screens/dashboard';
 import Forum from '../screens/forum';
 import FoodForum from '../screens/foodForum';
 import EnergyForum from '../screens/energyForum';
+import TransportationForum from '../screens/transportationForum';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,6 +28,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
         <Stack.Screen name="Forum" component={Forum} />
         <Stack.Screen name="FoodForum" component={FoodForum} />
         <Stack.Screen name="EnergyForum" component={EnergyForum} />
+        <Stack.Screen name="TransportationForum" component={TransportationForum} />
       </Stack.Navigator>
     </NavigationContainer>
   );

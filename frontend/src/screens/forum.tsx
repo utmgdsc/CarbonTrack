@@ -55,7 +55,7 @@ export default function Forum() {
         <View key={option.value} style={styles.checkboxContainer}>
           <Checkbox.Item
             status={selectedOptions.includes(option.value) ? 'checked' : 'unchecked'}
-            onPress={() => handleOptionChange(option.value)}
+            onPress={() => {handleOptionChange(option.value)}}
             label={option.label}
             color="#2E3E36"
             labelStyle={styles.answer}

@@ -6,6 +6,7 @@ export type RootStackParamList = {
     Forum: undefined;
     FoodForum: undefined;
     EnergyForum: undefined;
+    TransportationForum: undefined;
 };
 
 export type GoogleSVGType = {

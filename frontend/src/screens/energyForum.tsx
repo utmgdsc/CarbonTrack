@@ -1,21 +1,19 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, } from 'react-native';
 import * as React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from '../components/types';
+import { type StackNavigationProp } from "@react-navigation/stack";
+import { type RootStackParamList } from '../components/types';
 import { useFonts } from 'expo-font';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
-export default function EnergyForum() {
-  const navigation = useNavigation<StackNavigation>();
+export default function EnergyForum(): JSX.Element {
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
   if (!loaded) {
-    return null;
+    return <></>;
   }
   
   return (
