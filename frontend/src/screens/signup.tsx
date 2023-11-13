@@ -56,7 +56,6 @@ export default function SignUp(): JSX.Element{
       } catch (error) {
         console.error('Error when creating User:', error);
       }
-
     }
 
   };

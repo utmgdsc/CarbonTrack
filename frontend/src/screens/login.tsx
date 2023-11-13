@@ -32,7 +32,7 @@ export default function LogInScreen(): JSX.Element {
   const handleLogIn = async (): Promise<void> => {
     try{
         await firebaseService.signInUser(email, password);
-        navigation.navigate('DashBoard');
+        navigation.navigate('TransportationForum');
     } catch(error) {
       alert("Incorrect Email or password");
     }
