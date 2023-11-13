@@ -19,7 +19,8 @@ export const getUser = async (userID: ObjectID): Promise<undefined | User> => {
     const res = await FLASK_HTTPS.get(routeName + '/user/' + userID.str);
     return res.data.user as User;
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching user from Flask BE: ', error);
+    console.error('Temp tip: have you started the backend?: ');
     return undefined;
   }
 };
@@ -29,7 +30,8 @@ export const getUserByEmail = async (email: string): Promise<undefined | User> =
     const res = await FLASK_HTTPS.get(routeName + '/user_email/' + email);
     return res.data.user as User;
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching user from Flask BE: ', error);
+    console.error('Temp tip: have you started the backend?: ');
     return undefined;
   }
 };
@@ -41,7 +43,8 @@ export const createUser = async (user: User): Promise<undefined | User> => {
     });
     return res.data.user as User;
   } catch (error) {
-    console.error(error);
+    console.error('Error creating user in Flask BE: ', error);
+    console.error('Temp tip: have you started the backend?: ');
     return undefined;
   }
 };

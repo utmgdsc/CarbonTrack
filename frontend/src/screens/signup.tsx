@@ -151,22 +151,4 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  textInputBox: {
-    flex: 1,
-    paddingVertical: 0,
-  },
-  textbox: {
-    borderBottomColor: Colors.GREY,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    paddingBottom: 8,
-    marginBottom: 10,
-  },
-  fieldInputContainer: {
-    marginBottom: 25,
-  },
-  fieldErrorMessage: {
-    color: Colors.ERROR,
-    fontSize: 12,
-  },
 });
