@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import { type RootStackParamList } from '../components/types';
 import { type StackNavigationProp } from '@react-navigation/stack';
@@ -10,7 +10,7 @@ import { createUser } from '../APIs/UsersAPI';
 import ObjectID from 'bson-objectid';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
+import FormTextField from '../components/forms/formTextField';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 interface ISignUpFields {
@@ -69,69 +69,45 @@ export default function SignUp(): JSX.Element {
             <View style={styles.headerBox}>
               <Text style={styles.header}>Sign Up</Text>
 
-              <View style={styles.fieldInputContainer}>
-                <View style={styles.textbox}>
-                  <TextInput
-                    style={styles.textInputBox}
-                    placeholder="Full Name"
-                    onChangeText={handleChange('fullName')}
-                    onBlur={handleBlur('fullName')}
-                    value={values.fullName}
-                  />
-                </View>
+              <FormTextField
+                placeholder="Full Name"
+                handleChange={handleChange('fullName')}
+                handleBlur={handleBlur('fullName')}
+                value={values.fullName}
+                touchedValue={touched.fullName}
+                errorValue={errors.fullName}
+                secureTextEntry={false}
+              />
 
-                {(touched.fullName ?? false) && errors.fullName !== undefined && (
-                  <Text style={styles.fieldErrorMessage}>{errors.fullName}</Text>
-                )}
-              </View>
+              <FormTextField
+                placeholder="Email Address"
+                handleChange={handleChange('email')}
+                handleBlur={handleBlur('email')}
+                value={values.email}
+                touchedValue={touched.email}
+                errorValue={errors.email}
+                secureTextEntry={false}
+              />
 
-              <View style={styles.fieldInputContainer}>
-                <View style={styles.textbox}>
-                  <TextInput
-                    style={styles.textInputBox}
-                    placeholder="Email Address"
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                  />
-                </View>
+              <FormTextField
+                placeholder="Password"
+                handleChange={handleChange('password')}
+                handleBlur={handleBlur('password')}
+                value={values.password}
+                touchedValue={touched.password}
+                errorValue={errors.password}
+                secureTextEntry={true}
+              />
 
-                {(touched.email ?? false) && errors.email !== undefined && (
-                  <Text style={styles.fieldErrorMessage}>{errors.email}</Text>
-                )}
-              </View>
-
-              <View style={styles.fieldInputContainer}>
-                <View style={styles.textbox}>
-                  <TextInput
-                    style={styles.textInputBox}
-                    placeholder="Password"
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                  />
-                </View>
-
-                {(touched.password ?? false) && errors.password !== undefined && (
-                  <Text style={styles.fieldErrorMessage}>{errors.password}</Text>
-                )}
-              </View>
-
-              <View style={styles.fieldInputContainer}>
-                <View style={styles.textbox}>
-                  <TextInput
-                    style={styles.textInputBox}
-                    placeholder="Repeat password"
-                    onChangeText={handleChange('repeatPassword')}
-                    onBlur={handleBlur('repeatPassword')}
-                    value={values.repeatPassword}
-                  />
-                </View>
-
-                {(touched.repeatPassword ?? false) && errors.repeatPassword !== undefined && (
-                  <Text style={styles.fieldErrorMessage}>{errors.repeatPassword}</Text>
-                )}
-              </View>
+              <FormTextField
+                placeholder="Repeat Password"
+                handleChange={handleChange('repeatPassword')}
+                handleBlur={handleBlur('repeatPassword')}
+                value={values.repeatPassword}
+                touchedValue={touched.repeatPassword}
+                errorValue={errors.repeatPassword}
+                secureTextEntry={true}
+              />
 
               <TouchableOpacity style={styles.buttoning} onPress={() => handleSubmit()}>
                 <Text style={styles.altContainerText}>Next</Text>
