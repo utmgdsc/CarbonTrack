@@ -3,7 +3,10 @@ export interface RootStackParamList {
     LogIn: undefined; 
     SignUp: undefined;
     DashBoard: undefined;
-    Form: undefined;
+    Forum: undefined;
+    FoodForum: undefined;
+    EnergyForum: undefined;
+    TransportationForum: undefined;
     [key: string]: undefined;
 };
 

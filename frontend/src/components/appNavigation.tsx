@@ -6,7 +6,10 @@ import HomeScreen from '../screens/home';
 import LogInScreen from '../screens/login';
 import SignUpScreen from '../screens/signup';
 import DashBoardScreen from '../screens/dashboard';
-import Form from '../screens/forum';
+import Forum from '../screens/forum';
+import FoodForum from '../screens/foodForum';
+import EnergyForum from '../screens/energyForum';
+import TransportationForum from '../screens/transportationForum';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -20,7 +23,10 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
         <Stack.Screen name="LogIn" component={LogInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="DashBoard" component={DashBoardScreen} />
-        <Stack.Screen name="Form" component={Form} />
+        <Stack.Screen name="Forum" component={Forum} />
+        <Stack.Screen name="FoodForum" component={FoodForum} />
+        <Stack.Screen name="EnergyForum" component={EnergyForum} />
+        <Stack.Screen name="TransportationForum" component={TransportationForum} />
       </Stack.Navigator>
     </NavigationContainer>
   );
