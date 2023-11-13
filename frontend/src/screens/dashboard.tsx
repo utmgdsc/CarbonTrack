@@ -1,18 +1,30 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-import WidgetBox from '../widgets/widgetBox';
-import ProfileWidgetBox from '../widgets/profileWidget'; 
-
-
+import { type User } from '../models/User';
+import { GetLoggedInUser } from '../APIs/UsersAPI';
 
 export default function DashBoardScreen(): JSX.Element {
+  const [user, setUser] = useState<User | undefined>(undefined);
+
+
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
-  if (!loaded) {
+
+  useEffect( () => {
+
+    void GetLoggedInUser().then((res) => {
+      if (res != null) {
+        setUser(res)
+      }
+    });
+
+  }, [loaded])
+
+  if (!loaded || user === undefined) {
     return <></>;
   }
 
