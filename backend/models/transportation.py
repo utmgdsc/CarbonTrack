@@ -73,7 +73,10 @@ class TransportationEntry(DB_MODEL):
         train_carbon_emissions = self.train * 0.037
         motorbike_carbon_emissions = self.motorbike * 0.113
         plane_carbon_emissions = self.plane * 0.146
-        return sum([bus_carbon_emissions, train_carbon_emissions, motorbike_carbon_emissions, plane_carbon_emissions])
+        electric_car_carbon_emissions = self.electric_car * 0.4
+        gasoline_car_carbon_emissions = self.gasoline_car * 2.3
+        return sum([bus_carbon_emissions, train_carbon_emissions, motorbike_carbon_emissions, plane_carbon_emissions,
+                    electric_car_carbon_emissions, gasoline_car_carbon_emissions])
 
     def __repr__(self) -> str:
         return f'Transportation ID: {self.oid.__str__()}'
