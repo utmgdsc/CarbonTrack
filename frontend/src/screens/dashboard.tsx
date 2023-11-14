@@ -7,6 +7,7 @@ import { GetLoggedInUser } from '../APIs/UsersAPI';
 
 export default function DashBoardScreen(): JSX.Element {
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [photoURL] = useState<string>("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png");
 
 
   const [loaded] = useFonts({

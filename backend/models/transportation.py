@@ -4,7 +4,7 @@ Transportation Model
 
 from __future__ import annotations
 import json
-import datetime
+from datetime import datetime
 from typing import Optional
 from models.abstract_db_model import DB_MODEL
 from bson import ObjectId
@@ -18,19 +18,21 @@ class TransportationEntry(DB_MODEL):
     train: int
     motorbike: int
     plane: int
-    cars: int
+    electric_car: int
+    gasoline_car: int
     carbon_emissions: float
-    date: datetime.date
+    date: datetime
 
     def __init__(self, oid: ObjectId, user_id: ObjectId, bus: int, train: int, motorbike: int,
-                 plane: int, cars: int, carbon_emissions: float, date: datetime.date) -> None:
+                 plane: int, electric_car: int, gasoline_car: int, carbon_emissions: float, date: datetime) -> None:
         super().__init__(oid)
-        self.user_id = user_id
+        self.user_id = ObjectId(user_id)
         self.bus = bus
         self.train = train
         self.motorbike = motorbike
         self.plane = plane
-        self.cars = cars
+        self.electric_car = electric_car
+        self.gasoline_car = gasoline_car
         self.carbon_emissions = carbon_emissions
         self.date = date
 
@@ -42,7 +44,8 @@ class TransportationEntry(DB_MODEL):
             'train': self.train,
             'motorbike': self.motorbike,
             'plane': self.plane,
-            'cars': self.cars,
+            'electric_car': self.electric_car,
+            'gasoline_car': self.gasoline_car,
             'carbon_emissions': self.calculate_carbon_emissions(),
             'date': self.date
         }
@@ -59,9 +62,10 @@ class TransportationEntry(DB_MODEL):
             train=doc["train"],
             motorbike=doc["motorbike"],
             plane=doc["plane"],
-            cars=doc["cars"],
+            electric_car=doc["electric_car"],
+            gasoline_car=doc["gasoline_car"],
             carbon_emissions=doc["carbon_emissions"],
-            date=datetime.date.fromisoformat(doc["date"])
+            date=doc["date"]
         )
 
     def calculate_carbon_emissions(self) -> float:
