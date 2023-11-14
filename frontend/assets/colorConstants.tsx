@@ -6,6 +6,7 @@ const Colors = {
   DARKLIMEGREEN: '#4B8552',
   GREY: '#ccc',
   FILLGREEN: '#7CA982',
+  ERROR: 'red',
 };
 
 export default Colors;

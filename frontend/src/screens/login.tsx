@@ -37,6 +37,7 @@ export default function LogInScreen(): JSX.Element {
     }
   };
 
+  // TODO: Load it at the global level.
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
