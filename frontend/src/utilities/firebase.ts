@@ -1,33 +1,37 @@
-import { initializeApp,  } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA8d5XfMBK2X4Udf-pD9vWHS1SYeex8Qo4",
-    authDomain: "carbon-track-system.firebaseapp.com",
-    projectId: "carbon-track-system",
-    storageBucket: "carbon-track-system.appspot.com",
-    messagingSenderId: "617921267809",
-    appId: "1:617921267809:web:47601de3a68a0ea29c4220"
-  };
+  apiKey: 'AIzaSyA8d5XfMBK2X4Udf-pD9vWHS1SYeex8Qo4',
+  authDomain: 'carbon-track-system.firebaseapp.com',
+  projectId: 'carbon-track-system',
+  storageBucket: 'carbon-track-system.appspot.com',
+  messagingSenderId: '617921267809',
+  appId: '1:617921267809:web:47601de3a68a0ea29c4220',
+};
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const firebaseService = {
-
   getFirebaseUser: async () => {
     const user = getAuth().currentUser;
     if (user != null) {
-      return user
+      return user;
     }
   },
-  
+
   createUser: async (email: string, password: string) => {
-    try{
+    try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('User created:', userCred.user);
-    } catch(error) {
-      alert("Error occured making your account.");
-      }
+      console.log('User is created successfully with email:', userCred.user.email);
+    } catch (error) {
+      console.error('Error occured creating the user account:', error);
+    }
   },
 
   signInUser: async (email: string, password: string) => {
@@ -35,7 +39,7 @@ const firebaseService = {
   },
 
   signOutUser: async () => {
-      await signOut(auth);
+    await signOut(auth);
   },
 };
 

@@ -25,6 +25,7 @@
     "react-native/sort-styles": "off",
     "react/react-in-jsx-scope": "off",
     "etc/no-commented-out-code": "error",
-    "etc/no-implicit-any-catch": "off"
+    "etc/no-implicit-any-catch": "off",
+    "@typescript-eslint/no-confusing-void-expression": "off"
   }
 }
