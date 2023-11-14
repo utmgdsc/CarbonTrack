@@ -1,7 +1,7 @@
 from typing import Optional
 from pprint import pprint
 import firebase_admin
-from firebase_admin import credentials
+from firebase_admin import credentials, auth
 
 
 cred = credentials.Certificate("firebase.json")
