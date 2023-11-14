@@ -1,11 +1,15 @@
 import type ObjectID from "bson-objectid";
 
 
-export interface User {
+export interface Transportation {
     _id: ObjectID
-    full_name: string
-    email: string
-    badges: string[]
-    friends: ObjectID[]
-    score: number
+    user_id: ObjectID
+    bus: number
+    train: number
+    motorbike: number
+    plane: number
+    electric_car: number
+    gasoline_car: number
+    carbon_emmisions: number
+    date: Date
 }
