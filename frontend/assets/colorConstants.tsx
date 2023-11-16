@@ -5,7 +5,10 @@ const Colors = {
   BLACK: '000',
   DARKLIMEGREEN: '#4B8552',
   GREY: '#ccc',
+  FILLGREEN: '#7CA982',
   ERROR: 'red',
+  BLACKTRANS: '#000000aa',
+  BLUE: 'blue',
 };
 
 export default Colors;
