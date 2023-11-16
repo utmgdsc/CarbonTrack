@@ -1,38 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-import { type User } from '../models/User';
-import { GetLoggedInUser } from '../APIs/UsersAPI';
+import WidgetBox from '../widgets/widgetBox';
+import ProfileWidgetBox from '../widgets/profileWidget'; 
+
+
 
 export default function DashBoardScreen(): JSX.Element {
-  const [user, setUser] = useState<User | undefined>(undefined);
-
-
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
-
-  useEffect( () => {
-    // TODO
-    void GetLoggedInUser().then((res) => {
-      setUser(res)
-    });
-  }, [loaded])
-
-  if (!loaded || user === undefined) {
+  if (!loaded) {
     return <></>;
   }
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://lh3.googleusercontent.com/a/ACg8ocJ18KmHRL67wcG46K48ZT_Q7DUlLr7nk8xICk5KEMdLUEoq=s96-c' }}
-        style={styles.profilePicture}
-      />
-      <Text style={styles.name}>{user?.full_name}</Text>
-      <Text style={styles.email}>{user?.email}</Text>
+      <View style={styles.headerContainer}>
+        <View style={styles.headerBox}>
+          <Text style={styles.header}>Dashboard</Text>
+        </View>
+      </View>
+
+      <View style={styles.profileWidgetContainer}>
+        <View style={styles.widgetBoarder}>
+            <ProfileWidgetBox name="Alexader Almerez" pplavatar={'https://images.pexels.com/photos/8090137/pexels-photo-8090137.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'} rank='42' level={3} />
+          </View>
+      </View>
+
+      <View style={styles.widgetContainer}>
+
+        <View style={styles.widgetBoarder}>
+          <WidgetBox title="Food" content="10.6" />
+        </View>
+
+        <View style={styles.widgetBoarder}>
+          <WidgetBox title="Transportatoin" content="12.4" />
+        </View>
+
+      </View>
+
     </View>
   );
 }
@@ -44,22 +53,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  profilePicture: {
-    width: 100,
-    height: 100,
-    borderRadius: 50, // Make the image circular
-  },
-  name: {
-    color: Colors.DARKLIMEGREEN,
-    fontFamily: 'Montserrat',
+  header: {
     fontSize: 24,
-    fontWeight: '700',
-    marginTop: 16, // Add spacing between the elements
   },
-  email: {
-    color: Colors.DARKLIMEGREEN,
-    fontFamily: 'Montserrat',
-    fontSize: 16,
-    marginTop: 8, // Add spacing between the elements
+  headerBox: {
+    backgroundColor: Colors.WHITE,
+  },
+  headerContainer: {
+    alignItems: 'center',
+  },
+  profileWidgetContainer: {
+    padding: 10,
+    flexDirection: 'column',
+  },
+  widgetContainer: {
+    padding: 10,
+    flexDirection: 'row',
+  },
+  widgetBoarder: {
+    padding: 10,
   },
 });
