@@ -7,6 +7,8 @@ const Colors = {
   GREY: '#ccc',
   FILLGREEN: '#7CA982',
   ERROR: 'red',
+  BLACKTRANS: '#000000aa',
+  BLUE: 'blue',
 };
 
 export default Colors;
