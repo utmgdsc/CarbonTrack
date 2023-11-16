@@ -31,7 +31,7 @@ export default function LogInScreen(): JSX.Element {
   const handleLogIn = async (): Promise<void> => {
     try {
       await firebaseService.signInUser(email, password);
-      navigation.navigate('TransportationForum');
+      navigation.navigate('DashBoard');
     } catch (error) {
       alert('Incorrect Email or password');
     }
