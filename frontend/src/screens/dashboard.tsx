@@ -64,23 +64,9 @@ export default function DashBoardScreen(): JSX.Element {
           >
             <WidgetBox title="Food" content="10.6" />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('FoodHistory');
-            }}
-          >
-            <WidgetBox title="Food" content="10.6" />
-          </TouchableOpacity>
         </View>
 
         <View style={styles.widgetBoarder}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('TransportationHistory');
-            }}
-          >
-            <WidgetBox title="Transportatin" content="12.4" />
-          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('TransportationHistory');
