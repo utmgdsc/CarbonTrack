@@ -18,12 +18,3 @@ def get_1_day_range(d: datetime) -> tuple[datetime, datetime]:
     end = datetime(year=d.year, month=d.month, day=d.day) + timedelta(days=1)
     start = datetime(year=d.year, month=d.month, day=d.day) - timedelta(days=1)
     return start, end
-
-
-if __name__ == '__main__':
-
-    print(weekly_metric_reset(datetime(year=2023, month=11, day=5, second=23)))
-    print(weekly_metric_reset(datetime(year=2023, month=11, day=9)))
-    print(weekly_metric_reset(datetime(year=2023, month=11, day=11)))
-    print(weekly_metric_reset(datetime(year=2023, month=11, day=12)))
-    print(weekly_metric_reset(datetime(year=2023, month=11, day=13)))

@@ -1,16 +1,9 @@
 # Python Imports
-import base64
-import json
-from io import BytesIO
-import pprint
-
-import flask
 from bson import ObjectId
 from flask import Blueprint, Response, jsonify, request
 
 from models.user import User
 from mongodb_api.carbon_track_db import CarbonTrackDB
-from bson import json_util
 from routes import carbon_auth
 
 users = Blueprint('/users', __name__)

@@ -1,17 +1,10 @@
 # Python Imports
-import base64
 from datetime import datetime
-import json
-from io import BytesIO
-import pprint
-
-import flask
 from bson import ObjectId
 from flask import Blueprint, Response, jsonify, request
 
 from models.transportation import TransportationEntry
 from mongodb_api.carbon_track_db import CarbonTrackDB
-from bson import json_util
 from routes import carbon_auth
 from utils.metric_resets import weekly_metric_reset, get_1_day_range
 
@@ -43,7 +36,7 @@ def get_transportation_metric_for_today(user_id: str) -> Response:
 
 @carbon_auth.auth.login_required
 def create_transportation(user_id: ObjectId) -> Response:
-    transportation = TransportationEntry(oid=ObjectId(), user_id=user_id, bus=0, train=0, motorbike=0, plane=0, electric_car=0,
+    transportation = TransportationEntry(oid=ObjectId(), user_id=user_id, bus=0, train=0, motorbike=0, electric_car=0,
                                          gasoline_car=0, carbon_emissions=0.0, date=weekly_metric_reset(datetime.today()))
     transportation = transportation.to_json(for_mongodb=True)
     inserted_id = CarbonTrackDB.transportation_coll.insert_one(transportation).inserted_id

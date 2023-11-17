@@ -17,20 +17,18 @@ class TransportationEntry(DB_MODEL):
     bus: int
     train: int
     motorbike: int
-    plane: int
     electric_car: int
     gasoline_car: int
     carbon_emissions: float
     date: datetime
 
     def __init__(self, oid: ObjectId, user_id: ObjectId, bus: int, train: int, motorbike: int,
-                 plane: int, electric_car: int, gasoline_car: int, carbon_emissions: float, date: datetime) -> None:
+                 electric_car: int, gasoline_car: int, carbon_emissions: float, date: datetime) -> None:
         super().__init__(oid)
         self.user_id = ObjectId(user_id)
         self.bus = bus
         self.train = train
         self.motorbike = motorbike
-        self.plane = plane
         self.electric_car = electric_car
         self.gasoline_car = gasoline_car
         self.carbon_emissions = carbon_emissions
@@ -43,7 +41,6 @@ class TransportationEntry(DB_MODEL):
             'bus': self.bus,
             'train': self.train,
             'motorbike': self.motorbike,
-            'plane': self.plane,
             'electric_car': self.electric_car,
             'gasoline_car': self.gasoline_car,
             'carbon_emissions': self.calculate_carbon_emissions(),
@@ -61,7 +58,6 @@ class TransportationEntry(DB_MODEL):
             bus=doc["bus"],
             train=doc["train"],
             motorbike=doc["motorbike"],
-            plane=doc["plane"],
             electric_car=doc["electric_car"],
             gasoline_car=doc["gasoline_car"],
             carbon_emissions=doc["carbon_emissions"],
@@ -72,7 +68,6 @@ class TransportationEntry(DB_MODEL):
         bus_carbon_emissions = self.bus * 0.103
         train_carbon_emissions = self.train * 0.037
         motorbike_carbon_emissions = self.motorbike * 0.113
-        plane_carbon_emissions = self.plane * 0.146
         electric_car_carbon_emissions = self.electric_car * 0.4
         gasoline_car_carbon_emissions = self.gasoline_car * 2.3
         return sum([bus_carbon_emissions, train_carbon_emissions, motorbike_carbon_emissions, plane_carbon_emissions,
