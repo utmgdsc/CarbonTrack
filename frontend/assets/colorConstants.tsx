@@ -7,6 +7,7 @@ const Colors = {
   GREY: '#ccc',
   FILLGREEN: '#7CA982',
   ERROR: 'red',
+  TRANSGREEN: '#366959',
   BLACKTRANS: '#000000aa',
   BLUE: 'blue',
 };
