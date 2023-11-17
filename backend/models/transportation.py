@@ -5,7 +5,6 @@ Transportation Model
 from __future__ import annotations
 import json
 from datetime import datetime
-from typing import Optional
 from models.abstract_db_model import DB_MODEL
 from bson import ObjectId
 from bson import json_util
