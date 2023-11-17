@@ -1,18 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
+import { getUserLevel, type User } from '../models/User';
+import { GetLoggedInUser } from '../APIs/UsersAPI';
+import ProfileWidgetBox from '../widgets/profileWidget';
 import WidgetBox from '../widgets/widgetBox';
-import ProfileWidgetBox from '../widgets/profileWidget'; 
-
-
 
 export default function DashBoardScreen(): JSX.Element {
+  const [user, setUser] = useState<User | undefined>(undefined);
+  const [photoURL] = useState<string>("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png");
+
+
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
-  if (!loaded) {
+
+  useEffect( () => {
+
+    void GetLoggedInUser().then((res) => {
+      if (res != null) {
+        setUser(res)
+      }
+    });
+
+  }, [loaded])
+
+  if (!loaded || user === undefined) {
     return <></>;
   }
 
@@ -26,7 +41,7 @@ export default function DashBoardScreen(): JSX.Element {
 
       <View style={styles.profileWidgetContainer}>
         <View style={styles.widgetBoarder}>
-            <ProfileWidgetBox name="Alexader Almerez" pplavatar={'https://images.pexels.com/photos/8090137/pexels-photo-8090137.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'} rank='42' level={3} />
+            <ProfileWidgetBox name={user.full_name} pplavatar={photoURL} rank='42' level={getUserLevel(user)} />
           </View>
       </View>
 

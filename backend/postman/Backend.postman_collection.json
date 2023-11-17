@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "96af37c1-9d9e-43ba-9dcd-f25fcc13248e",
+		"name": "Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25097543",
+		"_collection_link": "https://smartqrapp.postman.co/workspace/CarbonTrack~a09486ca-92c2-404d-9e10-1f18c1befa4a/collection/25097543-96af37c1-9d9e-43ba-9dcd-f25fcc13248e?action=share&source=collection_link&creator=25097543"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/users/user_email/yazan@gmail.com",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"users",
+								"user_email",
+								"yazan@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "\"eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTE3OTkzLCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MTc5OTMsImV4cCI6MTY5ODUyMTU5MywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.Q1b4XkYwuMzn1aGv3qHVu469hGrgUI8FMSrsru_CgVGxhBKTKsUaKExwRssakLEwcQ0u68OcmNQjBLbwP2SE99f61R0GQxuiyI5m5L1-OhTrbPRYcRYDEFBySmSQMgOFBmPik5JlMcWOz1LtLXzbnCR-epcSrxs8qUZ2_rfpeYaaJavRQuYBJmQo8FgJyPz-LQ2aa-2ileNipyyg7AXxqU0fgnTLSSvHzPqk6O-bSCci53QdY2w6n2vusEUpIea6i5XhIrfr0BkMXy8VIoJQ8RoIjdS-_CpTx-1aixDzOMQd-I-synRJN7-YZKV5E4yupIquNPjQmFFoGF5xGTEelA\"",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"_id\": \"651cf22c1d4f7834e2303a85\",\n        \"full_name\": \"Adam\",\n        \"email\": \"adam#armoush.com\",\n        \"badges\": [],\n        \"friends\": [],\n        \"score\": 0\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/users/user",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"users",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "\"eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTE3OTkzLCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MTc5OTMsImV4cCI6MTY5ODUyMTU5MywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.Q1b4XkYwuMzn1aGv3qHVu469hGrgUI8FMSrsru_CgVGxhBKTKsUaKExwRssakLEwcQ0u68OcmNQjBLbwP2SE99f61R0GQxuiyI5m5L1-OhTrbPRYcRYDEFBySmSQMgOFBmPik5JlMcWOz1LtLXzbnCR-epcSrxs8qUZ2_rfpeYaaJavRQuYBJmQo8FgJyPz-LQ2aa-2ileNipyyg7AXxqU0fgnTLSSvHzPqk6O-bSCci53QdY2w6n2vusEUpIea6i5XhIrfr0BkMXy8VIoJQ8RoIjdS-_CpTx-1aixDzOMQd-I-synRJN7-YZKV5E4yupIquNPjQmFFoGF5xGTEelA\"",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"_id\": \"651cf22c1d4f7834e2303a85\",\n        \"full_name\": \"Adam\",\n        \"email\": \"adam#armoush.com\",\n        \"badges\": [],\n        \"friends\": [],\n        \"score\": 0\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/users/user",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"users",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transportation",
+			"item": [
+				{
+					"name": "Get Transportation",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/transportation/transportation/651cf22c1d4f7834e2303a44",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"transportation",
+								"transportation",
+								"651cf22c1d4f7834e2303a44"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current Transportation",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/transportation/get_transportation_metric_for_today/655151e8875bab2e6811b8b8",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"transportation",
+								"get_transportation_metric_for_today",
+								"655151e8875bab2e6811b8b8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current Transportation Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"transportation\": {\n        \"_id\": \"6552c6a8d6755e16ea2a73bd\",\n        \"bus\": 0,\n        \"carbon_emissions\": 0.0,\n        \"electric_car\": 3000,\n        \"gasoline_car\": 200,\n        \"date\": {\n            \"$date\": \"2023-11-12T00:00:00Z\"\n        },\n        \"motorbike\": 50,\n        \"plane\": 0,\n        \"train\": 50,\n        \"user_id\": \"655151e8875bab2e6811b8b8\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/transportation/transportation/6552c6a8d6755e16ea2a73bd",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"transportation",
+								"transportation",
+								"6552c6a8d6755e16ea2a73bd"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BaseGet",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LocalBaseURL}}",
+					"host": [
+						"{{LocalBaseURL}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "LocalBaseURL",
+			"value": "http://127.0.0.1:6050",
+			"type": "string"
+		}
+	]
+}
