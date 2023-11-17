@@ -4,9 +4,7 @@ DB Model
 All class that are storable in the db must inherit from this abstract class
 """
 from __future__ import annotations
-
 import json
-
 from bson import ObjectId
 
 
