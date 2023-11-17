@@ -1,31 +1,36 @@
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
 import { getUserLevel, type User } from '../models/User';
 import { GetLoggedInUser } from '../APIs/UsersAPI';
 import ProfileWidgetBox from '../widgets/profileWidget';
 import WidgetBox from '../widgets/widgetBox';
+import type { RootStackParamList } from '../components/types';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+
+export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function DashBoardScreen(): JSX.Element {
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [photoURL] = useState<string>("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png");
-
+  const [photoURL] = useState<string>(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png'
+  );
+  const navigation = useNavigation<StackNavigation>();
 
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
-  useEffect( () => {
-
+  useEffect(() => {
     void GetLoggedInUser().then((res) => {
       if (res != null) {
-        setUser(res)
+        setUser(res);
       }
     });
-
-  }, [loaded])
+  }, [loaded]);
 
   if (!loaded || user === undefined) {
     return <></>;
@@ -41,22 +46,50 @@ export default function DashBoardScreen(): JSX.Element {
 
       <View style={styles.profileWidgetContainer}>
         <View style={styles.widgetBoarder}>
-            <ProfileWidgetBox name={user.full_name} pplavatar={photoURL} rank='42' level={getUserLevel(user)} />
-          </View>
+          <ProfileWidgetBox
+            name={user.full_name}
+            pplavatar={photoURL}
+            rank="42"
+            level={getUserLevel(user)}
+          />
+        </View>
       </View>
 
       <View style={styles.widgetContainer}>
-
         <View style={styles.widgetBoarder}>
-          <WidgetBox title="Food" content="10.6" />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('FoodHistory');
+            }}
+          >
+            <WidgetBox title="Food" content="10.6" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('FoodHistory');
+            }}
+          >
+            <WidgetBox title="Food" content="10.6" />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.widgetBoarder}>
-          <WidgetBox title="Transportatoin" content="12.4" />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('TransportationHistory');
+            }}
+          >
+            <WidgetBox title="Transportatin" content="12.4" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('TransportationHistory');
+            }}
+          >
+            <WidgetBox title="Transportatin" content="12.4" />
+          </TouchableOpacity>
         </View>
-
       </View>
-
     </View>
   );
 }
