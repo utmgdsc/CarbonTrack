@@ -48,3 +48,16 @@ export const createUser = async (user: User): Promise<undefined | User> => {
     return undefined;
   }
 };
+
+export const updateUser = async (user: User): Promise<undefined | User> => {
+  try {
+    const res = await FLASK_HTTPS.patch(routeName + '/user/' + user._id.str, {
+      user,
+    });
+    return res.data.user as User;
+  } catch (error) {
+    console.error('Error fetching user from Flask BE: ', error);
+    console.error('Temp tip: have you started the backend?: ');
+    return undefined;
+  }
+};
