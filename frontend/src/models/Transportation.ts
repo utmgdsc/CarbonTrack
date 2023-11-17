@@ -7,7 +7,6 @@ export interface Transportation {
     bus: number
     train: number
     motorbike: number
-    plane: number
     electric_car: number
     gasoline_car: number
     carbon_emmisions: number
