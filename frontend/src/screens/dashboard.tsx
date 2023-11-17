@@ -109,5 +109,5 @@ const styles = StyleSheet.create({
   },
   widgetBoarder: {
     padding: 10,
-  },
+  }
 });
