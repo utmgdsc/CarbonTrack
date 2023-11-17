@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
 import { type User } from '../models/User';
 import { GetLoggedInUser } from '../APIs/UsersAPI';
+import ProfileWidgetBox from '../widgets/profileWidget';
+import WidgetBox from '../widgets/widgetBox';
 
 export default function DashBoardScreen(): JSX.Element {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -39,7 +41,7 @@ export default function DashBoardScreen(): JSX.Element {
 
       <View style={styles.profileWidgetContainer}>
         <View style={styles.widgetBoarder}>
-            <ProfileWidgetBox name="Alexader Almerez" pplavatar={'https://images.pexels.com/photos/8090137/pexels-photo-8090137.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'} rank='42' level={3} />
+            <ProfileWidgetBox name="Alexader Almerez" pplavatar={photoURL} rank='42' level={3} />
           </View>
       </View>
 

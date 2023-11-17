@@ -1,7 +1,6 @@
 import FLASK_HTTPS from './FLASK_API';
 import type ObjectID from 'bson-objectid';
 import type { Transportation } from '../models/Transportation';
-import firebaseService from '../utilities/firebase';
 
 const routeName = '/transportation';
 
