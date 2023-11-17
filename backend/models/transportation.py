@@ -69,7 +69,7 @@ class TransportationEntry(DB_MODEL):
         motorbike_carbon_emissions = self.motorbike * 0.113
         electric_car_carbon_emissions = self.electric_car * 0.4
         gasoline_car_carbon_emissions = self.gasoline_car * 2.3
-        return sum([bus_carbon_emissions, train_carbon_emissions, motorbike_carbon_emissions, plane_carbon_emissions,
+        return sum([bus_carbon_emissions, train_carbon_emissions, motorbike_carbon_emissions,
                     electric_car_carbon_emissions, gasoline_car_carbon_emissions])
 
     def __repr__(self) -> str:

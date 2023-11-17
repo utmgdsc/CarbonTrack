@@ -1,7 +1,6 @@
 # Python Imports
 from flask import Flask, render_template
 from flask_cors import CORS
-from flask_login import LoginManager
 
 # Imports
 from routes.users import users

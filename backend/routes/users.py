@@ -30,7 +30,6 @@ def get_user_by_email(user_email: str) -> Response:
 @users.route("/user", methods=['PUT'])
 @carbon_auth.auth.login_required
 def create_user() -> Response:
-    token = request.get_json()
     res: dict = request.get_json()['user']
     user = User.from_json(res).to_json(for_mongodb=True)
     inserted_id = CarbonTrackDB.users_coll.insert_one(user).inserted_id
