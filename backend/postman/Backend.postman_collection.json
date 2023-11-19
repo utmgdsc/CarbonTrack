@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "96af37c1-9d9e-43ba-9dcd-f25fcc13248e",
+		"_postman_id": "4e6a6476-9f0c-4b6a-b021-a2ee98a764fc",
 		"name": "Backend",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25097543",
-		"_collection_link": "https://smartqrapp.postman.co/workspace/CarbonTrack~a09486ca-92c2-404d-9e10-1f18c1befa4a/collection/25097543-96af37c1-9d9e-43ba-9dcd-f25fcc13248e?action=share&source=collection_link&creator=25097543"
+		"_exporter_id": "30673965"
 	},
 	"item": [
 		{
@@ -251,6 +250,131 @@
 								"transportation",
 								"transportation",
 								"655d625a1df1b3b87663ba71"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Food",
+			"item": [
+				{
+					"name": "Get Current Food",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/food/get_food_metric_for_today/655151e8875bab2e6811b8b8",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"food",
+								"get_food_metric_for_today",
+								"655151e8875bab2e6811b8b8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Food",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/food/food/6559599c7228677f5bc26d34",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"food",
+								"food",
+								"6559599c7228677f5bc26d34"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Food",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"food\": {\n        \"_id\": \"6559599c7228677f5bc26d34\",\n        \"beef\": 22,\n        \"carbon_emissions\": 0.0,\n        \"cheese\": 2,\n        \"chicken\": 22,\n        \"date\": {\n            \"$date\": \"2023-11-12T00:00:00Z\"\n        },\n        \"fish\": 22,\n        \"food_waste\": 12,\n        \"lamb\": 11,\n        \"milk\": 22,\n        \"pork\": 12,\n        \"user_id\": \"655151e8875bab2e6811b8b8\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/food/food/6559599c7228677f5bc26d34",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"food",
+								"food",
+								"6559599c7228677f5bc26d34"
 							]
 						}
 					},

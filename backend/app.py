@@ -7,6 +7,8 @@ from flask_cors import CORS
 from routes.users import users
 from routes.transportation import transportation_service
 from utils.customJSONEncoder import CustomJSONProvider
+from routes.food import food_service
+
 
 app = Flask(__name__)
 app.json = CustomJSONProvider(app)
@@ -14,6 +16,7 @@ app.json = CustomJSONProvider(app)
 # Services
 app.register_blueprint(users, url_prefix="/users")
 app.register_blueprint(transportation_service, url_prefix="/transportation")
+app.register_blueprint(food_service, url_prefix="/food")
 CORS(app)
 
 
@@ -26,14 +29,6 @@ def home() -> Response:
 @app.route("/google")
 def test_google() -> str:
     return render_template('index.html')
-
-
-@app.route('/get_object_id')
-def get_object_id():
-    # Example: Creating an ObjectId
-    my_object_id = ObjectId()
-
-    return jsonify({'_id': my_object_id})
 
 
 if __name__ == '__main__':
