@@ -20,6 +20,22 @@ def get_transportation(oid: str) -> Response:
     return jsonify({'transportation': item})
 
 
+@transportation_service.route("/get_transportations_entries_for_user_using_data_range/<user_id>", methods=['POST'])
+@carbon_auth.auth.login_required
+def get_transportations_entries_for_user_using_date_range(user_id: str) -> Response[list[TransportationEntry]]:
+    data = request.get_json()
+    start = data.get('start')
+    end = data.get('end')
+    # Validate that both start and end dates are provided
+    if not start or not end:
+        return jsonify({'error': 'Both start and end dates are required'})
+
+    query = {"user_id": ObjectId(user_id), "date": {"$gte": start, "$lte": end}}
+    items = list(CarbonTrackDB.transportation_coll.find(query))
+    items = [TransportationEntry.from_json(item).to_json() for item in items]
+    return jsonify({'transportations': items})
+
+
 @transportation_service.route("/get_transportation_metric_for_today/<user_id>", methods=['GET'])
 @carbon_auth.auth.login_required
 def get_transportation_metric_for_today(user_id: str) -> Response:
