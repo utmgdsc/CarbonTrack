@@ -1,3 +1,5 @@
+import { type User } from "../models/User";
+
 export interface RootStackParamList {
   Home: undefined;
   LogIn: undefined;
@@ -23,8 +25,7 @@ export interface WidgetBoxProps {
 }
 
 export interface profileWidgetBoxProps {
-  pplavatar: string;
-  name: string;
-  rank: string;
-  level: number;
+  photoURL: string
+  user: User
+  rank: number
 }

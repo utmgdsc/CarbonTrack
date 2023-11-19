@@ -15,6 +15,20 @@ export const getTransportation = async (transportationID: ObjectID): Promise<und
   }
 };
 
+export const getTransportationsEntriesForUserUsingDataRange = async (userID: ObjectID, start: Date, end: Date): Promise<undefined | Transportation[]> => {
+  try {
+    const res = await FLASK_HTTPS.post(routeName + '/get_transportations_entries_for_user_using_data_range/' + userID.str, {
+      start,
+      end
+    });
+    return res.data.transportation as Transportation[];
+  } catch (error) {
+    console.error('Error fetching transportation from Flask BE: ', error);
+    console.error('Temp tip: have you started the backend?: ');
+    return undefined;
+  }
+};
+
 export const getTransportationMetricForToday = async (userID: ObjectID): Promise<undefined | Transportation> => {
   try {
     const res = await FLASK_HTTPS.get(routeName + '/get_transportation_metric_for_today/' + userID.str);
