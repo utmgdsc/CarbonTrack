@@ -12,3 +12,14 @@ export interface Transportation {
     carbon_emmisions: number
     date: Date
 }
+
+export interface MonthlyEntry {
+    'data': number[]
+    'month': string
+    'year': string
+}
+
+export interface TransportationRes {
+    transportationEntries: []
+    monthlyData: []
+}

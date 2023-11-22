@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import Colors from '../../assets/colorConstants';
 import { useFonts } from 'expo-font';
 import { BarChart } from 'react-native-chart-kit';
+import { TransportationAPI } from '../APIs/TransportationAPI';
+import { type MonthlyEntry } from '../models/Transportation';
+
 
 export default function TransportationHistory(): JSX.Element {
-  const monthlyData = [
-    { month: 'September', data: [20, 25, 30, 22] },
-    { month: 'November', data: [18, 24, 16, 4] },
-    // Add data for other months...
-  ];
 
-  const [expandedStates, setExpandedStates] = useState(Array(monthlyData.length).fill(false));
+  const [expandedStates, setExpandedStates] = useState(Array(100).fill(false));
+  const [monthlyData, setMonthlyData] = useState<MonthlyEntry[]>();
 
   const toggleExpanded = (index: number): void => {
     const updatedStates = [...expandedStates];
@@ -27,7 +26,20 @@ export default function TransportationHistory(): JSX.Element {
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
-  if (!loaded) {
+
+  useEffect(() => {
+    void TransportationAPI.getTransportationsEntriesForUserUsingDataRange(new Date(2023, 1, 1), new Date(2023, 12, 1)).then((res) => {
+      if (res != null) {
+        if (res.monthlyData != null) {
+          setMonthlyData(res.monthlyData)
+          console.log(res)
+        }
+      }
+      console.log(res)
+    });
+  }, [loaded])
+
+  if (!loaded || monthlyData === undefined) {
     return <></>;
   }
 

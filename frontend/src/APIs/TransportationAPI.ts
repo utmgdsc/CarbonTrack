@@ -1,54 +1,58 @@
 import FLASK_HTTPS from './FLASK_API';
 import type ObjectID from 'bson-objectid';
-import type { Transportation } from '../models/Transportation';
+import type { Transportation, TransportationRes } from '../models/Transportation';
 
 const routeName = '/transportation';
 
-export const getTransportation = async (transportationID: ObjectID): Promise<undefined | Transportation> => {
-  try {
-    const res = await FLASK_HTTPS.get(routeName + '/transportation/' + transportationID.str);
-    return res.data.transportation as Transportation;
-  } catch (error) {
-    console.error('Error fetching transportation from Flask BE: ', error);
-    console.error('Temp tip: have you started the backend?: ');
-    return undefined;
-  }
-};
+export const TransportationAPI = {
 
-export const getTransportationsEntriesForUserUsingDataRange = async (userID: ObjectID, start: Date, end: Date): Promise<undefined | Transportation[]> => {
-  try {
-    const res = await FLASK_HTTPS.post(routeName + '/get_transportations_entries_for_user_using_data_range/' + userID.str, {
-      start,
-      end
-    });
-    return res.data.transportation as Transportation[];
-  } catch (error) {
-    console.error('Error fetching transportation from Flask BE: ', error);
-    console.error('Temp tip: have you started the backend?: ');
-    return undefined;
+  getTransportation: async (transportationID: ObjectID) => {
+    try {
+      const res = await FLASK_HTTPS.get(routeName + '/transportation/' + transportationID.str);
+      return res.data.transportation as Transportation;
+    } catch (error) {
+      console.error('Error fetching transportation from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
+  },
+  
+  getTransportationsEntriesForUserUsingDataRange: async (start: Date, end: Date) => {
+    try {
+      const res = await FLASK_HTTPS.post(routeName + '/get_transportations_entries_for_user_using_data_range', {
+        start,
+        end
+      });
+      console.log("Yazan")
+      return res.data.transportation as TransportationRes;
+    } catch (error) {
+      console.error('Error fetching transportation from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
+  },
+  
+  getTransportationMetricForToday: async (userID: ObjectID): Promise<undefined | Transportation> => {
+    try {
+      const res = await FLASK_HTTPS.get(routeName + '/get_transportation_metric_for_today/' + userID.str);
+      return res.data.transportation as Transportation;
+    } catch (error) {
+      console.error('Error fetching transportation from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
+  },
+  
+  updateTransportation: async (transportation: Transportation): Promise<undefined | Transportation> => {
+    try {
+      const res = await FLASK_HTTPS.patch(routeName + '/transportation/' + transportation._id.str, {
+        transportation,
+      });
+      return res.data.transportation as Transportation;
+    } catch (error) {
+      console.error('Error fetching transportation from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
   }
-};
-
-export const getTransportationMetricForToday = async (userID: ObjectID): Promise<undefined | Transportation> => {
-  try {
-    const res = await FLASK_HTTPS.get(routeName + '/get_transportation_metric_for_today/' + userID.str);
-    return res.data.transportation as Transportation;
-  } catch (error) {
-    console.error('Error fetching transportation from Flask BE: ', error);
-    console.error('Temp tip: have you started the backend?: ');
-    return undefined;
-  }
-};
-
-export const updateTransportation = async (transportation: Transportation): Promise<undefined | Transportation> => {
-  try {
-    const res = await FLASK_HTTPS.patch(routeName + '/transportation/' + transportation._id.str, {
-      transportation,
-    });
-    return res.data.transportation as Transportation;
-  } catch (error) {
-    console.error('Error fetching transportation from Flask BE: ', error);
-    console.error('Temp tip: have you started the backend?: ');
-    return undefined;
-  }
-};
+}
