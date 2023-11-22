@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-import { GetLoggedInUser } from '../APIs/UsersAPI';
 import ProfileWidgetBox from '../widgets/profileWidget';
 import WidgetBox from '../widgets/widgetBox';
 import type { RootStackParamList } from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { type User } from '../models/User';
+import { UsersAPI } from '../APIs/UsersAPI';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function DashBoardScreen(): JSX.Element {
@@ -23,7 +23,7 @@ export default function DashBoardScreen(): JSX.Element {
   });
 
   useEffect(() => {
-    void GetLoggedInUser().then((res) => {
+    void UsersAPI.GetLoggedInUser().then((res) => {
       if (res != null) {
         setUser(res);
       }
