@@ -52,6 +52,7 @@ def delete_user(user_id: str) -> Response:
 def update_user(user_id: str) -> Response:
     query = {"_id": ObjectId(user_id)}
     user = User.from_json(request.get_json()['user']).to_json(for_mongodb=True)
+    del user['_id']
     CarbonTrackDB.users_coll.update_one(query, {'$set': user})
     item = CarbonTrackDB.users_coll.find_one(query)
     item = User.from_json(item).to_json()

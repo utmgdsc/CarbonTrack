@@ -1,15 +1,14 @@
 import FLASK_HTTPS from './FLASK_API';
-import type ObjectID from 'bson-objectid';
-import type { Transportation, TransportationRes } from '../models/Transportation';
+import type { TransportationEntry, TransportationRes } from '../models/Transportation';
 
 const routeName = '/transportation';
 
 export const TransportationAPI = {
 
-  getTransportation: async (transportationID: ObjectID) => {
+  getTransportation: async (transportationID: string) => {
     try {
-      const res = await FLASK_HTTPS.get(routeName + '/transportation/' + transportationID.str);
-      return res.data.transportation as Transportation;
+      const res = await FLASK_HTTPS.get(routeName + '/transportation/' + transportationID);
+      return res.data.transportation as TransportationEntry;
     } catch (error) {
       console.error('Error fetching transportation from Flask BE: ', error);
       console.error('Temp tip: have you started the backend?: ');
@@ -23,8 +22,7 @@ export const TransportationAPI = {
         start,
         end
       });
-      console.log("Yazan")
-      return res.data.transportation as TransportationRes;
+      return res.data as TransportationRes;
     } catch (error) {
       console.error('Error fetching transportation from Flask BE: ', error);
       console.error('Temp tip: have you started the backend?: ');
@@ -32,10 +30,10 @@ export const TransportationAPI = {
     }
   },
   
-  getTransportationMetricForToday: async (userID: ObjectID): Promise<undefined | Transportation> => {
+  getTransportationMetricForToday: async (): Promise<undefined | TransportationEntry> => {
     try {
-      const res = await FLASK_HTTPS.get(routeName + '/get_transportation_metric_for_today/' + userID.str);
-      return res.data.transportation as Transportation;
+      const res = await FLASK_HTTPS.get(routeName + '/get_transportation_metric_for_today');
+      return res.data.transportation as TransportationEntry;
     } catch (error) {
       console.error('Error fetching transportation from Flask BE: ', error);
       console.error('Temp tip: have you started the backend?: ');
@@ -43,12 +41,13 @@ export const TransportationAPI = {
     }
   },
   
-  updateTransportation: async (transportation: Transportation): Promise<undefined | Transportation> => {
+  updateTransportation: async (transportation: TransportationEntry): Promise<undefined | TransportationEntry> => {
     try {
-      const res = await FLASK_HTTPS.patch(routeName + '/transportation/' + transportation._id.str, {
+      console.log(transportation._id)
+      const res = await FLASK_HTTPS.patch(routeName + '/transportation/' + transportation._id, {
         transportation,
       });
-      return res.data.transportation as Transportation;
+      return res.data.transportation as TransportationEntry;
     } catch (error) {
       console.error('Error fetching transportation from Flask BE: ', error);
       console.error('Temp tip: have you started the backend?: ');

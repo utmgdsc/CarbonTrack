@@ -43,14 +43,15 @@ def get_transportations_entries_for_user_using_date_range() -> Response:
     })
 
 
-@transportation_service.route("/get_transportation_metric_for_today/<user_id>", methods=['GET'])
+@transportation_service.route("/get_transportation_metric_for_today", methods=['GET'])
 @carbon_auth.auth.login_required
-def get_transportation_metric_for_today(user_id: str) -> Response:
-    query = {"user_id": ObjectId(user_id), "date": weekly_metric_reset(datetime.now())}
+def get_transportation_metric_for_today() -> Response:
+    user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
+    query = {"user_id": ObjectId(user.oid), "date": weekly_metric_reset(datetime.now())}
     item = CarbonTrackDB.transportation_coll.find_one(query)
     if item is None:
-        create_transportation(ObjectId(user_id))
-        return get_transportation_metric_for_today(user_id=user_id)
+        create_transportation(ObjectId(user.oid))
+        return get_transportation_metric_for_today()
     else:
         item = TransportationEntry.from_json(item).to_json()
         return jsonify({'transportation': item})
@@ -59,7 +60,7 @@ def get_transportation_metric_for_today(user_id: str) -> Response:
 @carbon_auth.auth.login_required
 def create_transportation(user_id: ObjectId) -> Response:
     transportation = TransportationEntry(oid=ObjectId(), user_id=user_id, bus=0, train=0, motorbike=0, electric_car=0,
-                                         gasoline_car=0, carbon_emissions=0.0, date=weekly_metric_reset(datetime.today()))
+                                         gasoline_car=0, carbon_emissions=0, date=weekly_metric_reset(datetime.today()))
     transportation = transportation.to_json(for_mongodb=True)
     inserted_id = CarbonTrackDB.transportation_coll.insert_one(transportation).inserted_id
     transportation = TransportationEntry.from_json(CarbonTrackDB.transportation_coll.find_one({"_id": inserted_id})).to_json()
@@ -70,7 +71,9 @@ def create_transportation(user_id: ObjectId) -> Response:
 @carbon_auth.auth.login_required
 def update_transportation(oid: str) -> Response:
     query = {"_id": ObjectId(oid)}
+    x = request.get_json()
     transportation: dict = TransportationEntry.from_json(request.get_json()['transportation']).to_json(for_mongodb=True)
+    del transportation['_id']
     del transportation['date']
     del transportation['user_id']
     CarbonTrackDB.transportation_coll.update_one(query, {'$set': transportation})

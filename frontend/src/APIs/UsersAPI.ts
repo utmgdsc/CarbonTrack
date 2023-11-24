@@ -1,5 +1,4 @@
 import FLASK_HTTPS from './FLASK_API';
-import type ObjectID from 'bson-objectid';
 import type { User } from '../models/User';
 import firebaseService from '../utilities/firebase';
 
@@ -16,9 +15,9 @@ export const UsersAPI = {
     }
   },
 
-  getUser: async (userID: ObjectID)=> {
+  getUser: async (userID: string)=> {
     try {
-      const res = await FLASK_HTTPS.get(routeName + '/user/' + userID.str);
+      const res = await FLASK_HTTPS.get(routeName + '/user/' + userID);
       return res.data.user as User;
     } catch (error) {
       console.error('Error fetching user from Flask BE: ', error);
@@ -53,7 +52,7 @@ export const UsersAPI = {
   
   updateUser: async (user: User)=> {
     try {
-      const res = await FLASK_HTTPS.patch(routeName + '/user/' + user._id.str, {
+      const res = await FLASK_HTTPS.patch(routeName + '/user/' + user._id, {
         user,
       });
       return res.data.user as User;
