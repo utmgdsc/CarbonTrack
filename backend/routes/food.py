@@ -12,7 +12,7 @@ food_service = Blueprint('/food', __name__)
 
 
 @food_service.route("/food/<oid>", methods=['GET'])
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def get_food(oid: str) -> Response:
     query = {"_id": ObjectId(oid)}
     item = CarbonTrackDB.food_coll.find_one(query)
@@ -21,7 +21,7 @@ def get_food(oid: str) -> Response:
 
 
 @food_service.route("/get_food_metric_for_today/<user_id>", methods=['GET'])
-#s@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def get_food_metric_for_today(user_id: str) -> Response:
     start_of_day, end_of_day = get_1_day_range(datetime.now())
     query = {"user_id": ObjectId(user_id), "date": {"$gte": start_of_day, "$lte": end_of_day}}
@@ -34,7 +34,7 @@ def get_food_metric_for_today(user_id: str) -> Response:
         return jsonify({'food': item})
 
 
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def create_food(user_id: ObjectId) -> Response:
     food = FoodEntry(
             oid=ObjectId(),
@@ -57,7 +57,7 @@ def create_food(user_id: ObjectId) -> Response:
 
 
 @food_service.route("/food/<oid>", methods=["PATCH"])
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def update_food(oid: str) -> Response:
     query = {"_id": ObjectId(oid)}
     food = FoodEntry.from_json(request.get_json()['food']).to_json(for_mongodb=True)
