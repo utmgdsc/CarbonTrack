@@ -71,7 +71,6 @@ def create_transportation(user_id: ObjectId) -> Response:
 @carbon_auth.auth.login_required
 def update_transportation(oid: str) -> Response:
     query = {"_id": ObjectId(oid)}
-    x = request.get_json()
     transportation: dict = TransportationEntry.from_json(request.get_json()['transportation']).to_json(for_mongodb=True)
     del transportation['_id']
     del transportation['date']

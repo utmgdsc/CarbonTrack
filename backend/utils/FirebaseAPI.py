@@ -1,6 +1,5 @@
 from typing import Optional
 from pprint import pprint
-import flask
 import firebase_admin
 from firebase_admin import credentials, auth
 from models.user import User
