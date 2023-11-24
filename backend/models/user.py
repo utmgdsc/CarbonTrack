@@ -27,7 +27,7 @@ class User(DB_MODEL):
 
     def to_json(self, for_mongodb: bool = False) -> json:
         res = {
-            '_id': self.oid,
+            '_id': self.oid.__str__(),
             'full_name': self.full_name,
             'email': self.email,
             'badges': self.badges,

@@ -1,15 +1,15 @@
 import type ObjectID from "bson-objectid";
 
 
-export interface Transportation {
-    _id: ObjectID
+export interface TransportationEntry {
+    _id: string
     user_id: ObjectID
     bus: number
     train: number
     motorbike: number
     electric_car: number
     gasoline_car: number
-    carbon_emmisions: number
+    carbon_emissions: number
     date: Date
 }
 
@@ -20,6 +20,6 @@ export interface MonthlyEntry {
 }
 
 export interface TransportationRes {
-    transportationEntries: []
-    monthlyData: []
+    transportationEntries: TransportationEntry[]
+    monthlyData: MonthlyEntry[]
 }

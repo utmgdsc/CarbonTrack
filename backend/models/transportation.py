@@ -19,11 +19,11 @@ class TransportationEntry(DB_MODEL):
     motorbike: int
     electric_car: int
     gasoline_car: int
-    carbon_emissions: float
+    carbon_emissions: int
     date: datetime
 
     def __init__(self, oid: ObjectId, user_id: ObjectId, bus: int, train: int, motorbike: int,
-                 electric_car: int, gasoline_car: int, carbon_emissions: float, date: Union[str, datetime]) -> None:
+                 electric_car: int, gasoline_car: int, carbon_emissions: int, date: Union[str, datetime]) -> None:
         super().__init__(oid)
         self.user_id = ObjectId(user_id)
         self.bus = bus
@@ -39,15 +39,15 @@ class TransportationEntry(DB_MODEL):
 
     def to_json(self, for_mongodb: bool = False) -> json:
         res = {
-            '_id': self.oid,
-            'user_id': self.user_id,
+            '_id': self.oid.__str__(),
+            'user_id': self.user_id.__str__(),
             'bus': self.bus,
             'train': self.train,
             'motorbike': self.motorbike,
             'electric_car': self.electric_car,
             'gasoline_car': self.gasoline_car,
             'carbon_emissions': self.calculate_carbon_emissions(),
-            'date': self.date
+            'date': self.date.__str__()
         }
         if for_mongodb:
             return res
@@ -57,7 +57,7 @@ class TransportationEntry(DB_MODEL):
     def from_json(doc: json) -> TransportationEntry:
         return TransportationEntry(
             oid=ObjectId(doc["_id"]),
-            user_id=doc['user_id'],
+            user_id=ObjectId(doc['user_id']),
             bus=doc["bus"],
             train=doc["train"],
             motorbike=doc["motorbike"],
@@ -67,14 +67,14 @@ class TransportationEntry(DB_MODEL):
             date=doc["date"]
         )
 
-    def calculate_carbon_emissions(self) -> float:
+    def calculate_carbon_emissions(self) -> int:
         bus_carbon_emissions = self.bus * 0.103
         train_carbon_emissions = self.train * 0.037
         motorbike_carbon_emissions = self.motorbike * 0.113
         electric_car_carbon_emissions = self.electric_car * 0.4
         gasoline_car_carbon_emissions = self.gasoline_car * 2.3
-        return sum([bus_carbon_emissions, train_carbon_emissions, motorbike_carbon_emissions,
-                    electric_car_carbon_emissions, gasoline_car_carbon_emissions])
+        return int(sum([bus_carbon_emissions, train_carbon_emissions, motorbike_carbon_emissions,
+                        electric_car_carbon_emissions, gasoline_car_carbon_emissions]))
 
     @staticmethod
     def get_monthly_view(start: datetime, end: datetime,
@@ -112,7 +112,7 @@ class TransportationEntry(DB_MODEL):
                     elif transportation_entry.date.day < 28:
                         monthly_entry['data'][3] += transportation_entry.calculate_carbon_emissions()
                     else:  # If a Month has 5 sunday, we add them to the fourth week
-                        monthly_entry['data'][3] += transportation_entry.calculate_carbon_emissions()
+                        monthly_entry['data'][3] += transportation_entry.calculate_carbon_emissions() / 4
 
         return monthly_data
 
