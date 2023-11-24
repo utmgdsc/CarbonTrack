@@ -4,22 +4,21 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  TextInput,
   Modal,
   Linking,
 } from 'react-native';
-import { CheckBox } from 'react-native-elements';
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../components/types';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-import transportationQuestions from '../../assets/questions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
+import { TransportationAPI } from '../APIs/TransportationAPI';
+import { type TransportationEntry } from '../models/Transportation';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -32,33 +31,32 @@ export default function TransportationForum(): JSX.Element {
     initialValue: number;
   }
 
-  const slidersData: SliderData[] = [
-    { id: 1, label: 'Car', minValue: 0, maxValue: 800, initialValue: 0 },
-    { id: 2, label: 'Bus', minValue: 0, maxValue: 800, initialValue: 0 },
-    { id: 3, label: 'Train', minValue: 0, maxValue: 800, initialValue: 0 },
-    { id: 4, label: 'Motobike', minValue: 0, maxValue: 800, initialValue: 0 },
-    // Add more slider data as needed
-  ];
+  const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
 
-  const [sliderValues, setSliderValues] = useState<number[]>(
-    slidersData.map((data) => data.initialValue)
-  );
+  const [slidersData, setSliderData] = useState<SliderData[]>([]);
+
+  const [electricCarTravel, setElectricCarTravel] = useState(0);
+  const [gasolineCarTravel, setGasolineCarTravel] = useState(0);
+  const [busTravel, setBusTravel] = useState(0);
+  const [trainTravel, setTrainTravel] = useState(0);
+  const [bikeTravel, setBikeTravel] = useState(0);
 
   const onSliderValueChange = (value: number, index: number): void => {
-    const updatedValues = [...sliderValues];
-    updatedValues[index] = value;
-    setSliderValues(updatedValues);
+    slidersData[index].initialValue = value
     switch (index) {
       case 0:
-        setCarTravel(value);
+        setElectricCarTravel(value);
         break;
       case 1:
-        setBusTravel(value);
+        setGasolineCarTravel(value);
         break;
       case 2:
         setTrainTravel(value);
         break;
       case 3:
+        setBusTravel(value);
+        break;
+      case 4:
         setBikeTravel(value);
         break;
       default:
@@ -90,40 +88,53 @@ export default function TransportationForum(): JSX.Element {
 
   const navigation = useNavigation<StackNavigation>();
 
-  const data = transportationQuestions;
-
-  const [responses, setResponses] = useState<string[]>(new Array(data.length).fill(''));
-
-  const [fuelType, setFuelType] = useState<string>('');
-  const [fuelEfficiency, setFuelEfficiency] = useState(0);
-  const [carTravel, setCarTravel] = useState(0);
-  const [busTravel, setBusTravel] = useState(0);
-  const [trainTravel, setTrainTravel] = useState(0);
-  const [bikeTravel, setBikeTravel] = useState(0);
-
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
-    console.log('Survey Responses:', {
-      fuelType,
-      fuelEfficiency,
-      carTravel,
-      busTravel,
-      trainTravel,
-      bikeTravel,
-    });
-
-    navigation.navigate('FoodForum');
+    if (transportationEntry != null) {
+      const newEntry: TransportationEntry = {
+        _id: transportationEntry._id,
+        user_id: transportationEntry.user_id,
+        bus: busTravel,
+        train: trainTravel,
+        motorbike: bikeTravel,
+        electric_car: electricCarTravel,
+        gasoline_car: gasolineCarTravel,
+        carbon_emissions: transportationEntry.carbon_emissions,
+        date: transportationEntry.date
+      }
+      void TransportationAPI.updateTransportation(newEntry).then()
+    }
+    navigation.navigate('TransportationHistory');
   };
 
-  const handleOptionSelect = (questionId: number, optionIndex: number): void => {
-    const updatedResponses = [...responses];
-    updatedResponses[questionId] = data[questionId].options[optionIndex];
-    setResponses(updatedResponses);
-  };
+  useEffect(() => {
+    if (transportationEntry != null) {
+      setSliderData([
+        { id: 1, label: 'Electric Car', minValue: 0, maxValue: 800, initialValue: transportationEntry.electric_car },
+        { id: 2, label: 'Gasoline Car', minValue: 0, maxValue: 800, initialValue: transportationEntry.gasoline_car },
+        { id: 3, label: 'Train', minValue: 0, maxValue: 800, initialValue: transportationEntry.train },
+        { id: 4, label: 'Bus', minValue: 0, maxValue: 800, initialValue: transportationEntry.bus },
+        { id: 5, label: 'Motobike', minValue: 0, maxValue: 800, initialValue: transportationEntry.motorbike },
+      ])
+      setElectricCarTravel(transportationEntry.electric_car);
+      setGasolineCarTravel(transportationEntry.gasoline_car);
+      setBusTravel(transportationEntry.bus);
+      setTrainTravel(transportationEntry.train);
+      setBikeTravel(transportationEntry.motorbike);
+    }
+  }, [transportationEntry])
 
-  if (!loaded) {
+  useEffect(() => {
+    void TransportationAPI.getTransportationMetricForToday().then((res) => {
+      if (res != null) {
+        setTransportationEntry(res)
+      }
+    })
+  }, [loaded])
+
+  if (!loaded || slidersData.length === 0) {
     return <></>;
   }
 
@@ -131,49 +142,6 @@ export default function TransportationForum(): JSX.Element {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <Text style={styles.header}>Calculate your emissions from transportation:</Text>
-
-        <View style={styles.questionContainer}>
-          <Text style={styles.question}>{data[0].question}</Text>
-          {data[0].options.map((option, index) => (
-            <CheckBox
-              checkedColor={Colors.DARKGREEN}
-              textStyle={styles.answer}
-              containerStyle={
-                responses[data[0].id] === option ? styles.selectedOption : styles.unSelectedOption
-              }
-              key={index}
-              title={option}
-              checked={responses[data[0].id] === option}
-              onPress={() => {
-                handleOptionSelect(data[0].id, index);
-                setFuelType(data[0].options[index]);
-              }}
-            />
-          ))}
-        </View>
-
-        <View style={styles.questionContainer}>
-          <View style={styles.questionWithIcon}>
-            <Text style={styles.question}>
-              Please enter your vehicle&apos;s fuel efficiency. If you don&apos;t have a vehicle,
-              enter 0.
-            </Text>
-            <TouchableOpacity
-              style={styles.questionIcon}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Icon name="question-circle" size={30} color={Colors.DARKGREEN} />
-            </TouchableOpacity>
-          </View>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            placeholder="Input"
-            onChangeText={(text) => {
-              setFuelEfficiency(Number(text));
-            }}
-          />
-        </View>
 
         <Modal transparent={true} visible={modalVisible}>
           <View style={styles.modalBackground}>
@@ -205,7 +173,7 @@ export default function TransportationForum(): JSX.Element {
         {slidersData.map((slider, index) => (
           <View style={styles.questionContainer} key={slider.id}>
             <Text style={styles.question}>
-              {slider.label}: {sliderValues[index]} km
+              {slider.label}: {slidersData[index].initialValue} km
             </Text>
             <Slider
               style={styles.silder}
@@ -215,7 +183,7 @@ export default function TransportationForum(): JSX.Element {
               minimumTrackTintColor={Colors.DARKGREEN}
               maximumTrackTintColor={Colors.FILLGREEN}
               thumbTintColor={Colors.WHITE}
-              value={sliderValues[index]}
+              value={slidersData[index].initialValue}
               onValueChange={(value) => onSliderValueChange(value, index)}
             />
             <View style={styles.labelContainer}>
@@ -227,7 +195,7 @@ export default function TransportationForum(): JSX.Element {
         ))}
 
         <TouchableOpacity style={styles.buttoning} onPress={handleSurveySubmit}>
-          <Text style={styles.buttoningText}>Next</Text>
+          <Text style={styles.buttoningText}>Save</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
@@ -282,20 +250,6 @@ const styles = StyleSheet.create({
     color: Colors.DARKGREEN,
     marginBottom: 20,
   },
-  answer: {
-    fontFamily: 'Montserrat',
-    fontSize: 17,
-    fontWeight: '700',
-    color: Colors.DARKGREEN,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: Colors.GREY,
-    padding: 8,
-    margin: 10,
-    width: 200,
-    backgroundColor: Colors.WHITE,
-  },
   buttoning: {
     backgroundColor: Colors.DARKGREEN,
     borderRadius: 10,
@@ -308,17 +262,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  selectedOption: {
-    backgroundColor: Colors.FILLGREEN,
-  },
-  unSelectedOption: {
-    backgroundColor: Colors.LIGHTFGREEN,
-  },
   questionContainer: {
     paddingBottom: 30,
-  },
-  questionWithIcon: {
-    flexDirection: 'row',
   },
   infoText: {
     fontSize: 20,
@@ -329,10 +274,6 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     marginLeft: 'auto',
-  },
-  questionIcon: {
-    marginLeft: 15,
-    paddingTop: 5,
   },
   silder: {
     height: 50,

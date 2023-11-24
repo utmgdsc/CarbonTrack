@@ -9,10 +9,13 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { type User } from '../models/User';
 import { UsersAPI } from '../APIs/UsersAPI';
+import { type TransportationEntry } from '../models/Transportation';
+import { TransportationAPI } from '../APIs/TransportationAPI';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function DashBoardScreen(): JSX.Element {
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
   const [photoURL] = useState<string>("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png");
 
   const navigation = useNavigation<StackNavigation>();
@@ -28,9 +31,14 @@ export default function DashBoardScreen(): JSX.Element {
         setUser(res);
       }
     });
+    void TransportationAPI.getTransportationMetricForToday().then((res) => {
+      if (res != null) {
+        setTransportationEntry(res)
+      }
+    });
   }, [loaded]);
 
-  if (!loaded || user === undefined) {
+  if (!loaded || user === undefined || transportationEntry === undefined) {
     return <></>;
   }
 
@@ -69,7 +77,7 @@ export default function DashBoardScreen(): JSX.Element {
               navigation.navigate('TransportationHistory');
             }}
           >
-            <WidgetBox title="Transportatin" content="12.4" />
+            <WidgetBox title="Transportatin" content={transportationEntry.carbon_emissions.toString()} />
           </TouchableOpacity>
         </View>
       </View>
