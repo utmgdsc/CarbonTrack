@@ -15,14 +15,18 @@ class User(DB_MODEL):
     badges: list[str]
     friends: list[str]
     score: int
+    province: str
+    household: int
 
-    def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], score:int) -> None:
+    def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], score:int, province:str, household:int) -> None:
         super().__init__(oid)
         self.full_name = str(full_name)
         self.email = str(email)
         self.badges = badges
         self.friends = friends
         self.score = score
+        self.province = province
+        self.household = household
 
     def to_json(self) -> json:
         res = {
@@ -31,7 +35,9 @@ class User(DB_MODEL):
             'email': self.email,
             'badges': self.badges,
             'friends': self.friends,
-            'score': self.score
+            'score': self.score,
+            'province': self.province,
+            'household': self.household
         }
         return res
 
@@ -43,7 +49,9 @@ class User(DB_MODEL):
             email=doc["email"],
             badges=doc["badges"],
             friends=doc["friends"],
-            score=doc["score"]
+            score=doc["score"],
+            province=doc["province"],
+            household=doc["household"]
         )
 
     def __repr__(self) -> str:

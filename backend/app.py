@@ -7,6 +7,7 @@ from routes.users import users
 from routes.transportation import transportation_service
 from utils.customJSONEncoder import CustomJSONProvider
 from routes.food import food_service
+from routes.energy import energy_service
 
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ app.json = CustomJSONProvider(app)
 app.register_blueprint(users, url_prefix="/users")
 app.register_blueprint(transportation_service, url_prefix="/transportation")
 app.register_blueprint(food_service, url_prefix="/food")
+app.register_blueprint(energy_service, url_prefix="/energy")
 CORS(app)
 
 
