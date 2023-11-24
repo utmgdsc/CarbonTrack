@@ -114,7 +114,7 @@ export default function TransportationHistory(): JSX.Element {
       <View style={styles.widgetBoarder}>
           <TouchableOpacity 
           onPress={() => {
-                      navigation.navigate('TransportationForum');
+                      navigation.navigate('TransportationEntryEdit');
                     }}
                   >
                     <WidgetBox title="This Week's Entry" content={transportationEntry.carbon_emissions.toString()} />
