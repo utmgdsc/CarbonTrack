@@ -1,5 +1,4 @@
 # Python Imports
-import json
 from datetime import datetime
 from bson import ObjectId
 from flask import Blueprint, Response, jsonify, request

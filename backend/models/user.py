@@ -6,7 +6,6 @@ from __future__ import annotations
 import json
 from models.abstract_db_model import DB_MODEL
 from bson import ObjectId
-from bson import json_util
 
 
 class User(DB_MODEL):

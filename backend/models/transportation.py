@@ -8,7 +8,6 @@ import json
 from datetime import datetime, timezone
 from models.abstract_db_model import DB_MODEL
 from bson import ObjectId
-from bson import json_util
 
 
 class TransportationEntry(DB_MODEL):
