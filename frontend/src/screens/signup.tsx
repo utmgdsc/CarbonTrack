@@ -7,11 +7,12 @@ import { type StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../../assets/colorConstants';
 import firebaseService from '../utilities/firebase';
-import { createUser } from '../APIs/UsersAPI';
-import ObjectID from 'bson-objectid';
+import { UsersAPI } from '../APIs/UsersAPI';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import FormTextField from '../components/forms/formTextField';
+import { type ObjectId } from 'mongodb';
+import ObjectID from 'bson-objectid';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -46,17 +47,28 @@ export default function SignUp(): JSX.Element {
   const handleSignUp = async (fields: ISignUpFields): Promise<void> => {
     const { fullName, email, password } = fields;
     try {
-      await firebaseService.createUser(email, password);
-      await createUser({
-        _id: new ObjectID(),
-        full_name: fullName,
-        email,
-        badges: [],
-        friends: [],
-        score: 0,
+      await firebaseService.createUser(email, password).then(async () => {
+        await UsersAPI.createUser({
+          _id: (new ObjectID()).toHexString() as unknown as ObjectId,
+          full_name: fullName,
+          email,
+          badges: [],
+          friends: [],
+          score: 0,
+        }).then((res): void => {
+          console.log(res)
+          if (typeof res === 'string') {
+            // TODO: Can we make a warning on the screen using proper design?
+            console.warn('User was not created: ' + res);
+          } else {
+            console.log('User was created succesfully:', email);
+            navigation.navigate('DashBoard');
+          }
+        });
+      }).catch((err) => {
+        console.warn('User was not created: ' + err);
       });
-      console.log('User was created succesfully:', email);
-      navigation.navigate('DashBoard');
+      
     } catch (error) {
       console.error('Error when creating User:', error);
     }

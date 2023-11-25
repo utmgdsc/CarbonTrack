@@ -55,7 +55,7 @@ export default function DashBoardScreen(): JSX.Element {
             <ProfileWidgetBox
             photoURL={photoURL}
             user={user}
-            rank={0}            />
+            />
           </View>
       </View>
 

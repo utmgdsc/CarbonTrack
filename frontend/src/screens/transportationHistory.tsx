@@ -50,7 +50,7 @@ export default function TransportationHistory(): JSX.Element {
         setTransportationEntry(res)
       }
     });
-  }, [endDate, loaded, startDate])
+  }, [endDate, loaded, startDate, navigation])
 
   if (!loaded || monthlyData === undefined || transportationEntry === undefined) {
     return <></>;

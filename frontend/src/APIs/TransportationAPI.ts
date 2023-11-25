@@ -1,13 +1,14 @@
 import FLASK_HTTPS from './FLASK_API';
 import type { TransportationEntry, TransportationRes } from '../models/Transportation';
+import { type ObjectId } from 'mongodb';
 
 const routeName = '/transportation';
 
 export const TransportationAPI = {
 
-  getTransportation: async (transportationID: string) => {
+  getTransportation: async (transportationID: ObjectId) => {
     try {
-      const res = await FLASK_HTTPS.get(routeName + '/transportation/' + transportationID);
+      const res = await FLASK_HTTPS.get(routeName + '/transportation/' + transportationID.toHexString());
       return res.data.transportation as TransportationEntry;
     } catch (error) {
       console.error('Error fetching transportation from Flask BE: ', error);
@@ -43,8 +44,7 @@ export const TransportationAPI = {
   
   updateTransportation: async (transportation: TransportationEntry): Promise<undefined | TransportationEntry> => {
     try {
-      console.log(transportation._id)
-      const res = await FLASK_HTTPS.patch(routeName + '/transportation/' + transportation._id, {
+      const res = await FLASK_HTTPS.patch(routeName + '/transportation/' + transportation._id.toString(), {
         transportation,
       });
       return res.data.transportation as TransportationEntry;

@@ -27,5 +27,4 @@ export interface WidgetBoxProps {
 export interface profileWidgetBoxProps {
   photoURL: string
   user: User
-  rank: number
 }

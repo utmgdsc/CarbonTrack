@@ -1,6 +1,7 @@
 import FLASK_HTTPS from './FLASK_API';
 import type { User } from '../models/User';
 import firebaseService from '../utilities/firebase';
+import { type ObjectId } from 'mongodb';
 
 const routeName = '/users';
 
@@ -15,9 +16,9 @@ export const UsersAPI = {
     }
   },
 
-  getUser: async (userID: string)=> {
+  getUser: async (userID: ObjectId)=> {
     try {
-      const res = await FLASK_HTTPS.get(routeName + '/user/' + userID);
+      const res = await FLASK_HTTPS.get(routeName + '/user/' + userID.toHexString());
       return res.data.user as User;
     } catch (error) {
       console.error('Error fetching user from Flask BE: ', error);
@@ -39,10 +40,15 @@ export const UsersAPI = {
   
   createUser: async (user: User)=> {
     try {
+      console.log(user)
       const res = await FLASK_HTTPS.put(routeName + '/user', {
         user,
       });
-      return res.data.user as User;
+      if (res.data.user != null) {
+        return res.data.user as User;
+      } else if (res.data.error != null) {
+        return res.data.error as string;
+      } 
     } catch (error) {
       console.error('Error creating user in Flask BE: ', error);
       console.error('Temp tip: have you started the backend?: ');
@@ -52,7 +58,7 @@ export const UsersAPI = {
   
   updateUser: async (user: User)=> {
     try {
-      const res = await FLASK_HTTPS.patch(routeName + '/user/' + user._id, {
+      const res = await FLASK_HTTPS.patch(routeName + '/user/' + user._id.toString(), {
         user,
       });
       return res.data.user as User;

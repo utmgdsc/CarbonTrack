@@ -1,4 +1,5 @@
 # Python Imports
+import json
 from datetime import datetime
 from bson import ObjectId
 from flask import Blueprint, Response, jsonify, request
@@ -14,12 +15,12 @@ transportation_service = Blueprint('/transportation', __name__)
 
 
 @transportation_service.route("/transportation/<oid>", methods=['GET'])
-@carbon_auth.auth.login_required
+# @carbon_auth.auth.login_required
 def get_transportation(oid: str) -> Response:
     query = {"_id": ObjectId(oid)}
     item = CarbonTrackDB.transportation_coll.find_one(query)
     item = TransportationEntry.from_json(item).to_json()
-    return jsonify({'transportation': item})
+    return jsonify({"transportation": item})
 
 
 @transportation_service.route("/get_transportations_entries_for_user_using_data_range", methods=['POST'])
@@ -61,7 +62,7 @@ def get_transportation_metric_for_today() -> Response:
 def create_transportation(user_id: ObjectId) -> Response:
     transportation = TransportationEntry(oid=ObjectId(), user_id=user_id, bus=0, train=0, motorbike=0, electric_car=0,
                                          gasoline_car=0, carbon_emissions=0, date=weekly_metric_reset(datetime.today()))
-    transportation = transportation.to_json(for_mongodb=True)
+    transportation = transportation.to_json()
     inserted_id = CarbonTrackDB.transportation_coll.insert_one(transportation).inserted_id
     transportation = TransportationEntry.from_json(CarbonTrackDB.transportation_coll.find_one({"_id": inserted_id})).to_json()
     return transportation
@@ -71,7 +72,7 @@ def create_transportation(user_id: ObjectId) -> Response:
 @carbon_auth.auth.login_required
 def update_transportation(oid: str) -> Response:
     query = {"_id": ObjectId(oid)}
-    transportation: dict = TransportationEntry.from_json(request.get_json()['transportation']).to_json(for_mongodb=True)
+    transportation: dict = TransportationEntry.from_json(request.get_json()['transportation']).to_json()
     del transportation['_id']
     del transportation['date']
     del transportation['user_id']

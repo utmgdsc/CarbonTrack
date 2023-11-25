@@ -25,18 +25,16 @@ class User(DB_MODEL):
         self.friends = friends
         self.score = score
 
-    def to_json(self, for_mongodb: bool = False) -> json:
+    def to_json(self) -> json:
         res = {
-            '_id': self.oid.__str__(),
+            '_id': self.oid,
             'full_name': self.full_name,
             'email': self.email,
             'badges': self.badges,
             'friends': self.friends,
             'score': self.score
         }
-        if for_mongodb:
-            return res
-        return json.loads(json_util.dumps(res))
+        return res
 
     @staticmethod
     def from_json(doc: json) -> User:

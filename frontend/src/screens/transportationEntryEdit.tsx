@@ -104,9 +104,10 @@ export default function TransportationEntryEdit(): JSX.Element {
         carbon_emissions: transportationEntry.carbon_emissions,
         date: transportationEntry.date
       }
-      void TransportationAPI.updateTransportation(newEntry).then()
+      void TransportationAPI.updateTransportation(newEntry).then(() => {
+        navigation.navigate('TransportationHistory');
+      })
     }
-    navigation.navigate('TransportationHistory');
   };
 
   useEffect(() => {

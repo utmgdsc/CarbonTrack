@@ -37,27 +37,25 @@ class TransportationEntry(DB_MODEL):
         else:
             self.date = datetime.fromisoformat(date)
 
-    def to_json(self, for_mongodb: bool = False) -> json:
+    def to_json(self) -> json:
         res = {
-            '_id': self.oid.__str__(),
-            'user_id': self.user_id.__str__(),
-            'bus': self.bus,
-            'train': self.train,
-            'motorbike': self.motorbike,
-            'electric_car': self.electric_car,
-            'gasoline_car': self.gasoline_car,
-            'carbon_emissions': self.calculate_carbon_emissions(),
-            'date': self.date.__str__()
+            "_id": self.oid,
+            "user_id": self.user_id,
+            "bus": self.bus,
+            "train": self.train,
+            "motorbike": self.motorbike,
+            "electric_car": self.electric_car,
+            "gasoline_car": self.gasoline_car,
+            "carbon_emissions": self.calculate_carbon_emissions(),
+            "date": self.date
         }
-        if for_mongodb:
-            return res
-        return json.loads(json_util.dumps(res))
+        return res
 
     @staticmethod
     def from_json(doc: json) -> TransportationEntry:
         return TransportationEntry(
             oid=ObjectId(doc["_id"]),
-            user_id=ObjectId(doc['user_id']),
+            user_id=ObjectId(doc["user_id"]),
             bus=doc["bus"],
             train=doc["train"],
             motorbike=doc["motorbike"],
@@ -88,9 +86,9 @@ class TransportationEntry(DB_MODEL):
         while current_month <= end:
             # Add the current month to the list
             monthly_data.append({
-                'month': current_month.strftime('%B'),
-                'year': current_month.strftime('%Y'),
-                'data': [0, 0, 0, 0]
+                "month": current_month.strftime("%B"),
+                "year": current_month.strftime("%Y"),
+                "data": [0, 0, 0, 0]
             })
 
             # Move to the next month
@@ -101,20 +99,20 @@ class TransportationEntry(DB_MODEL):
 
         for transportation_entry in transportationEntries:
             for monthly_entry in monthly_data:
-                if transportation_entry.date.strftime('%B') == monthly_entry['month'] \
-                        and transportation_entry.date.strftime('%Y') == monthly_entry['year']:
+                if transportation_entry.date.strftime("%B") == monthly_entry["month"] \
+                        and transportation_entry.date.strftime("%Y") == monthly_entry["year"]:
                     if transportation_entry.date.day < 7:
-                        monthly_entry['data'][0] = transportation_entry.calculate_carbon_emissions()
+                        monthly_entry["data"][0] = transportation_entry.calculate_carbon_emissions()
                     elif transportation_entry.date.day < 14:
-                        monthly_entry['data'][1] = transportation_entry.calculate_carbon_emissions()
+                        monthly_entry["data"][1] = transportation_entry.calculate_carbon_emissions()
                     elif transportation_entry.date.day < 21:
-                        monthly_entry['data'][2] = transportation_entry.calculate_carbon_emissions()
+                        monthly_entry["data"][2] = transportation_entry.calculate_carbon_emissions()
                     elif transportation_entry.date.day < 28:
-                        monthly_entry['data'][3] += transportation_entry.calculate_carbon_emissions()
+                        monthly_entry["data"][3] += transportation_entry.calculate_carbon_emissions()
                     else:  # If a Month has 5 sunday, we add them to the fourth week
-                        monthly_entry['data'][3] += transportation_entry.calculate_carbon_emissions() / 4
+                        monthly_entry["data"][3] += transportation_entry.calculate_carbon_emissions() / 4
 
         return monthly_data
 
     def __repr__(self) -> str:
-        return f'Transportation ID: {self.oid.__str__()}'
+        return f"Transportation ID: {self.oid.__str__()}"

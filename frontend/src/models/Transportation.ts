@@ -1,9 +1,9 @@
-import type ObjectID from "bson-objectid";
+import { type ObjectId } from "mongodb";
 
 
 export interface TransportationEntry {
-    _id: string
-    user_id: ObjectID
+    _id: ObjectId
+    user_id: ObjectId
     bus: number
     train: number
     motorbike: number
