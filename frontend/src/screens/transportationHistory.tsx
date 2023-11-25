@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import Colors from '../../assets/colorConstants';
 import { useFonts } from 'expo-font';
 import { BarChart } from 'react-native-chart-kit';
+import { TransportationAPI } from '../APIs/TransportationAPI';
+import { type TransportationEntry, type MonthlyEntry } from '../models/Transportation';
+import { useNavigation } from '@react-navigation/native';
+import { type StackNavigationProp } from '@react-navigation/stack';
+import { type RootStackParamList } from '../components/types';
+import WidgetBox from '../widgets/widgetBox';
+export type StackNavigation = StackNavigationProp<RootStackParamList>;
+
 
 export default function TransportationHistory(): JSX.Element {
-  const monthlyData = [
-    { month: 'September', data: [20, 25, 30, 22] },
-    { month: 'November', data: [18, 24, 16, 4] },
-    // Add data for other months...
-  ];
 
-  const [expandedStates, setExpandedStates] = useState(Array(monthlyData.length).fill(false));
+  const [expandedStates, setExpandedStates] = useState(Array(100).fill(false));
+  const [monthlyData, setMonthlyData] = useState<MonthlyEntry[]>();
+  const [startDate] = useState<Date>(new Date(2023, 8, 1));
+  const [endDate] = useState<Date>(new Date(2023, 11, 1));
+  const navigation = useNavigation<StackNavigation>();
+  const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
 
   const toggleExpanded = (index: number): void => {
     const updatedStates = [...expandedStates];
@@ -27,7 +35,24 @@ export default function TransportationHistory(): JSX.Element {
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
-  if (!loaded) {
+
+  useEffect(() => {
+    void TransportationAPI.getTransportationsEntriesForUserUsingDataRange(
+      startDate, endDate).then((res) => {
+      if (res != null) {
+        if (res.monthlyData != null) {
+          setMonthlyData(res.monthlyData)
+        }
+      }
+    });
+    void TransportationAPI.getTransportationMetricForToday().then((res) => {
+      if (res != null) {
+        setTransportationEntry(res)
+      }
+    });
+  }, [endDate, loaded, startDate, navigation])
+
+  if (!loaded || monthlyData === undefined || transportationEntry === undefined) {
     return <></>;
   }
 
@@ -80,12 +105,22 @@ export default function TransportationHistory(): JSX.Element {
                     withHorizontalLabels={false}
                   />
                 </View>
-                {/* Add more content here */}
               </View>
             )}
           </View>
         ))}
       </ScrollView>
+      <View style={styles.widgetContainer}>
+      <View style={styles.widgetBoarder}>
+          <TouchableOpacity 
+          onPress={() => {
+                      navigation.navigate('TransportationEntryEdit');
+                    }}
+                  >
+                    <WidgetBox title="This Week's Entry" content={transportationEntry.carbon_emissions.toString()} />
+                    </TouchableOpacity>
+      </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -136,4 +171,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginLeft: -50,
   },
+  widgetContainer: {
+    padding: 10,
+    flexDirection: 'row',
+  },
+  widgetBoarder: {
+    padding: 10,
+  }
 });

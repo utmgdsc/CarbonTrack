@@ -15,7 +15,7 @@ class DB_MODEL:
     def __init__(self, oid: ObjectId) -> None:
         self.oid = ObjectId(oid)
 
-    def to_json(self, for_mongodb: bool = False) -> json:
+    def to_json(self) -> json:
         raise NotImplementedError
 
     @staticmethod

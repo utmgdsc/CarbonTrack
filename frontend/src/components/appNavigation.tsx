@@ -10,6 +10,7 @@ import Forum from '../screens/forum';
 import FoodForum from '../screens/foodForum';
 import EnergyForum from '../screens/energyForum';
 import TransportationForum from '../screens/transportationForum';
+import TransportationEntryEdit from '../screens/transportationEntryEdit';
 import FoodHistory from '../screens/foodHistory';
 import TransportationHistory from '../screens/transportationHistory';
 
@@ -27,6 +28,7 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen name="FoodForum" component={FoodForum} />
         <Stack.Screen name="EnergyForum" component={EnergyForum} />
         <Stack.Screen name="TransportationForum" component={TransportationForum} />
+        <Stack.Screen name="TransportationEntryEdit" component={TransportationEntryEdit} />
         <Stack.Screen name="FoodHistory" component={FoodHistory} />
         <Stack.Screen name="TransportationHistory" component={TransportationHistory} />
       </Stack.Navigator>

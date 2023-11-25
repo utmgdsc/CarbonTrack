@@ -2,7 +2,8 @@ from typing import Optional
 from pprint import pprint
 import firebase_admin
 from firebase_admin import credentials, auth
-
+from models.user import User
+from mongodb_api.carbon_track_db import CarbonTrackDB
 
 cred = credentials.Certificate("firebase.json")
 APP = firebase_admin.initialize_app(cred)
@@ -11,13 +12,23 @@ APP = firebase_admin.initialize_app(cred)
 class FirebaseAPI:
     @staticmethod
     def verify_google_token(id_token: str) -> Optional[dict]:
+        # print(id_token)
         return auth.verify_id_token(
             id_token=id_token, check_revoked=True
         )
 
+    @staticmethod
+    def get_user(id_token: str) -> Optional[User]:
+        user = auth.verify_id_token(id_token=id_token, check_revoked=True)
+        if user:
+            query = {"email": user.get('email')}
+            item = CarbonTrackDB.users_coll.find_one(query)
+            item = User.from_json(item)
+            return item
+
 
 if __name__ == "__main__":
     d = FirebaseAPI.verify_google_token(
-        "eyJhbGciOiJSUzI1NiIsImtpZCI6ImE2YzYzNTNmMmEzZWMxMjg2NTA1MzBkMTVmNmM0Y2Y0NTcxYTQ1NTciLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNzAwMjI5MTE0LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE3MDAyMjkxMTQsImV4cCI6MTcwMDIzMjcxNCwiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.qx9G7SENxVNJG6aVncn4SjmOyyD-loFScBNKl1ndJyAX_n-851D1LC8ctw1ljnhey2TYh9Zp-yFOg0AvL4vkN0XjbzP2qJw7OLB-WPLLKjkjWK3XEGGiXirbCK29dGveQTGXz6UJ8hTMmU26ojnWKfg6ezFqI5SnQYweHP7vtZBbciKgKUSE-pHwZkhBkYCOVtS0aSmGsQpOmxliWRWxuyqkpCqUk_J2pC2p-LHXqthKGIvGvK_akBSjtZvvl-5Db96HMeMr3GF00I4NevOcVs1vkLkCvib9OshlYNPrBtjdsc9loCQe9iRAflQP6Wpm-B_NtW6x0fsTLQs_JyEmNQ"
+        "eyJhbGciOiJSUzI1NiIsImtpZCI6ImE2YzYzNTNmMmEzZWMxMjg2NTA1MzBkMTVmNmM0Y2Y0NTcxYTQ1NTciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2FyYm9uLXRyYWNrLXN5c3RlbSIsImF1ZCI6ImNhcmJvbi10cmFjay1zeXN0ZW0iLCJhdXRoX3RpbWUiOjE3MDA2NzU5NzksInVzZXJfaWQiOiJ3UFVEaEFiM0Q5ZHpoeDJXa1RBZlBLbnhGSG0xIiwic3ViIjoid1BVRGhBYjNEOWR6aHgyV2tUQWZQS254RkhtMSIsImlhdCI6MTcwMDY3NTk3OSwiZXhwIjoxNzAwNjc5NTc5LCJlbWFpbCI6InlhemFuQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ5YXphbkBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.MRTtHwIK-sShrOUSOTq0yJvjj2svkH3X5T2Zb2hP-KzUYxXLWTRDVUtbBxCJMghqCccTm0jYVNEEd-9i4KteCbJmSLDNbqXR0qO2797fsyo0LU9YpjRyk6-NV6CpHSSMIXeuOcdgXCo65yh_aVlS-tZJg5QU5Av0RtCxHG2szIAz-gqQMuwMxi5iHSCRns67NrxrTdO-BT_lazZo5L3huiyDnE-AGGgprQQcL1I4DMRYRwkEwDLrXoM6GNIylIur0rlVWQxUlOQvUEDhOW8YenpwPm0xuVe78yWxPMFj4aMwgoe6DotMW-HfGv5jSz6baZSHg0yfsEwbtH-iUL88uQ"
     )
     pprint(d)

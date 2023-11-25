@@ -3,8 +3,9 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import Colors from '../../assets/colorConstants';
 import { type profileWidgetBoxProps } from '../components/types';
 import { useFonts } from 'expo-font';
+import { getUserLevel } from '../models/User';
 
-const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ pplavatar, name, level, rank }) => {
+const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ photoURL, user }) => {
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
@@ -16,16 +17,12 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ pplavatar, name, le
 
   return (
     <View style={styles.boxContainer}>
-        <Image source={{ uri: pplavatar }} style={styles.profilePicture} />
+        <Image source={{ uri: photoURL }} style={styles.profilePicture} />
         <View>
-          <Text style={styles.name}> {name} </Text>
-          <Text style={styles.level}> Level: {level} </Text>
+          <Text style={styles.name}> {user.full_name} </Text>
+          <Text style={styles.level}> Email: {user.email} </Text>
+          <Text style={styles.level}> Level: {getUserLevel(user)} </Text>
         </View>
-        <View>
-          <Text style={styles.rank}> {rank} </Text>
-        </View>
-        
-              
     </View>
   );
 };
@@ -45,13 +42,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     flex: 1,
     },
-  rank:{
-    backgroundColor: Colors.LIGHTFGREEN,
-    opacity: 0.2,
-    height: 20,
-    width: '25%',
-    borderRadius: 30,
-  },
   name: {
     flex: 1,
     fontSize: 16,

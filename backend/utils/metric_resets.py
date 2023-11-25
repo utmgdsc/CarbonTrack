@@ -11,10 +11,3 @@ def weekly_metric_reset(d: datetime) -> datetime:
     previous_sunday = d - timedelta(days=days_until_sunday)
     date = datetime(year=previous_sunday.year, month=previous_sunday.month, day=previous_sunday.day)
     return date
-
-
-def get_1_day_range(d: datetime) -> tuple[datetime, datetime]:
-    d = weekly_metric_reset(d)
-    end = datetime(year=d.year, month=d.month, day=d.day) + timedelta(days=1)
-    start = datetime(year=d.year, month=d.month, day=d.day) - timedelta(days=1)
-    return start, end

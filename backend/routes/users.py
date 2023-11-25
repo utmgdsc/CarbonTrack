@@ -31,10 +31,17 @@ def get_user_by_email(user_email: str) -> Response:
 @carbon_auth.auth.login_required
 def create_user() -> Response:
     res: dict = request.get_json()['user']
-    user = User.from_json(res).to_json(for_mongodb=True)
-    inserted_id = CarbonTrackDB.users_coll.insert_one(user).inserted_id
-    user = User.from_json(CarbonTrackDB.users_coll.find_one({"_id": inserted_id})).to_json()
-    return user
+    user = User.from_json(res)
+
+    query = {"email": user.email.lower()}
+    item = CarbonTrackDB.users_coll.find_one(query)
+    if item is None:
+        user = user.to_json()
+        inserted_id = CarbonTrackDB.users_coll.insert_one(user).inserted_id
+        user = User.from_json(CarbonTrackDB.users_coll.find_one({"_id": inserted_id})).to_json()
+        return jsonify({'user': user})
+    else:
+        return jsonify({'error': 'User Already Exits With Same Email, Please Log In'})
 
 
 @users.route("/user/<user_id>", methods=['DELETE'])
@@ -51,7 +58,8 @@ def delete_user(user_id: str) -> Response:
 @carbon_auth.auth.login_required
 def update_user(user_id: str) -> Response:
     query = {"_id": ObjectId(user_id)}
-    user = User.from_json(request.get_json()['user']).to_json(for_mongodb=True)
+    user = User.from_json(request.get_json()['user']).to_json()
+    del user['_id']
     CarbonTrackDB.users_coll.update_one(query, {'$set': user})
     item = CarbonTrackDB.users_coll.find_one(query)
     item = User.from_json(item).to_json()

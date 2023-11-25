@@ -6,7 +6,6 @@ from __future__ import annotations
 import json
 from models.abstract_db_model import DB_MODEL
 from bson import ObjectId
-from bson import json_util
 
 
 class User(DB_MODEL):
@@ -25,7 +24,7 @@ class User(DB_MODEL):
         self.friends = friends
         self.score = score
 
-    def to_json(self, for_mongodb: bool = False) -> json:
+    def to_json(self) -> json:
         res = {
             '_id': self.oid,
             'full_name': self.full_name,
@@ -34,9 +33,7 @@ class User(DB_MODEL):
             'friends': self.friends,
             'score': self.score
         }
-        if for_mongodb:
-            return res
-        return json.loads(json_util.dumps(res))
+        return res
 
     @staticmethod
     def from_json(doc: json) -> User:
