@@ -9,6 +9,7 @@ export interface RootStackParamList {
   TransportationForum: undefined;
   FoodHistory: undefined;
   TransportationHistory: undefined;
+  SignUpQuestions: undefined;
   [key: string]: undefined;
 }
 

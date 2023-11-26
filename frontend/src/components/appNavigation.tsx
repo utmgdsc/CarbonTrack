@@ -12,6 +12,7 @@ import EnergyForum from '../screens/energyForum';
 import TransportationForum from '../screens/transportationForum';
 import FoodHistory from '../screens/foodHistory';
 import TransportationHistory from '../screens/transportationHistory';
+import SignUpQuestions from '../screens/signUpQuestions';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -29,6 +30,7 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen name="TransportationForum" component={TransportationForum} />
         <Stack.Screen name="FoodHistory" component={FoodHistory} />
         <Stack.Screen name="TransportationHistory" component={TransportationHistory} />
+        <Stack.Screen name="SignUpQuestions" component={SignUpQuestions} />
       </Stack.Navigator>
     </NavigationContainer>
   );
