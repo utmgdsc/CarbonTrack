@@ -6,7 +6,7 @@ from flask import Blueprint, Response, jsonify, request
 from models.energy import EnergyEntry
 from models.user import User
 from mongodb_api.carbon_track_db import CarbonTrackDB
-from routes import carbon_auth, users
+from routes import carbon_auth
 from utils.FirebaseAPI import FirebaseAPI
 from utils.metric_resets import weekly_metric_reset
 
