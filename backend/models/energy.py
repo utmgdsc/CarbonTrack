@@ -9,6 +9,7 @@ from models.abstract_db_model import DB_MODEL
 from bson import ObjectId
 from bson import json_util
 
+
 class EnergyEntry(DB_MODEL):
     oid: ObjectId
     user_id: ObjectId
@@ -66,7 +67,7 @@ class EnergyEntry(DB_MODEL):
         heating_oil_carbon_emissions = self.heating_oil * 2.753
         natural_gas_carbon_emissions = self.natural_gas * 1.96
 
-        if self.province == "British Colombia":
+        if self.province == "British Columbia":
             electricity_carbon_emissions = (self.electricity * 0.015)/self.household
         elif self.province == "Alberta":
             electricity_carbon_emissions = (self.electricity * 0.54)/self.household
