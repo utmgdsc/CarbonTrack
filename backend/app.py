@@ -1,6 +1,7 @@
 # Python Imports
 from flask import Flask, Response, jsonify, render_template
 from flask_cors import CORS
+from werkzeug.exceptions import HTTPException
 
 # Imports
 from routes.users import users
@@ -30,6 +31,22 @@ def home() -> Response:
 @app.route("/google")
 def test_google() -> str:
     return render_template('index.html')
+
+
+# Error handler for 400 Bad Request errors
+@app.errorhandler(400)
+def bad_request(error: HTTPException):
+    response = jsonify({"error": "Bad Request", "message": error.description})
+    response.status_code = error.code
+    return response
+
+
+# Error handler for 404 Not Found errors
+@app.errorhandler(404)
+def not_found(error: HTTPException):
+    response = jsonify({"error": error.name, "message": error.description})
+    response.status_code = error.code
+    return response
 
 
 if __name__ == '__main__':
