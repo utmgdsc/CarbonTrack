@@ -3,7 +3,6 @@ from datetime import datetime
 from bson import ObjectId
 from flask import Blueprint, Response, jsonify, request
 import flask
-
 from models.transportation import TransportationEntry
 from mongodb_api.carbon_track_db import CarbonTrackDB
 from routes import carbon_auth
@@ -14,7 +13,7 @@ transportation_service = Blueprint('/transportation', __name__)
 
 
 @transportation_service.route("/transportation/<oid>", methods=['GET'])
-# @carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def get_transportation(oid: str) -> Response:
     query = {"_id": ObjectId(oid)}
     item = CarbonTrackDB.transportation_coll.find_one(query)
@@ -22,9 +21,9 @@ def get_transportation(oid: str) -> Response:
     return jsonify({"transportation": item})
 
 
-@transportation_service.route("/get_transportations_entries_for_user_using_data_range", methods=['POST'])
+@transportation_service.route("/get_transportation_entries_for_user_using_data_range", methods=['POST'])
 @carbon_auth.auth.login_required
-def get_transportations_entries_for_user_using_date_range() -> Response:
+def get_transportation_entries_for_user_using_date_range() -> Response:
     user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
     data = request.get_json()
     start = datetime.fromisoformat(data.get('start'))
@@ -59,8 +58,8 @@ def get_transportation_metric_for_today() -> Response:
 
 @carbon_auth.auth.login_required
 def create_transportation(user_id: ObjectId) -> Response:
-    transportation = TransportationEntry(oid=ObjectId(), user_id=user_id, bus=0, train=0, motorbike=0, electric_car=0,
-                                         gasoline_car=0, carbon_emissions=0, date=weekly_metric_reset(datetime.today()))
+    transportation = TransportationEntry(oid=ObjectId(), user_id=user_id, carbon_emissions=0, date=weekly_metric_reset(datetime.today()),
+                                         bus=0, train=0, motorbike=0, electric_car=0, gasoline_car=0)
     transportation = transportation.to_json()
     inserted_id = CarbonTrackDB.transportation_coll.insert_one(transportation).inserted_id
     transportation = TransportationEntry.from_json(CarbonTrackDB.transportation_coll.find_one({"_id": inserted_id})).to_json()
