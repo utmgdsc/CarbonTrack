@@ -31,7 +31,7 @@ class User(DB_MODEL):
         self.fuel_efficiency = fuel_efficiency
 
     def to_json(self) -> json:
-        res = {
+        return {
             '_id': self.oid,
             'full_name': self.full_name,
             'email': self.email,
@@ -42,7 +42,6 @@ class User(DB_MODEL):
             'household': self.household,
             'fuel_efficiency': self.fuel_efficiency
         }
-        return res
 
     @staticmethod
     def from_json(doc: json) -> User:
@@ -57,7 +56,6 @@ class User(DB_MODEL):
             household=doc["household"],
             fuel_efficiency=doc["fuel_efficiency"]
         )
-    
 
     def __repr__(self) -> str:
         return f'User ID: {self.oid.__str__()}'

@@ -3,16 +3,18 @@ Food Model
 """
 
 from __future__ import annotations
+from typing import Union
 import json
 from datetime import datetime
-from models.abstract_db_model import DB_MODEL
+from models.abstract_carbon_model import CARBON_MODEL
 from bson import ObjectId
-from bson import json_util
 
 
-class FoodEntry(DB_MODEL):
+class FoodEntry(CARBON_MODEL):
     oid: ObjectId
     user_id: ObjectId
+    carbon_emissions: int
+    date: datetime
     beef: int
     lamb: int
     pork: int
@@ -21,15 +23,12 @@ class FoodEntry(DB_MODEL):
     cheese: int
     milk: int
     food_waste: int
-    carbon_emissions: float
-    date: datetime
 
     # food measurements in # of 100g servings
-    def __init__(self, oid: ObjectId, user_id: ObjectId, beef: int, lamb: int, pork: int,
-                 chicken: int, fish: int, cheese: int, milk: int, food_waste: int, carbon_emissions: float,
-                 date: datetime) -> None:
-        super().__init__(oid)
-        self.user_id = ObjectId(user_id)
+    def __init__(self, oid: ObjectId, user_id: ObjectId, carbon_emissions: int, date: Union[str, datetime],
+                 beef: int, lamb: int, pork: int, chicken: int, fish: int, cheese: int, milk: int,
+                 food_waste: int) -> None:
+        super().__init__(oid, user_id, carbon_emissions, date)
         self.beef = beef
         self.lamb = lamb
         self.pork = pork
@@ -38,27 +37,22 @@ class FoodEntry(DB_MODEL):
         self.cheese = cheese
         self.milk = milk
         self.food_waste = food_waste
-        self.carbon_emissions = carbon_emissions
-        self.date = date
 
-    def to_json(self, for_mongodb: bool = False) -> json:
-        res = {
+    def to_json(self) -> json:
+        return {
             '_id': self.oid,
             'user_id': self.user_id,
             'beef': self.beef,
             'lamb': self.lamb,
             'pork': self.pork,
-            'chicken': self.chicken, 
+            'chicken': self.chicken,
             'fish': self.fish,
-            'cheese': self.cheese, 
+            'cheese': self.cheese,
             'milk': self.milk,
-            'food_waste': self.food_waste, 
+            'food_waste': self.food_waste,
             'carbon_emissions': self.calculate_carbon_emissions(),
             'date': self.date
         }
-        if for_mongodb:
-            return res
-        return json.loads(json_util.dumps(res))
 
     @staticmethod
     def from_json(doc: json) -> FoodEntry:
@@ -87,7 +81,7 @@ class FoodEntry(DB_MODEL):
         milk_carbon_emissions = self.milk * 0.8
         food_waste_carbon_emissions = self.food_waste * 0.25
         return sum([beef_carbon_emissions, lamb_carbon_emissions, pork_carbon_emissions,
-                    chicken_carbon_emissions, fish_carbon_emissions, cheese_carbon_emissions, 
+                    chicken_carbon_emissions, fish_carbon_emissions, cheese_carbon_emissions,
                     milk_carbon_emissions, food_waste_carbon_emissions])
 
     def __repr__(self) -> str:

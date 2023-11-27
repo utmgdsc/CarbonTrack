@@ -3,38 +3,35 @@ Energy Model
 """
 
 from __future__ import annotations
+from typing import Union
 import json
 from datetime import datetime
-from models.abstract_db_model import DB_MODEL
+from models.abstract_carbon_model import CARBON_MODEL
 from bson import ObjectId
-from bson import json_util
 
 
-class EnergyEntry(DB_MODEL):
+class EnergyEntry(CARBON_MODEL):
     oid: ObjectId
     user_id: ObjectId
-    heating_oil: int # measured in L of fuel
-    natural_gas: int # measured in m3 of gas
-    electricity: int # measured in kWh
+    carbon_emissions: int  # measured in kgs of CO2
+    date: datetime
+    heating_oil: int  # measured in L of fuel
+    natural_gas: int  # measured in m3 of gas
+    electricity: int  # measured in kWh
     province: str
     household: int
-    carbon_emissions: float # measured in kgs of CO2
-    date: datetime
 
-    def __init__(self, oid: ObjectId, user_id: ObjectId, heating_oil: int, natural_gas: int, province: str, 
-                 household: int, electricity: int, carbon_emissions: float, date: datetime) -> None:
-        super().__init__(oid)
-        self.user_id = ObjectId(user_id)
+    def __init__(self, oid: ObjectId, user_id: ObjectId, carbon_emissions: int, date: Union[str, datetime],
+                 heating_oil: int, natural_gas: int, province: str, household: int, electricity: int) -> None:
+        super().__init__(oid, user_id, carbon_emissions, date)
         self.heating_oil = heating_oil
         self.natural_gas = natural_gas
         self.electricity = electricity
         self.province = province
         self.household = household
-        self.carbon_emissions = carbon_emissions
-        self.date = date
 
-    def to_json(self, for_mongodb: bool = False) -> json:
-        res = {
+    def to_json(self) -> json:
+        return {
             '_id': self.oid,
             'user_id': self.user_id,
             'heating_oil': self.heating_oil,
@@ -45,9 +42,6 @@ class EnergyEntry(DB_MODEL):
             'carbon_emissions': self.calculate_carbon_emissions(),
             'date': self.date
         }
-        if for_mongodb:
-            return res
-        return json.loads(json_util.dumps(res))
 
     @staticmethod
     def from_json(doc: json) -> EnergyEntry:
@@ -68,31 +62,31 @@ class EnergyEntry(DB_MODEL):
         natural_gas_carbon_emissions = self.natural_gas * 1.96
 
         if self.province == "British Columbia":
-            electricity_carbon_emissions = (self.electricity * 0.015)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.015) / self.household
         elif self.province == "Alberta":
-            electricity_carbon_emissions = (self.electricity * 0.54)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.54) / self.household
         elif self.province == "Saskatchewan":
-            electricity_carbon_emissions = (self.electricity * 0.73)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.73) / self.household
         elif self.province == "Manitoba":
-            electricity_carbon_emissions = (self.electricity * 0.002)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.002) / self.household
         elif self.province == "Ontario":
-            electricity_carbon_emissions = (self.electricity * 0.03)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.03) / self.household
         elif self.province == "Quebec":
-            electricity_carbon_emissions = (self.electricity * 0.0017)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.0017) / self.household
         elif self.province == "New Brunswick":
-            electricity_carbon_emissions = (self.electricity * 0.3)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.3) / self.household
         elif self.province == "Nova Scotia":
-            electricity_carbon_emissions = (self.electricity * 0.69)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.69) / self.household
         elif self.province == "PEI":
-            electricity_carbon_emissions = (self.electricity * 0.3)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.3) / self.household
         elif self.province == "Newfoundland and Labrador":
-            electricity_carbon_emissions = (self.electricity * 0.017)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.017) / self.household
         elif self.province == "Yukon":
-            electricity_carbon_emissions = (self.electricity * 0.08)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.08) / self.household
         elif self.province == "Nortwest Territories":
-            electricity_carbon_emissions = (self.electricity * 0.17)/self.household
-        else: # self.province == "Nunavut"
-            electricity_carbon_emissions = (self.electricity * 0.84)/self.household
+            electricity_carbon_emissions = (self.electricity * 0.17) / self.household
+        else:  # self.province == "Nunavut"
+            electricity_carbon_emissions = (self.electricity * 0.84) / self.household
         return sum([heating_oil_carbon_emissions, natural_gas_carbon_emissions, electricity_carbon_emissions])
 
     def __repr__(self) -> str:
