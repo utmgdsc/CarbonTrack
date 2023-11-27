@@ -9,13 +9,6 @@ from routes import carbon_auth
 users = Blueprint('/users', __name__)
 
 
-@carbon_auth.auth.login_required
-def get_user_obj(user_id: ObjectId) -> User:
-    query = {"_id": user_id}
-    item = CarbonTrackDB.users_coll.find_one(query)
-    item = User.from_json(item)
-    return item
-
 @users.route("/user/<user_id>", methods=['GET'])
 @carbon_auth.auth.login_required
 def get_user(user_id: str) -> Response:
