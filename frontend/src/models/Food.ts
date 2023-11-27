@@ -1,6 +1,6 @@
 import type ObjectID from 'bson-objectid';
 
-export interface Food {
+export interface FoodEntry {
   _id: ObjectID
   user_id: ObjectID
   carbon_emissions: number
@@ -13,4 +13,15 @@ export interface Food {
   cheese: number
   milk: number
   food_waste: number
+}
+
+export interface MonthlyEntry {
+    'data': number[]
+    'month': string
+    'year': string
+}
+
+export interface FoodRes {
+    foodEntries: FoodEntry[]
+    monthlyData: MonthlyEntry[]
 }

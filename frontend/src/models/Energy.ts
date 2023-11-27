@@ -1,6 +1,6 @@
 import type ObjectID from 'bson-objectid';
 
-export interface Energy {
+export interface EnergyEntry {
   _id: ObjectID
   user_id: ObjectID
   carbon_emissions: number
@@ -10,4 +10,15 @@ export interface Energy {
   electricity: number
   province: string
   household: number
+}
+
+export interface MonthlyEntry {
+    'data': number[]
+    'month': string
+    'year': string
+}
+
+export interface EnergyRes {
+    energyEntries: EnergyEntry[]
+    monthlyData: MonthlyEntry[]
 }

@@ -1,40 +1,57 @@
 import FLASK_HTTPS from './FLASK_API';
-import type ObjectID from 'bson-objectid';
-import type { Energy } from '../models/Energy';
+import type { EnergyEntry, EnergyRes } from '../models/Energy';
+import { type ObjectId } from 'mongodb';
 
 const routeName = '/energy';
 
-export const getEnergy = async (energyID: ObjectID): Promise<undefined | Energy> => {
-  try {
-    const res = await FLASK_HTTPS.get(routeName + '/energy/' + energyID.str);
-    return res.data.energy as Energy;
-  } catch (error) {
-    console.error('Error fetching energy from Flask BE: ', error);
-    console.error('Temp tip: have you started the backend?: ');
-    return undefined;
-  }
-};
+export const EnergyAPI = {
 
-export const getEnergyMetricForToday = async (userID: ObjectID): Promise<undefined | Energy> => {
-  try {
-    const res = await FLASK_HTTPS.get(routeName + '/get_energy_metric_for_today/' + userID.str);
-    return res.data.energy as Energy;
-  } catch (error) {
-    console.error('Error fetching energy from Flask BE: ', error);
-    console.error('Temp tip: have you started the backend?: ');
-    return undefined;
+  getEnergy: async (energyID: ObjectId) => {
+    try {
+      const res = await FLASK_HTTPS.get(routeName + '/energy/' + energyID.toHexString());
+      return res.data.energy as EnergyEntry;
+    } catch (error) {
+      console.error('Error fetching energy from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
+  },
+  
+  getEnergyEntriesForUserUsingDataRange: async (start: Date, end: Date) => {
+    try {
+      const res = await FLASK_HTTPS.post(routeName + '/get_energy_entries_for_user_using_data_range', {
+        start,
+        end
+      });
+      return res.data as EnergyRes;
+    } catch (error) {
+      console.error('Error fetching energy from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
+  },
+  
+  getEnergyMetricForToday: async (): Promise<undefined | EnergyEntry> => {
+    try {
+      const res = await FLASK_HTTPS.get(routeName + '/get_energy_metric_for_today');
+      return res.data.energy as EnergyEntry;
+    } catch (error) {
+      console.error('Error fetching energy from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
+  },
+  
+  updateEnergy: async (energy: EnergyEntry): Promise<undefined | EnergyEntry> => {
+    try {
+      const res = await FLASK_HTTPS.patch(routeName + '/energy/' + energy._id.toString(), {
+        energy,
+      });
+      return res.data.energy as EnergyEntry;
+    } catch (error) {
+      console.error('Error fetching energy from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
   }
-};
-
-export const updateEnergy = async (energy: Energy): Promise<undefined | Energy> => {
-  try {
-    const res = await FLASK_HTTPS.patch(routeName + '/energy/' + energy._id.str, {
-      energy,
-    });
-    return res.data.energy as Energy;
-  } catch (error) {
-    console.error('Error fetching energy from Flask BE: ', error);
-    console.error('Temp tip: have you started the backend?: ');
-    return undefined;
-  }
-};
+}

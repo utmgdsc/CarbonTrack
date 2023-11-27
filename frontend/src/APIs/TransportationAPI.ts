@@ -19,7 +19,7 @@ export const TransportationAPI = {
   
   getTransportationEntriesForUserUsingDataRange: async (start: Date, end: Date) => {
     try {
-      const res = await FLASK_HTTPS.post(routeName + '/get_transportations_entrie_for_user_using_data_range', {
+      const res = await FLASK_HTTPS.post(routeName + '/get_transportation_entries_for_user_using_data_range', {
         start,
         end
       });
