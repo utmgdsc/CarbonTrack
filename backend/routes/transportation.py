@@ -91,6 +91,6 @@ def update_transportation(oid: str) -> Response:
         CarbonTrackDB.transportation_coll.update_one(query, {'$set': transportation})
         item = CarbonTrackDB.transportation_coll.find_one(query)
         item = TransportationEntry.from_json(item).to_json()
-        return jsonify({'updated_transportation': item})
+        return jsonify({'transportation': item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")

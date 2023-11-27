@@ -93,6 +93,6 @@ def update_energy(oid: str) -> Response:
         CarbonTrackDB.energy_coll.update_one(query, {'$set': energy})
         item = CarbonTrackDB.energy_coll.find_one(query)
         item = EnergyEntry.from_json(item).to_json()
-        return jsonify({'updated_energy': item})
+        return jsonify({'energy': item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")

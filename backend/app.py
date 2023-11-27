@@ -3,6 +3,7 @@ from flask import Flask, Response, jsonify, render_template
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 
+from routes.ct_firebase_service import ct_firebase_service
 # Imports
 from routes.users import users
 from routes.transportation import transportation_service
@@ -19,18 +20,13 @@ app.register_blueprint(users, url_prefix="/users")
 app.register_blueprint(transportation_service, url_prefix="/transportation")
 app.register_blueprint(food_service, url_prefix="/food")
 app.register_blueprint(energy_service, url_prefix="/energy")
+app.register_blueprint(ct_firebase_service, url_prefix="/f")
 CORS(app)
 
 
 @app.route("/")
 def home() -> Response:
     return jsonify('Carbon Track APP BACKEND API :: UNAUTHORIZED ACCESS')
-
-
-# This is just for testing
-@app.route("/google")
-def test_google() -> str:
-    return render_template('index.html')
 
 
 # Error handler for 400 Bad Request errors

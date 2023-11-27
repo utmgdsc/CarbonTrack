@@ -94,6 +94,6 @@ def update_food(oid: str) -> Response:
         CarbonTrackDB.food_coll.update_one(query, {'$set': food})
         item = CarbonTrackDB.food_coll.find_one(query)
         item = FoodEntry.from_json(item).to_json()
-        return jsonify({'updated_food': item})
+        return jsonify({'food': item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
