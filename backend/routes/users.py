@@ -9,7 +9,7 @@ from routes import carbon_auth
 users = Blueprint('/users', __name__)
 
 
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def get_user_obj(user_id: ObjectId) -> User:
     query = {"_id": user_id}
     item = CarbonTrackDB.users_coll.find_one(query)
@@ -17,7 +17,7 @@ def get_user_obj(user_id: ObjectId) -> User:
     return item
 
 @users.route("/user/<user_id>", methods=['GET'])
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def get_user(user_id: str) -> Response:
     query = {"_id": ObjectId(user_id)}
     item = CarbonTrackDB.users_coll.find_one(query)
@@ -26,7 +26,7 @@ def get_user(user_id: str) -> Response:
 
 
 @users.route("/user_email/<user_email>", methods=['GET'])
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def get_user_by_email(user_email: str) -> Response:
     query = {"email": user_email}
     item = CarbonTrackDB.users_coll.find_one(query)
@@ -35,7 +35,7 @@ def get_user_by_email(user_email: str) -> Response:
 
 
 @users.route("/user", methods=['PUT'])
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def create_user() -> Response:
     res: dict = request.get_json()['user']
     user = User.from_json(res)
@@ -52,7 +52,7 @@ def create_user() -> Response:
 
 
 @users.route("/user/<user_id>", methods=['DELETE'])
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def delete_user(user_id: str) -> Response:
     query = {"_id": ObjectId(user_id)}
     item = CarbonTrackDB.users_coll.find_one(query)
@@ -62,7 +62,7 @@ def delete_user(user_id: str) -> Response:
 
 
 @users.route("user/<user_id>", methods=["PATCH"])
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def update_user(user_id: str) -> Response:
     query = {"_id": ObjectId(user_id)}
     user = User.from_json(request.get_json()['user']).to_json()
