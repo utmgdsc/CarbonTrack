@@ -16,7 +16,6 @@ jobs:
         run: |
           cd frontend
           npm install
-          npm run dev
 
       - name: Check linting
         run: |

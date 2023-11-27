@@ -37,7 +37,7 @@ export default function TransportationHistory(): JSX.Element {
   });
 
   useEffect(() => {
-    void TransportationAPI.getTransportationsEntriesForUserUsingDataRange(
+    void TransportationAPI.getTransportationEntriesForUserUsingDataRange(
       startDate, endDate).then((res) => {
       if (res != null) {
         if (res.monthlyData != null) {
