@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import * as React from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
-import { type RootStackParamList } from '../components/types';
+import { type RootStackParamList } from '../../components/types';
 import { useFonts } from 'expo-font';
-import Colors from '../../assets/colorConstants';
+import Colors from '../../../assets/colorConstants';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import foodSliderData from '../../assets/foodQuestions';
+import foodSliderData from '../../../assets/foodQuestions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 

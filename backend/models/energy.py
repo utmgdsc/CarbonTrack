@@ -61,6 +61,9 @@ class EnergyEntry(CARBON_MODEL):
         heating_oil_carbon_emissions = self.heating_oil * 2.753
         natural_gas_carbon_emissions = self.natural_gas * 1.96
 
+        if self.household < 1:
+            self.household = 1
+
         if self.province == "British Columbia":
             electricity_carbon_emissions = (self.electricity * 0.015) / self.household
         elif self.province == "Alberta":
@@ -83,7 +86,7 @@ class EnergyEntry(CARBON_MODEL):
             electricity_carbon_emissions = (self.electricity * 0.017) / self.household
         elif self.province == "Yukon":
             electricity_carbon_emissions = (self.electricity * 0.08) / self.household
-        elif self.province == "Nortwest Territories":
+        elif self.province == "Northwest Territories":
             electricity_carbon_emissions = (self.electricity * 0.17) / self.household
         else:  # self.province == "Nunavut"
             electricity_carbon_emissions = (self.electricity * 0.84) / self.household

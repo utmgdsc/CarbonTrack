@@ -70,7 +70,7 @@ def get_energy_metric_for_today() -> Response:
 @carbon_auth.auth.login_required
 def create_energy(user_id: ObjectId) -> Response:
     try:
-        user = User.from_json(CarbonTrackDB.users_coll.find_one({'_id'}))
+        user = User.from_json(CarbonTrackDB.users_coll.find_one({'_id': user_id}))
         energy = EnergyEntry(oid=ObjectId(), user_id=user_id, carbon_emissions=0, date=weekly_metric_reset(datetime.today()),
                              heating_oil=0, natural_gas=0, province=user.province, household=user.household, electricity=0)
         energy = energy.to_json()

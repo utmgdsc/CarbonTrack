@@ -10,7 +10,7 @@ users = Blueprint('/users', __name__)
 
 
 @users.route("/user/<user_id>", methods=['GET'])
-# @carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def get_user(user_id: str) -> Response:
     try:
         query = {"_id": ObjectId(user_id)}
@@ -73,10 +73,11 @@ def update_user(user_id: str) -> Response:
         query = {"_id": ObjectId(user_id)}
         user = User.from_json(request.get_json()['user']).to_json()
         del user['_id']
+        del user['email']
         CarbonTrackDB.users_coll.update_one(query, {'$set': user})
         item = CarbonTrackDB.users_coll.find_one(query)
         item = User.from_json(item).to_json()
-        return jsonify({'updated_user': item})
+        return jsonify({'user': item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
 

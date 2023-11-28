@@ -13,11 +13,11 @@ import {
   import Icon from 'react-native-vector-icons/FontAwesome';
   import { useState } from 'react';
   import { type StackNavigationProp } from '@react-navigation/stack';
-  import { type RootStackParamList } from '../components/types';
+  import { type RootStackParamList } from '../../components/types';
   import { useNavigation } from '@react-navigation/native';
   import { useFonts } from 'expo-font';
-  import Colors from '../../assets/colorConstants';
-  import transportationQuestions from '../../assets/questions';
+  import Colors from '../../../assets/colorConstants';
+  import transportationQuestions from '../../../assets/questions';
   import { SafeAreaView } from 'react-native-safe-area-context';
   import Slider from '@react-native-community/slider';
   

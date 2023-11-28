@@ -1,8 +1,8 @@
-import type ObjectID from 'bson-objectid';
+import { type ObjectId } from 'mongodb';
 
 export interface FoodEntry {
-  _id: ObjectID
-  user_id: ObjectID
+  _id: ObjectId
+  user_id: ObjectId
   carbon_emissions: number
   date: Date
   beef: number

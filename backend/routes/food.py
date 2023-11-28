@@ -51,7 +51,7 @@ def get_food_entries_for_user_using_date_range() -> Response:
         abort(code=400, description=f"{e}")
 
 
-@food_service.route("/get_food_metric_for_today/", methods=['GET'])
+@food_service.route("/get_food_metric_for_today", methods=['GET'])
 @carbon_auth.auth.login_required
 def get_food_metric_for_today() -> Response:
     try:

@@ -11,18 +11,18 @@ import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useEffect, useState } from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
-import { type RootStackParamList } from '../components/types';
+import { type RootStackParamList } from '../../components/types';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import Colors from '../../assets/colorConstants';
+import Colors from '../../../assets/colorConstants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
-import { TransportationAPI } from '../APIs/TransportationAPI';
-import { type TransportationEntry } from '../models/Transportation';
+import { FoodAPI } from '../../APIs/FoodAPI';
+import { type FoodEntry } from '../../models/Food';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
-export default function TransportationEntryEdit(): JSX.Element {
+export default function FoodEntryEdit(): JSX.Element {
   interface SliderData {
     id: number;
     label: string;
@@ -31,33 +31,45 @@ export default function TransportationEntryEdit(): JSX.Element {
     initialValue: number;
   }
 
-  const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
+  const [foodEntry, setFoodEntry] = useState<FoodEntry>();
 
   const [slidersData, setSliderData] = useState<SliderData[]>([]);
 
-  const [electricCarTravel, setElectricCarTravel] = useState(0);
-  const [gasolineCarTravel, setGasolineCarTravel] = useState(0);
-  const [busTravel, setBusTravel] = useState(0);
-  const [trainTravel, setTrainTravel] = useState(0);
-  const [bikeTravel, setBikeTravel] = useState(0);
+  const [beefConsumption, setBeefConsumption] = useState(0);
+  const [lambConsumption, setLambConsumption] = useState(0);
+  const [porkConsumption, setPorkConsumption] = useState(0);
+  const [chickenConsumption, setChickenConsumption] = useState(0);
+  const [fishConsumption, setFishConsumption] = useState(0);
+  const [cheeseConsumption, setCheeseConsumption] = useState(0);
+  const [milkConsumption, setMilkConsumption] = useState(0);
+  const [foodWaste, setFoodWaste] = useState(0);
 
   const onSliderValueChange = (value: number, index: number): void => {
-    slidersData[index].initialValue = value
+    slidersData[index].initialValue = value;
     switch (index) {
       case 0:
-        setElectricCarTravel(value);
+        setBeefConsumption(value);
         break;
       case 1:
-        setGasolineCarTravel(value);
+        setLambConsumption(value);
         break;
       case 2:
-        setTrainTravel(value);
+        setPorkConsumption(value);
         break;
       case 3:
-        setBusTravel(value);
+        setChickenConsumption(value);
         break;
       case 4:
-        setBikeTravel(value);
+        setFishConsumption(value);
+        break;
+      case 5:
+        setCheeseConsumption(value);
+        break;
+      case 6:
+        setMilkConsumption(value);
+        break;
+      case 7:
+        setFoodWaste(value);
         break;
       default:
         break;
@@ -92,45 +104,54 @@ export default function TransportationEntryEdit(): JSX.Element {
 
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
-    if (transportationEntry != null) {
-      const newEntry: TransportationEntry = {
-        _id: transportationEntry._id,
-        user_id: transportationEntry.user_id,
-        bus: busTravel,
-        train: trainTravel,
-        motorbike: bikeTravel,
-        electric_car: electricCarTravel,
-        gasoline_car: gasolineCarTravel,
-        carbon_emissions: transportationEntry.carbon_emissions,
-        date: transportationEntry.date
+    if (foodEntry != null) {
+      const newEntry: FoodEntry = {
+        _id: foodEntry._id,
+        user_id: foodEntry.user_id,
+        carbon_emissions: foodEntry.carbon_emissions,
+        date: foodEntry.date,
+        beef: beefConsumption,
+        lamb: lambConsumption,
+        pork: porkConsumption,
+        chicken: chickenConsumption,
+        fish: fishConsumption,
+        cheese: cheeseConsumption,
+        milk: milkConsumption,
+        food_waste: foodWaste,
       }
-      void TransportationAPI.updateTransportation(newEntry).then(() => {
-        navigation.navigate('TransportationHistory');
+      void FoodAPI.updateFood(newEntry).then(() => {
+        navigation.navigate('FoodHistory');
       })
     }
   };
 
   useEffect(() => {
-    if (transportationEntry != null) {
+    if (foodEntry != null) {
       setSliderData([
-        { id: 1, label: 'Electric Car', minValue: 0, maxValue: 800, initialValue: transportationEntry.electric_car },
-        { id: 2, label: 'Gasoline Car', minValue: 0, maxValue: 800, initialValue: transportationEntry.gasoline_car },
-        { id: 3, label: 'Train', minValue: 0, maxValue: 800, initialValue: transportationEntry.train },
-        { id: 4, label: 'Bus', minValue: 0, maxValue: 800, initialValue: transportationEntry.bus },
-        { id: 5, label: 'Motobike', minValue: 0, maxValue: 800, initialValue: transportationEntry.motorbike },
-      ])
-      setElectricCarTravel(transportationEntry.electric_car);
-      setGasolineCarTravel(transportationEntry.gasoline_car);
-      setBusTravel(transportationEntry.bus);
-      setTrainTravel(transportationEntry.train);
-      setBikeTravel(transportationEntry.motorbike);
+        { id: 1, label: 'Beef', minValue: 0, maxValue: 800, initialValue: foodEntry.beef },
+        { id: 2, label: 'Lamb', minValue: 0, maxValue: 800, initialValue: foodEntry.lamb },
+        { id: 3, label: 'Pork', minValue: 0, maxValue: 800, initialValue: foodEntry.pork },
+        { id: 4, label: 'Chicken', minValue: 0, maxValue: 800, initialValue: foodEntry.chicken },
+        { id: 5, label: 'Fish', minValue: 0, maxValue: 800, initialValue: foodEntry.fish },
+        { id: 6, label: 'Cheese', minValue: 0, maxValue: 800, initialValue: foodEntry.cheese },
+        { id: 7, label: 'Milk', minValue: 0, maxValue: 800, initialValue: foodEntry.milk },
+        { id: 8, label: 'Food Waste', minValue: 0, maxValue: 800, initialValue: foodEntry.food_waste },
+      ]);
+      setBeefConsumption(foodEntry.beef);
+      setLambConsumption(foodEntry.lamb);
+      setPorkConsumption(foodEntry.pork);
+      setChickenConsumption(foodEntry.chicken);
+      setFishConsumption(foodEntry.fish);
+      setCheeseConsumption(foodEntry.cheese);
+      setMilkConsumption(foodEntry.milk);
+      setFoodWaste(foodEntry.food_waste);
     }
-  }, [transportationEntry])
+  }, [foodEntry]);
 
   useEffect(() => {
-    void TransportationAPI.getTransportationMetricForToday().then((res) => {
+    void FoodAPI.getFoodMetricForToday().then((res) => {
       if (res != null) {
-        setTransportationEntry(res)
+        setFoodEntry(res)
       }
     })
   }, [loaded])
@@ -142,7 +163,7 @@ export default function TransportationEntryEdit(): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-        <Text style={styles.header}>Calculate your emissions from transportation:</Text>
+        <Text style={styles.header}>Calculate your emissions from food:</Text>
 
         <Modal transparent={true} visible={modalVisible}>
           <View style={styles.modalBackground}>
