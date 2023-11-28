@@ -13,7 +13,7 @@ import TransportationForum from '../screens/Transportation/transportationForum';
 import TransportationEntryEdit from '../screens/Transportation/transportationEntryEdit';
 import FoodHistory from '../screens/Food/foodHistory';
 import TransportationHistory from '../screens/Transportation/transportationHistory';
-import EnergyHistory from '../screens/Energy/energy';
+import EnergyHistory from '../screens/Energy/energyHistory';
 import EnergyEntryEdit from '../screens/Energy/energyEntryEdit';
 import FoodEntryEdit from '../screens/Food/foodEntryEdit';
 

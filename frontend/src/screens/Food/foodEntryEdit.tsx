@@ -94,8 +94,8 @@ export default function FoodEntryEdit(): JSX.Element {
   };
 
   const [loaded] = useFonts({
-    Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
-    Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
+    Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
+    Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
   const navigation = useNavigation<StackNavigation>();
