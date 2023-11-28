@@ -11,11 +11,17 @@ import { type User } from '../models/User';
 import { UsersAPI } from '../APIs/UsersAPI';
 import { type TransportationEntry } from '../models/Transportation';
 import { TransportationAPI } from '../APIs/TransportationAPI';
+import { type FoodEntry } from '../models/Food';
+import { type EnergyEntry } from '../models/Energy';
+import { FoodAPI } from '../APIs/FoodAPI';
+import { EnergyAPI } from '../APIs/EnergyAPI';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function DashBoardScreen(): JSX.Element {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
+  const [foodEntry, setFoodEntry] = useState<FoodEntry>();
+  const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
   const [photoURL] = useState<string>("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png");
 
   const navigation = useNavigation<StackNavigation>();
@@ -36,9 +42,19 @@ export default function DashBoardScreen(): JSX.Element {
         setTransportationEntry(res)
       }
     });
+    void FoodAPI.getFoodMetricForToday().then((res) => {
+      if (res != null) {
+        setFoodEntry(res)
+      }
+    });
+    void EnergyAPI.getEnergyMetricForToday().then((res) => {
+      if (res != null) {
+        setEnergyEntry(res)
+      }
+    });
   }, [loaded]);
 
-  if (!loaded || user === undefined || transportationEntry === undefined) {
+  if (!loaded || user === undefined || transportationEntry === undefined || foodEntry === undefined || energyEntry === undefined) {
     return <></>;
   }
 
@@ -64,22 +80,45 @@ export default function DashBoardScreen(): JSX.Element {
         <View style={styles.widgetBoarder}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('FoodHistory');
-            }}
-          >
-            <WidgetBox title="Food" content="10.6" />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.widgetBoarder}>
-          <TouchableOpacity
-            onPress={() => {
               navigation.navigate('TransportationHistory');
             }}
           >
             <WidgetBox title="Transportatin" content={transportationEntry.carbon_emissions.toString()} />
           </TouchableOpacity>
         </View>
+
+        <View style={styles.widgetBoarder}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('FoodHistory');
+            }}
+          >
+            <WidgetBox title="Food" content={foodEntry.carbon_emissions.toString()} />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.widgetContainer}>
+
+        <View style={styles.widgetBoarder}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('EnergyHistory');
+            }}
+          >
+            <WidgetBox title="Energy" content={energyEntry.carbon_emissions.toString()} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.widgetBoarder}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Settings');
+            }}
+          >
+            <WidgetBox title="Settings" content={"Access User Settings"} />
+          </TouchableOpacity>
+        </View>
+
       </View>
     </View>
   );

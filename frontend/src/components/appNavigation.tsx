@@ -7,12 +7,15 @@ import LogInScreen from '../screens/login';
 import SignUpScreen from '../screens/signup';
 import DashBoardScreen from '../screens/dashboard';
 import Forum from '../screens/forum';
-import FoodForum from '../screens/foodForum';
-import EnergyForum from '../screens/energyForum';
-import TransportationForum from '../screens/transportationForum';
-import TransportationEntryEdit from '../screens/transportationEntryEdit';
-import FoodHistory from '../screens/foodHistory';
-import TransportationHistory from '../screens/transportationHistory';
+import FoodForum from '../screens/Food/foodForum';
+import EnergyForum from '../screens/Energy/energyForum';
+import TransportationForum from '../screens/Transportation/transportationForum';
+import TransportationEntryEdit from '../screens/Transportation/transportationEntryEdit';
+import FoodHistory from '../screens/Food/foodHistory';
+import TransportationHistory from '../screens/Transportation/transportationHistory';
+import EnergyHistory from '../screens/Energy/energyHistory';
+import EnergyEntryEdit from '../screens/Energy/energyEntryEdit';
+import FoodEntryEdit from '../screens/Food/foodEntryEdit';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -25,12 +28,18 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="DashBoard" component={DashBoardScreen} />
         <Stack.Screen name="Forum" component={Forum} />
-        <Stack.Screen name="FoodForum" component={FoodForum} />
-        <Stack.Screen name="EnergyForum" component={EnergyForum} />
+        
         <Stack.Screen name="TransportationForum" component={TransportationForum} />
         <Stack.Screen name="TransportationEntryEdit" component={TransportationEntryEdit} />
-        <Stack.Screen name="FoodHistory" component={FoodHistory} />
         <Stack.Screen name="TransportationHistory" component={TransportationHistory} />
+
+        <Stack.Screen name="FoodForum" component={FoodForum} />
+        <Stack.Screen name="FoodEntryEdit" component={FoodEntryEdit} />
+        <Stack.Screen name="FoodHistory" component={FoodHistory} />
+
+        <Stack.Screen name="EnergyForum" component={EnergyForum} />
+        <Stack.Screen name="EnergyEntryEdit" component={EnergyEntryEdit} />
+        <Stack.Screen name="EnergyHistory" component={EnergyHistory} />
       </Stack.Navigator>
     </NavigationContainer>
   );

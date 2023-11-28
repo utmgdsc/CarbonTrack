@@ -8,6 +8,7 @@ import Colors from '../../assets/colorConstants';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import FormTextField from '../components/forms/formTextField';
+import { UsersAPI } from '../APIs/UsersAPI';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -26,8 +27,18 @@ export default function LogInScreen(): JSX.Element {
   const handleLogIn = async (fields: ILogInFields): Promise<void> => {
     const { email, password } = fields;
     try {
-      await firebaseService.signInUser(email, password);
-      navigation.navigate('DashBoard');
+      await firebaseService.signInUser(email, password).then(async () => {
+        await UsersAPI.GetLoggedInUser().then((res) => {
+          if (res != null) {
+            navigation.navigate('DashBoard');
+          } else {
+            console.warn('User was not logged in: ' + res);
+          }
+        }).catch((err) => {
+          console.warn('User was not logged in: ' + err);
+        });
+      });
+      
     } catch (error) {
       alert('Incorrect Email or password');
     }

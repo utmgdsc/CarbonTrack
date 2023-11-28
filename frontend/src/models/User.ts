@@ -8,6 +8,9 @@ export interface User {
     badges: string[]
     friends: ObjectId[]
     score: number
+    province: string
+    household: number
+    fuel_efficiency: number
 }
 
 

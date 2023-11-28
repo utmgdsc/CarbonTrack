@@ -55,6 +55,9 @@ export default function SignUp(): JSX.Element {
           badges: [],
           friends: [],
           score: 0,
+          province: '',
+          household: 0,
+          fuel_efficiency: 0
         }).then((res): void => {
           console.log(res)
           if (typeof res === 'string') {

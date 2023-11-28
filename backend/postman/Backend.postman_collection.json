@@ -1,30 +1,52 @@
 {
 	"info": {
-		"_postman_id": "4e6a6476-9f0c-4b6a-b021-a2ee98a764fc",
+		"_postman_id": "96af37c1-9d9e-43ba-9dcd-f25fcc13248e",
 		"name": "Backend",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30673965"
+		"_exporter_id": "25097543",
+		"_collection_link": "https://smartqrapp.postman.co/workspace/CarbonTrack~a09486ca-92c2-404d-9e10-1f18c1befa4a/collection/25097543-96af37c1-9d9e-43ba-9dcd-f25fcc13248e?action=share&source=collection_link&creator=25097543"
 	},
 	"item": [
 		{
 			"name": "Users",
 			"item": [
 				{
-					"name": "Get User",
+					"name": "Get User Via ID",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
-									"type": "string"
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/users/user/65651db4f3369512431e5c4a",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"users",
+								"user",
+								"65651db4f3369512431e5c4a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Via Emai",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -58,7 +80,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "\"eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTE3OTkzLCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MTc5OTMsImV4cCI6MTY5ODUyMTU5MywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.Q1b4XkYwuMzn1aGv3qHVu469hGrgUI8FMSrsru_CgVGxhBKTKsUaKExwRssakLEwcQ0u68OcmNQjBLbwP2SE99f61R0GQxuiyI5m5L1-OhTrbPRYcRYDEFBySmSQMgOFBmPik5JlMcWOz1LtLXzbnCR-epcSrxs8qUZ2_rfpeYaaJavRQuYBJmQo8FgJyPz-LQ2aa-2ileNipyyg7AXxqU0fgnTLSSvHzPqk6O-bSCci53QdY2w6n2vusEUpIea6i5XhIrfr0BkMXy8VIoJQ8RoIjdS-_CpTx-1aixDzOMQd-I-synRJN7-YZKV5E4yupIquNPjQmFFoGF5xGTEelA\"",
+									"value": "",
 									"type": "string"
 								}
 							]
@@ -90,21 +112,11 @@
 				{
 					"name": "Update User",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "\"eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTE3OTkzLCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MTc5OTMsImV4cCI6MTY5ODUyMTU5MywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.Q1b4XkYwuMzn1aGv3qHVu469hGrgUI8FMSrsru_CgVGxhBKTKsUaKExwRssakLEwcQ0u68OcmNQjBLbwP2SE99f61R0GQxuiyI5m5L1-OhTrbPRYcRYDEFBySmSQMgOFBmPik5JlMcWOz1LtLXzbnCR-epcSrxs8qUZ2_rfpeYaaJavRQuYBJmQo8FgJyPz-LQ2aa-2ileNipyyg7AXxqU0fgnTLSSvHzPqk6O-bSCci53QdY2w6n2vusEUpIea6i5XhIrfr0BkMXy8VIoJQ8RoIjdS-_CpTx-1aixDzOMQd-I-synRJN7-YZKV5E4yupIquNPjQmFFoGF5xGTEelA\"",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"user\": {\n        \"_id\": \"651cf22c1d4f7834e2303a85\",\n        \"full_name\": \"Adam\",\n        \"email\": \"adam#armoush.com\",\n        \"badges\": [],\n        \"friends\": [],\n        \"score\": 0\n    }\n}",
+							"raw": "{\n    \"user\": {\n        \"_id\": \"65651db4f3369512431e5c4a\",\n        \"full_name\": \"Yazan Armoush\",\n        \"email\": \"yazan@gmail.com\",\n        \"badges\": [],\n        \"friends\": [],\n        \"score\": 0,\n        \"province\": \"\",\n        \"household\": 0,\n        \"fuel_efficiency\": 0\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,13 +124,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{LocalBaseURL}}/users/user",
+							"raw": "{{LocalBaseURL}}/users/user/65651db4f3369512431e5c4a",
 							"host": [
 								"{{LocalBaseURL}}"
 							],
 							"path": [
 								"users",
-								"user"
+								"user",
+								"65651db4f3369512431e5c4a"
 							]
 						}
 					},
@@ -135,16 +148,6 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -157,14 +160,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{LocalBaseURL}}/transportation/transportation/655d5c7d123217b52115b046",
+							"raw": "{{LocalBaseURL}}/transportation/transportation/65651db5495a95751815af4e",
 							"host": [
 								"{{LocalBaseURL}}"
 							],
 							"path": [
 								"transportation",
 								"transportation",
-								"655d5c7d123217b52115b046"
+								"65651db5495a95751815af4e"
 							]
 						}
 					},
@@ -207,7 +210,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"start\": \"2023-01-01T00:00:00Z\",\n    \"end\": \"2023-12-01T00:00:00Z\"\n}",
+							"raw": "{\n    \"start\": \"2023-10-01T00:00:00Z\",\n    \"end\": \"2023-12-01T00:00:00Z\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,13 +218,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{LocalBaseURL}}/transportation/get_transportations_entries_for_user_using_data_range",
+							"raw": "{{LocalBaseURL}}/transportation/get_transportation_entries_for_user_using_data_range",
 							"host": [
 								"{{LocalBaseURL}}"
 							],
 							"path": [
 								"transportation",
-								"get_transportations_entries_for_user_using_data_range"
+								"get_transportation_entries_for_user_using_data_range"
 							]
 						}
 					},
@@ -234,7 +237,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"transportation\": {\n        \"_id\": \"655d5c7d123217b52115b046\",\n        \"bus\": 200,\n        \"carbon_emissions\": 0.0,\n        \"date\": \"2023-11-19T00:00:00Z\",\n        \"electric_car\": 4000,\n        \"gasoline_car\": 100,\n        \"motorbike\": 0,\n        \"train\": 0,\n        \"user_id\": \"655151e8875bab2e6811b8b8\"\n    }\n}",
+							"raw": "{\n    \"transportation\": {\n        \"_id\": \"65651db5495a95751815af4e\",\n        \"user_id\": \"65651db4f3369512431e5c4a\",\n        \"bus\": 200,\n        \"train\": 0,\n        \"motorbike\": 0,\n        \"electric_car\": 4000,\n        \"gasoline_car\": 100,\n        \"carbon_emissions\": 1850,\n        \"date\": \"2023-11-26T00:00:00\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -242,18 +245,38 @@
 							}
 						},
 						"url": {
-							"raw": "{{LocalBaseURL}}/transportation/transportation/655d625a1df1b3b87663ba71",
+							"raw": "{{LocalBaseURL}}/transportation/transportation/65651db5495a95751815af4e",
 							"host": [
 								"{{LocalBaseURL}}"
 							],
 							"path": [
 								"transportation",
 								"transportation",
-								"655d625a1df1b3b87663ba71"
+								"65651db5495a95751815af4e"
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -261,21 +284,11 @@
 			"name": "Food",
 			"item": [
 				{
-					"name": "Get Current Food",
+					"name": "Get Food",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -288,35 +301,136 @@
 							}
 						},
 						"url": {
-							"raw": "{{LocalBaseURL}}/food/get_food_metric_for_today/655151e8875bab2e6811b8b8",
+							"raw": "{{LocalBaseURL}}/food/food/6565277a04aaad72e88b010d",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"food",
+								"food",
+								"6565277a04aaad72e88b010d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current Food",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/food/get_food_metric_for_today/",
 							"host": [
 								"{{LocalBaseURL}}"
 							],
 							"path": [
 								"food",
 								"get_food_metric_for_today",
-								"655151e8875bab2e6811b8b8"
+								""
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Food",
+					"name": "Date Range",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"start\": \"2023-10-01T00:00:00Z\",\n    \"end\": \"2023-12-01T00:00:00Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/food/get_food_entries_for_user_using_data_range",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"food",
+								"get_food_entries_for_user_using_data_range"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Transportation",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"food\": {\n        \"_id\": \"6565277a04aaad72e88b010d\",\n        \"user_id\": \"65651db4f3369512431e5c4a\",\n        \"beef\": 0,\n        \"lamb\": 0,\n        \"pork\": 0,\n        \"chicken\": 0,\n        \"fish\": 10,\n        \"cheese\": 0,\n        \"milk\": 0,\n        \"food_waste\": 0,\n        \"carbon_emissions\": 0.0,\n        \"date\": \"2023-11-26T00:00:00\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/food/food/6565277a04aaad72e88b010d",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"food",
+								"food",
+								"6565277a04aaad72e88b010d"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Energy",
+			"item": [
+				{
+					"name": "Get Eenrgy",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -329,37 +443,30 @@
 							}
 						},
 						"url": {
-							"raw": "{{LocalBaseURL}}/food/food/6559599c7228677f5bc26d34",
+							"raw": "{{LocalBaseURL}}/energy/energy/656529e46e7a0fc224b33573",
 							"host": [
 								"{{LocalBaseURL}}"
 							],
 							"path": [
-								"food",
-								"food",
-								"6559599c7228677f5bc26d34"
+								"energy",
+								"energy",
+								"656529e46e7a0fc224b33573"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Update Food",
+					"name": "Get Current Energy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkMGU4NmJkNjQ3NDBjYWQyNDc1NjI4ZGEyZWM0OTZkZjUyYWRiNWQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWF6YW4gQXJtb3VzaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMThLbUhSTDY3d2NHNDZLNDhaVF9RN0RVbExyN25rOHhJQ2s1S0VNZExVRW9xPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2NhcmJvbi10cmFjay1zeXN0ZW0iLCJhdWQiOiJjYXJib24tdHJhY2stc3lzdGVtIiwiYXV0aF90aW1lIjoxNjk4NTMwMzE3LCJ1c2VyX2lkIjoiUkZSbmdJVm1Bd1BHY0pxVFVPalZOeFB4SzVzMSIsInN1YiI6IlJGUm5nSVZtQXdQR2NKcVRVT2pWTnhQeEs1czEiLCJpYXQiOjE2OTg1MzAzMTcsImV4cCI6MTY5ODUzMzkxNywiZW1haWwiOiJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzEyOTg2MDYwMzg2MDUxODQwOCJdLCJlbWFpbCI6WyJ5YXphbi5hcm1vdXNoMUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.D586V3FjImF4P46sjEw1VuwgHXY5VTHPPrQAzC1thWqe5rASSYqxPRtn53xCD8_mxAzNjPu5zmGLmuiW0AL3x8hs4KiB8jhGlcx_z32mfDOBqvhlqgJw6HEsQRj7kziPvD1gnTt0I4xVuculKFSY6gYeyoii6_A6fN4frqoR59qzb4iNDXnHaKovleUB9VWmzG1cLcvzSP1nXSvj8tNIR_e52yTPq9tpAf-hkzs_1dTS3a65canzVOW_F6plnX79TZJ5N9Wvm7669cX8v2qUb-e5gBkMnU2i70jjheacaXVuHx_cb-JIK12VpmrsVfJGSD_uwCfODHf140lfdr_okg",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"food\": {\n        \"_id\": \"6559599c7228677f5bc26d34\",\n        \"beef\": 22,\n        \"carbon_emissions\": 0.0,\n        \"cheese\": 2,\n        \"chicken\": 22,\n        \"date\": {\n            \"$date\": \"2023-11-12T00:00:00Z\"\n        },\n        \"fish\": 22,\n        \"food_waste\": 12,\n        \"lamb\": 11,\n        \"milk\": 22,\n        \"pork\": 12,\n        \"user_id\": \"655151e8875bab2e6811b8b8\"\n    }\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -367,14 +474,68 @@
 							}
 						},
 						"url": {
-							"raw": "{{LocalBaseURL}}/food/food/6559599c7228677f5bc26d34",
+							"raw": "{{LocalBaseURL}}/energy/get_energy_metric_for_today",
 							"host": [
 								"{{LocalBaseURL}}"
 							],
 							"path": [
-								"food",
-								"food",
-								"6559599c7228677f5bc26d34"
+								"energy",
+								"get_energy_metric_for_today"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Date Range",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"start\": \"2023-10-01T00:00:00Z\",\n    \"end\": \"2023-12-01T00:00:00Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/energy/get_energy_entries_for_user_using_data_range",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"energy",
+								"get_energy_entries_for_user_using_data_range"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Energy",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"energy\": {\n        \"_id\": \"6565277a04aaad72e88b010d\",\n        \"user_id\": \"65651db4f3369512431e5c4a\",\n        \"heating_oil\": 0,\n        \"natural_gas\": 0,\n        \"electricity\": 500,\n        \"province\": \"\",\n        \"household\": 0,\n        \"carbon_emissions\": 0.0,\n        \"date\": \"2023-11-26T00:00:00\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LocalBaseURL}}/energy/energy/656529e46e7a0fc224b33573",
+							"host": [
+								"{{LocalBaseURL}}"
+							],
+							"path": [
+								"energy",
+								"energy",
+								"656529e46e7a0fc224b33573"
 							]
 						}
 					},
@@ -408,9 +569,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{LocalBaseURL}}",
+					"raw": "{{LocalBaseURL}}/",
 					"host": [
 						"{{LocalBaseURL}}"
+					],
+					"path": [
+						""
 					]
 				}
 			},
@@ -422,7 +586,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBiYmQyOTllODU2MmU3MmYyZThkN2YwMTliYTdiZjAxMWFlZjU1Y2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2FyYm9uLXRyYWNrLXN5c3RlbSIsImF1ZCI6ImNhcmJvbi10cmFjay1zeXN0ZW0iLCJhdXRoX3RpbWUiOjE3MDA4NDg5NjgsInVzZXJfaWQiOiJ3UFVEaEFiM0Q5ZHpoeDJXa1RBZlBLbnhGSG0xIiwic3ViIjoid1BVRGhBYjNEOWR6aHgyV2tUQWZQS254RkhtMSIsImlhdCI6MTcwMDg0ODk2OCwiZXhwIjoxNzAwODUyNTY4LCJlbWFpbCI6InlhemFuQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ5YXphbkBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.E1XaTAt-BQ6ub7AdOKV_BR8z533NJA-G9DhXI26rffCtZXj55SPpUSYd71t_jVZ2Q8RSZyrKdOkkbW9pwMKw0zUKRCWLpwS5bbWFUBvcX4qhmGiAO6-ZkHYrn9cJiHr6cToT3baPLCzIYuIFzuABjC4w3LZL4C_UQlWhfF2Qois_Qc7-XdNyNJ7e9n0bSlAlM8rOtbkIy0o4T1_9n1rVwM6hiH2ePGWTOjmjcGCSqichttqbYLIhB5NOTrhYXTuTtJtpV_wr2tdi2lDCFoMXGj8DaLVsq4URHJVf_U7JvWKUg50_8wlIZs9c6Px2ypSGIXEYEwUrjtOsIjRlPdPJDA",
+				"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBiYmQyOTllODU2MmU3MmYyZThkN2YwMTliYTdiZjAxMWFlZjU1Y2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2FyYm9uLXRyYWNrLXN5c3RlbSIsImF1ZCI6ImNhcmJvbi10cmFjay1zeXN0ZW0iLCJhdXRoX3RpbWUiOjE3MDExMjc0NTAsInVzZXJfaWQiOiJ3UFVEaEFiM0Q5ZHpoeDJXa1RBZlBLbnhGSG0xIiwic3ViIjoid1BVRGhBYjNEOWR6aHgyV2tUQWZQS254RkhtMSIsImlhdCI6MTcwMTEyNzQ1MCwiZXhwIjoxNzAxMTMxMDUwLCJlbWFpbCI6InlhemFuQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ5YXphbkBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.YcyzOeOgXiurm2W8lw2YwvIL2Pfweezu2ASK_RK3MuVRUw2Z1AXwWTJyDbjioYfaXS2GwurtJ3u-q7TqPlL4MmTwb5G09F7cmbNBvbEBQTtOhK9TmyNlMcGV0Gtkaf3J7xebL4qcwQ9aI_lZ1MGS9tMYn8gwArxIVs8nNPxkSFUicrj_buf3Jan6kNMfVIQOOUg9cqocn3VoxInAI9fjbxyliZ7LDF3rNBzBNsXQoOJ6UlHqEcd_Up2oLGsEm3HnIArtPzn4V_BNcmkaZh2cx28KDUjUPpTVHdWguEPUkA_CFhDTYdts7ReisAQviKTkhIxDkCGsUtllWU0Q4fTNcg",
 				"type": "string"
 			}
 		]

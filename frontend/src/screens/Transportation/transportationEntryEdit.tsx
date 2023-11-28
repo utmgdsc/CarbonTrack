@@ -11,14 +11,14 @@ import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useEffect, useState } from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
-import { type RootStackParamList } from '../components/types';
+import { type RootStackParamList } from '../../components/types';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import Colors from '../../assets/colorConstants';
+import Colors from '../../../assets/colorConstants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
-import { TransportationAPI } from '../APIs/TransportationAPI';
-import { type TransportationEntry } from '../models/Transportation';
+import { TransportationAPI } from '../../APIs/TransportationAPI';
+import { type TransportationEntry } from '../../models/Transportation';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -82,8 +82,8 @@ export default function TransportationEntryEdit(): JSX.Element {
   };
 
   const [loaded] = useFonts({
-    Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
-    Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
+    Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
+    Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
   const navigation = useNavigation<StackNavigation>();
