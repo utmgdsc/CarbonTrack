@@ -1,5 +1,5 @@
 # Python Imports
-from flask import Flask, Response, jsonify, render_template
+from flask import Flask, Response, jsonify
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 

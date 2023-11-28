@@ -1,8 +1,6 @@
 from typing import Optional
-from pprint import pprint
 import firebase_admin
 from firebase_admin import credentials, auth
-from firebase_admin.auth import UserRecord
 
 from models.user import User
 from mongodb_api.carbon_track_db import CarbonTrackDB
