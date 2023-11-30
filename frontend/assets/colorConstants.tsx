@@ -1,6 +1,8 @@
 const Colors = {
   LIGHTFGREEN: '#E0EEC6',
   DARKGREEN: '#243E36',
+  DARKGREEN2: '#224A3E',
+  DARKGREEN3: '#2E5C4E',
   WHITE: '#fff',
   BLACK: '000',
   DARKLIMEGREEN: '#4B8552',
