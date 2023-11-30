@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import type { RootStackParamList } from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 import firebaseService from '../utilities/firebase';
 import Colors from '../../assets/colorConstants';
 import { Formik } from 'formik';
@@ -11,6 +10,11 @@ import FormTextField from '../components/forms/formTextField';
 import { UsersAPI } from '../APIs/UsersAPI';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
+
+
+export interface LoginScreenProps {
+  navigation: StackNavigationProp<RootStackParamList, 'LogIn'>; // Specify the type for the navigation prop
+};
 
 interface ILogInFields {
   email: string;
@@ -21,16 +25,14 @@ const LogInSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-export default function LogInScreen(): JSX.Element {
-  const navigation = useNavigation<StackNavigation>();
-
+export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Element {
   const handleLogIn = async (fields: ILogInFields): Promise<void> => {
     const { email, password } = fields;
     try {
       await firebaseService.signInUser(email, password).then(async () => {
         await UsersAPI.GetLoggedInUser().then((res) => {
           if (res != null) {
-            navigation.navigate('DashBoard');
+            navigation.navigate('MainApp', { screen: 'DashBoard' });
           } else {
             console.warn('User was not logged in: ' + res);
           }
