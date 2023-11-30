@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import * as React from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
@@ -19,27 +18,19 @@ export default function EnergyForum(): JSX.Element {
 
   const navigation = useNavigation<StackNavigation>();
 
-  const [province, setProvince] = useState<string>('');
-  const [numOfPpl, setNumOfPpl] = useState(0);
   const [electricalConsumption, setElectricalConsumption] = useState(0);
   const [heatingOil, setHeatingOil] = useState(0);
   const [naturalGas, setNaturalGas] = useState(0);
 
-  const handleValueChange = (itemValue: string): void => {
-    setProvince(itemValue);
-  };
-
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
     console.log('Survey Responses:', {
-      province,
-      numOfPpl,
       electricalConsumption,
       heatingOil,
       naturalGas,
     });
 
-    navigation.navigate('DashBoard');
+    navigation.navigate('MainApp');
   };
 
   if (!loaded) {
@@ -50,44 +41,6 @@ export default function EnergyForum(): JSX.Element {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <Text style={styles.header}>Calculate your energy consumption:</Text>
-
-        <View style={styles.questionContainer}>
-          <Text style={styles.question}>Which Province do you live in:</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={province}
-              style={styles.picker}
-              onValueChange={handleValueChange}
-            >
-              <Picker.Item label="Ontario" value="Ontario" />
-              <Picker.Item label="Saskatchewan" value="Saskatchewan" />
-              <Picker.Item label="PEI" value="PEI" />
-              <Picker.Item label="Nunavut" value="Nunavut" />
-              <Picker.Item label="Alberta" value="Alberta" />
-              <Picker.Item label="Manitoba" value="Manitoba" />
-              <Picker.Item label="Quebec" value="Quebec" />
-              <Picker.Item label="Newfoundland and Labrador" value="Newfoundland and Labrador" />
-              <Picker.Item label="British Columbia" value="British Columbia" />
-              <Picker.Item label="Nova Scotia" value="Nova Scotia" />
-              <Picker.Item label="Northwest Territories" value="Northwest Territories" />
-              <Picker.Item label="New Brunswick" value="New Brunswick" />
-              <Picker.Item label="Yukon" value="Yukon" />
-              {/* Add more Picker.Item components for additional options */}
-            </Picker>
-          </View>
-        </View>
-
-        <View style={styles.questionContainer}>
-          <Text style={styles.question}>How many people live in your household:</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            placeholder="Input"
-            onChangeText={(text) => {
-              setNumOfPpl(Number(text));
-            }}
-          />
-        </View>
 
         <View style={styles.questionContainer}>
           <Text style={styles.question}>What is your monthly electricity consumption, in kWh:</Text>
@@ -158,15 +111,6 @@ const styles = StyleSheet.create({
   questionContainer: {
     paddingBottom: 30,
   },
-  pickerContainer: {
-    height: 50,
-    width: 250,
-    backgroundColor: Colors.WHITE,
-    borderColor: Colors.GREY,
-    borderRadius: 5,
-    borderWidth: 1,
-  },
-  picker: { height: 50, width: 250 },
   question: {
     fontFamily: 'Montserrat',
     fontSize: 20,

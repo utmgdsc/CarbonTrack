@@ -1,12 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Modal,
-  Linking,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal, Linking } from 'react-native';
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useEffect, useState } from 'react';
@@ -42,7 +34,7 @@ export default function TransportationEntryEdit(): JSX.Element {
   const [bikeTravel, setBikeTravel] = useState(0);
 
   const onSliderValueChange = (value: number, index: number): void => {
-    slidersData[index].initialValue = value
+    slidersData[index].initialValue = value;
     switch (index) {
       case 0:
         setElectricCarTravel(value);
@@ -102,38 +94,62 @@ export default function TransportationEntryEdit(): JSX.Element {
         electric_car: electricCarTravel,
         gasoline_car: gasolineCarTravel,
         carbon_emissions: transportationEntry.carbon_emissions,
-        date: transportationEntry.date
-      }
+        date: transportationEntry.date,
+      };
       void TransportationAPI.updateTransportation(newEntry).then(() => {
         navigation.navigate('TransportationHistory');
-      })
+      });
     }
   };
 
   useEffect(() => {
     if (transportationEntry != null) {
       setSliderData([
-        { id: 1, label: 'Electric Car', minValue: 0, maxValue: 800, initialValue: transportationEntry.electric_car },
-        { id: 2, label: 'Gasoline Car', minValue: 0, maxValue: 800, initialValue: transportationEntry.gasoline_car },
-        { id: 3, label: 'Train', minValue: 0, maxValue: 800, initialValue: transportationEntry.train },
+        {
+          id: 1,
+          label: 'Electric Car',
+          minValue: 0,
+          maxValue: 800,
+          initialValue: transportationEntry.electric_car,
+        },
+        {
+          id: 2,
+          label: 'Gasoline Car',
+          minValue: 0,
+          maxValue: 800,
+          initialValue: transportationEntry.gasoline_car,
+        },
+        {
+          id: 3,
+          label: 'Train',
+          minValue: 0,
+          maxValue: 800,
+          initialValue: transportationEntry.train,
+        },
         { id: 4, label: 'Bus', minValue: 0, maxValue: 800, initialValue: transportationEntry.bus },
-        { id: 5, label: 'Motobike', minValue: 0, maxValue: 800, initialValue: transportationEntry.motorbike },
-      ])
+        {
+          id: 5,
+          label: 'Motobike',
+          minValue: 0,
+          maxValue: 800,
+          initialValue: transportationEntry.motorbike,
+        },
+      ]);
       setElectricCarTravel(transportationEntry.electric_car);
       setGasolineCarTravel(transportationEntry.gasoline_car);
       setBusTravel(transportationEntry.bus);
       setTrainTravel(transportationEntry.train);
       setBikeTravel(transportationEntry.motorbike);
     }
-  }, [transportationEntry])
+  }, [transportationEntry]);
 
   useEffect(() => {
     void TransportationAPI.getTransportationMetricForToday().then((res) => {
       if (res != null) {
-        setTransportationEntry(res)
+        setTransportationEntry(res);
       }
-    })
-  }, [loaded])
+    });
+  }, [loaded]);
 
   if (!loaded || slidersData.length === 0) {
     return <></>;

@@ -13,7 +13,8 @@ export interface RootStackParamList {
   TransportationForum: undefined;
   FoodHistory: undefined;
   TransportationHistory: undefined;
-  [key: string]: { screen: string } | undefined
+  SignUpQuestions: undefined;
+  [key: string]: { screen: string } | undefined;
 }
 
 export interface GoogleSVGType {

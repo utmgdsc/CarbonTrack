@@ -47,31 +47,33 @@ export default function SignUp(): JSX.Element {
   const handleSignUp = async (fields: ISignUpFields): Promise<void> => {
     const { fullName, email, password } = fields;
     try {
-      await firebaseService.createUser(email, password).then(async () => {
-        await UsersAPI.createUser({
-          _id: (new ObjectID()).toHexString() as unknown as ObjectId,
-          full_name: fullName,
-          email,
-          badges: [],
-          friends: [],
-          score: 0,
-          province: '',
-          household: 0,
-          fuel_efficiency: 0
-        }).then((res): void => {
-          console.log(res)
-          if (typeof res === 'string') {
-            // TODO: Can we make a warning on the screen using proper design?
-            console.warn('User was not created: ' + res);
-          } else {
-            console.log('User was created succesfully:', email);
-            navigation.navigate('DashBoard');
-          }
+      await firebaseService
+        .createUser(email, password)
+        .then(async () => {
+          await UsersAPI.createUser({
+            _id: new ObjectID().toHexString() as unknown as ObjectId,
+            full_name: fullName,
+            email,
+            badges: [],
+            friends: [],
+            score: 0,
+            province: '',
+            household: 0,
+            fuel_efficiency: 0,
+          }).then((res): void => {
+            console.log(res);
+            if (typeof res === 'string') {
+              // TODO: Can we make a warning on the screen using proper design?
+              console.warn('User was not created: ' + res);
+            } else {
+              console.log('User was created succesfully:', email);
+              navigation.navigate('SignUpQuestions');
+            }
+          });
+        })
+        .catch((err) => {
+          console.warn('User was not created: ' + err);
         });
-      }).catch((err) => {
-        console.warn('User was not created: ' + err);
-      });
-      
     } catch (error) {
       console.error('Error when creating User:', error);
     }
