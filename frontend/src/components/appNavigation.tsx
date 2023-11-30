@@ -73,7 +73,7 @@ const MainAppTabs = (): JSX.Element => {
             <Ionicons
               name={'home-sharp'}
               size={24}
-              style={{ color: focused ? Colors.LIGHTFGREEN : Colors.WHITE }}
+              style={{ color: (focused as boolean) ? Colors.LIGHTFGREEN : Colors.WHITE }}
             />
           ),
         }}
@@ -88,7 +88,7 @@ const MainAppTabs = (): JSX.Element => {
             <Ionicons
               name={'settings'}
               size={24}
-              style={{ color: focused ? Colors.LIGHTFGREEN : Colors.WHITE }}
+              style={{ color: (focused as boolean) ? Colors.LIGHTFGREEN : Colors.WHITE }}
             />
           ),
         }} />
@@ -99,7 +99,7 @@ const MainAppTabs = (): JSX.Element => {
           headerTintColor: '#fff',
           headerTitleStyle: { fontWeight: 'bold' },
           tabBarIcon: ({ focused }) => (
-            <AntDesign name="form" size={24} color="black" style={{ color: focused ? Colors.LIGHTFGREEN : Colors.WHITE }} />
+            <AntDesign name="form" size={24} color="black" style={{ color: (focused as boolean) ? Colors.LIGHTFGREEN : Colors.WHITE }} />
           ),
         }} />
       <Tab.Screen name="CommunityHub" component={CommunityHub}
@@ -109,7 +109,7 @@ const MainAppTabs = (): JSX.Element => {
           headerTintColor: '#fff',
           headerTitleStyle: { fontWeight: 'bold' },
           tabBarIcon: ({ focused }) => (
-            <Fontisto name="world-o" size={24} color="black" style={{ color: focused ? Colors.LIGHTFGREEN : Colors.WHITE }} />
+            <Fontisto name="world-o" size={24} color="black" style={{ color: (focused as boolean) ? Colors.LIGHTFGREEN : Colors.WHITE }} />
           ),
         }} />
     </Tab.Navigator>
