@@ -10,6 +10,7 @@ import LogInScreen from '../screens/login';
 import SignUpScreen from '../screens/signup';
 import DashBoardScreen from '../screens/dashboard';
 import Forum from '../screens/forum';
+import CommunityHub from '../screens/communityHub';
 import FoodForum from '../screens/Food/foodForum';
 import EnergyForum from '../screens/Energy/energyForum';
 import TransportationForum from '../screens/Transportation/transportationForum';
@@ -22,6 +23,7 @@ import FoodEntryEdit from '../screens/Food/foodEntryEdit';
 import SettingsScreen from '../screens/settings';
 import YourForms from '../screens/yourForms';
 import CommunityHub from '../screens/communityHub';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +50,6 @@ const AppNavigation = (): JSX.Element => {
 
         <Stack.Screen name="EnergyForum" component={EnergyForum} options={{ headerShown: false }} />
         <Stack.Screen name="EnergyEntryEdit" component={EnergyEntryEdit} options={{ headerShown: false }} />
-        <Stack.Screen name="EnergyHistory" component={EnergyHistory} options={{ headerShown: false }} />
       </Stack.Navigator>
   </NavigationContainer>
   );
