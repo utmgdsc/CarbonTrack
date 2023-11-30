@@ -109,16 +109,6 @@ export default function DashBoardScreen(): JSX.Element {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.widgetBoarder}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Settings');
-            }}
-          >
-            <WidgetBox title="Settings" content={"Access User Settings"} />
-          </TouchableOpacity>
-        </View>
-
       </View>
     </View>
   );

@@ -4,6 +4,7 @@ export interface RootStackParamList {
   Home: undefined;
   LogIn: undefined;
   SignUp: undefined;
+  MainApp: { screen: string } | undefined;
   DashBoard: undefined;
   Forum: undefined;
   FoodForum: undefined;
@@ -12,7 +13,7 @@ export interface RootStackParamList {
   TransportationForum: undefined;
   FoodHistory: undefined;
   TransportationHistory: undefined;
-  [key: string]: undefined;
+  [key: string]: { screen: string } | undefined
 }
 
 export interface GoogleSVGType {
