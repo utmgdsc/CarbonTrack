@@ -7,6 +7,7 @@ import LogInScreen from '../screens/login';
 import SignUpScreen from '../screens/signup';
 import DashBoardScreen from '../screens/dashboard';
 import Forum from '../screens/forum';
+import CommunityHub from '../screens/communityHub';
 import FoodForum from '../screens/Food/foodForum';
 import EnergyForum from '../screens/Energy/energyForum';
 import TransportationForum from '../screens/Transportation/transportationForum';
@@ -28,7 +29,8 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="DashBoard" component={DashBoardScreen} />
         <Stack.Screen name="Forum" component={Forum} />
-        
+        <Stack.Screen name="CommunityHub" component={CommunityHub} />
+
         <Stack.Screen name="TransportationForum" component={TransportationForum} />
         <Stack.Screen name="TransportationEntryEdit" component={TransportationEntryEdit} />
         <Stack.Screen name="TransportationHistory" component={TransportationHistory} />

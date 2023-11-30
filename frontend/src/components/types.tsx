@@ -1,4 +1,4 @@
-import { type User } from "../models/User";
+import { type User } from '../models/User';
 
 export interface RootStackParamList {
   Home: undefined;
@@ -7,6 +7,7 @@ export interface RootStackParamList {
   DashBoard: undefined;
   Forum: undefined;
   FoodForum: undefined;
+  CommunityHub: undefined;
   EnergyForum: undefined;
   TransportationForum: undefined;
   FoodHistory: undefined;
@@ -25,6 +26,6 @@ export interface WidgetBoxProps {
 }
 
 export interface profileWidgetBoxProps {
-  photoURL: string
-  user: User
+  photoURL: string;
+  user: User;
 }
