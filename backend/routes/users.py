@@ -39,8 +39,9 @@ def create_user() -> Response:
     try:
         res: dict = request.get_json()['user']
         user = User.from_json(res)
+        user.email = user.email.lower()
 
-        query = {"email": user.email.lower()}
+        query = {"email": user.email}
         item = CarbonTrackDB.users_coll.find_one(query)
         if item is None:
             user = user.to_json()
@@ -48,7 +49,7 @@ def create_user() -> Response:
             user = User.from_json(CarbonTrackDB.users_coll.find_one({"_id": inserted_id})).to_json()
             return jsonify({'user': user})
         else:
-            abort(code=400, description="User Already Exits With Same Email, Please Log In")
+            return jsonify({'error': "User Already Exits With Same Email, Please Log In"})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
 

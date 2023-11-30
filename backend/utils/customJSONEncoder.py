@@ -3,6 +3,8 @@ from bson import ObjectId
 import json
 from flask.json.provider import JSONProvider
 
+from models.abstract_db_model import DB_MODEL
+
 
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -10,6 +12,8 @@ class CustomJSONEncoder(json.JSONEncoder):
             return obj.__str__()
         if isinstance(obj, datetime):
             return obj.isoformat()
+        if isinstance(obj, DB_MODEL):
+            return obj.to_json()
         return super().default(obj)
 
 
