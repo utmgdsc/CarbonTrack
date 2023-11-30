@@ -55,7 +55,7 @@ export default function SignUpQuestions(): JSX.Element {
       fuelType,
     });
 
-    navigation.navigate('TransportationQuestions');
+    navigation.navigate('TransportationForum');
   };
 
   const openLink = async (url: string): Promise<void> => {

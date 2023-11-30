@@ -30,7 +30,7 @@ export default function EnergyForum(): JSX.Element {
       naturalGas,
     });
 
-    navigation.navigate('DashBoard');
+    navigation.navigate('MainApp');
   };
 
   if (!loaded) {
