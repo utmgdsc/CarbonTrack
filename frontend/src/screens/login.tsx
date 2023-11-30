@@ -1,37 +1,46 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import type { RootStackParamList } from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
-import GoogleSVG from '../../assets/toSVG';
 import firebaseService from '../utilities/firebase';
 import Colors from '../../assets/colorConstants';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import FormTextField from '../components/forms/formTextField';
+import { UsersAPI } from '../APIs/UsersAPI';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
-export default function LogInScreen(): JSX.Element {
-  const navigation = useNavigation<StackNavigation>();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export interface LoginScreenProps {
+  navigation: StackNavigationProp<RootStackParamList, 'LogIn'>; // Specify the type for the navigation prop
+};
 
-  const checkInput = (): void => {
-    if (email.trim().length === 0) {
-      alert('Please Enter Valid Email');
-      return;
-    }
-    if (password.trim().length === 0) {
-      alert('Please Enter Password');
-      return;
-    }
-    void handleLogIn();
-  };
+interface ILogInFields {
+  email: string;
+  password: string;
+}
+const LogInSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
 
-  const handleLogIn = async (): Promise<void> => {
+export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Element {
+  const handleLogIn = async (fields: ILogInFields): Promise<void> => {
+    const { email, password } = fields;
     try {
-      await firebaseService.signInUser(email, password);
-      navigation.navigate('DashBoard');
+      await firebaseService.signInUser(email, password).then(async () => {
+        await UsersAPI.GetLoggedInUser().then((res) => {
+          if (res != null) {
+            navigation.navigate('MainApp', { screen: 'DashBoard' });
+          } else {
+            console.warn('User was not logged in: ' + res);
+          }
+        }).catch((err) => {
+          console.warn('User was not logged in: ' + err);
+        });
+      });
+      
     } catch (error) {
       alert('Incorrect Email or password');
     }
@@ -48,88 +57,60 @@ export default function LogInScreen(): JSX.Element {
   }
 
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.headerBox}>
-        <Text style={styles.header}> Log In </Text>
+    <>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        validationSchema={LogInSchema}
+        onSubmit={async (values) => await handleLogIn(values)}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+          <View style={styles.headerContainer}>
+            <View style={styles.headerBox}>
+              <Text style={styles.header}>Log In</Text>
 
-        <View style={styles.textbox}>
-          <Image style={styles.icon} source={require('../../assets/email-icon.png')} />
-          <TextInput
-            placeholder="Email ID"
-            style={styles.textInputBox}
-            onChangeText={(value) => {
-              setEmail(value);
-            }}
-            keyboardType="email-address"
-          />
-        </View>
+              <FormTextField
+                placeholder="Email Address"
+                handleChange={handleChange('email')}
+                handleBlur={handleBlur('email')}
+                value={values.email}
+                touchedValue={touched.email}
+                errorValue={errors.email}
+                secureTextEntry={false}
+              />
 
-        <View style={styles.textbox}>
-          <Image style={styles.icon} source={require('../../assets/lock-icon.png')} />
-          <TextInput
-            placeholder="Password"
-            style={styles.textInputBox}
-            onChangeText={(value) => {
-              setPassword(value);
-            }}
-            secureTextEntry={true}
-          />
-        </View>
+              <FormTextField
+                placeholder="Password"
+                handleChange={handleChange('password')}
+                handleBlur={handleBlur('password')}
+                value={values.password}
+                touchedValue={touched.password}
+                errorValue={errors.password}
+                secureTextEntry={true}
+              />
 
-        <TouchableOpacity style={styles.buttoning} onPress={checkInput}>
-          <Text style={styles.buttoningText}> Log In</Text>
-        </TouchableOpacity>
+              <TouchableOpacity style={styles.buttoning} onPress={() => handleSubmit()}>
+                <Text style={styles.buttoningText}> Log In</Text>
+              </TouchableOpacity>
 
-        <View style={styles.footerContainer}>
-          <Text style={styles.footer}> Don&apos;t have an account? </Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SignUp');
-            }}
-          >
-            <Text style={styles.footerBold}> Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.altContainer}>
-          <View style={styles.altContainerSub} />
-          <View>
-            <Text style={styles.altContainerText}>Or log in with</Text>
+              <View style={styles.footerContainer}>
+                <Text style={styles.footer}> Don&apos;t have an account? </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('SignUp');
+                  }}
+                >
+                  <Text style={styles.footerBold}> Sign Up</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-          <View style={styles.altContainerFloater} />
-        </View>
-
-        <TouchableOpacity onPress={() => {}} style={styles.googleIcon}>
-          <GoogleSVG width={45} height={45} />
-        </TouchableOpacity>
-      </View>
-    </View>
+        )}
+      </Formik>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  altContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: 30,
-  },
-  altContainerFloater: {
-    backgroundColor: Colors.DARKLIMEGREEN,
-    flex: 1,
-    height: 1,
-  },
-  altContainerSub: {
-    backgroundColor: Colors.DARKLIMEGREEN,
-    flex: 1,
-    height: 1,
-  },
-  altContainerText: {
-    color: Colors.DARKLIMEGREEN,
-    fontFamily: 'Montserrat',
-    fontSize: 18,
-    marginHorizontal: 5,
-    textAlign: 'center',
-  },
   buttoning: {
     backgroundColor: Colors.DARKGREEN,
     borderRadius: 10,
@@ -161,10 +142,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  googleIcon: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   header: {
     color: Colors.DARKGREEN,
     fontFamily: 'Montserrat',
@@ -178,21 +155,5 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     justifyContent: 'center',
-  },
-  icon: {
-    height: 24,
-    marginRight: 5,
-    width: 24,
-  },
-  textInputBox: {
-    flex: 1,
-    paddingVertical: 0,
-  },
-  textbox: {
-    borderBottomColor: Colors.GREY,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    marginBottom: 25,
-    paddingBotton: 8,
   },
 });

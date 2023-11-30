@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login with Firebase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #user-container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #user-info {
+            margin-top: 10px;
+        }
+
+        #copy-button {
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+    <script type="module">
+        // Import the necessary Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8d5XfMBK2X4Udf-pD9vWHS1SYeex8Qo4",
+            authDomain: "carbon-track-system.firebaseapp.com",
+            projectId: "carbon-track-system",
+            storageBucket: "carbon-track-system.appspot.com",
+            messagingSenderId: "617921267809",
+            appId: "1:617921267809:web:47601de3a68a0ea29c4220"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        // Get the Firebase Auth instance
+        const auth = getAuth();
+
+        // Function to sign in with Google
+        window.signInWithGoogle = function () {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    // User signed in with Google
+                    displayUserInfo(result.user);
+                })
+                .catch((error) => {
+                    // Handle sign-in errors
+                    console.error(error);
+                });
+        };
+
+        function displayUserInfo(user) {
+            // Create a container for user details
+            const container = document.createElement("div");
+            container.id = "user-container";
+
+            // Create a heading element
+            const heading = document.createElement("h2");
+            heading.textContent = "User Information";
+            container.appendChild(heading);
+
+            // Create a paragraph element for user's name
+            const nameParagraph = document.createElement("p");
+            nameParagraph.id = "user-info";
+            nameParagraph.textContent = `Name: ${user.displayName}`;
+            container.appendChild(nameParagraph);
+
+            // Create a paragraph element for user's email
+            const emailParagraph = document.createElement("p");
+            emailParagraph.id = "user-info";
+            emailParagraph.textContent = `Email: ${user.email}`;
+            container.appendChild(emailParagraph);
+
+            // Create a copy button for the ID Token
+            const copyButton = document.createElement("button");
+            copyButton.id = "copy-button";
+            copyButton.textContent = "Copy Token";
+            copyButton.onclick = function () {
+                // Copy the token to the clipboard
+                navigator.clipboard.writeText(user.accessToken);
+                alert("Token copied to clipboard!");
+            };
+
+            // Append the token and copy button to the container
+            container.appendChild(copyButton);
+
+            // Append the container to the body of the document
+            document.body.appendChild(container);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Login with Firebase</h1>
+    <!-- Add a button to trigger the sign-in -->
+    <button onclick="signInWithGoogle()">Sign in with Google</button>
+</body>
+
+</html>

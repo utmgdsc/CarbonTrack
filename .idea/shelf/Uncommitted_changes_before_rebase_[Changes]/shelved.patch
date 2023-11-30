@@ -1,0 +1,100 @@
+Index: backend/models/user.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"\"\"\nUser Model\n\"\"\"\n\nfrom __future__ import annotations\nimport json\nfrom models.abstract_db_model import DB_MODEL\nfrom bson import ObjectId\nfrom bson import json_util\n\n\nclass User(DB_MODEL):\n    oid: ObjectId\n    full_name: str\n    email: str\n    badges: list[str]\n    friends: list[str]\n    score: int\n\n    def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], score:int) -> None:\n        super().__init__(oid)\n        self.full_name = str(full_name)\n        self.email = str(email)\n        self.badges = badges\n        self.friends = friends\n        self.score = score\n\n    def to_json(self, for_mongodb: bool = False) -> json:\n        res = {\n            '_id': self.oid.__str__(),\n            'full_name': self.full_name,\n            'email': self.email,\n            'badges': self.badges,\n            'friends': self.friends,\n            'score': self.score\n        }\n        if for_mongodb:\n            return res\n        return json.loads(json_util.dumps(res))\n\n    @staticmethod\n    def from_json(doc: json) -> User:\n        return User(\n            oid=ObjectId(doc[\"_id\"]),\n            full_name=doc[\"full_name\"],\n            email=doc[\"email\"],\n            badges=doc[\"badges\"],\n            friends=doc[\"friends\"],\n            score=doc[\"score\"]\n        )\n\n    def __repr__(self) -> str:\n        return f'User ID: {self.oid.__str__()}'\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/models/user.py b/backend/models/user.py
+--- a/backend/models/user.py	(revision d4edc6c19458df589e5752bf1f7086854ea6d375)
++++ b/backend/models/user.py	(date 1700864519074)
+@@ -27,7 +27,7 @@
+ 
+     def to_json(self, for_mongodb: bool = False) -> json:
+         res = {
+-            '_id': self.oid.__str__(),
++            '_id': self.oid,
+             'full_name': self.full_name,
+             'email': self.email,
+             'badges': self.badges,
+Index: backend/models/transportation.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"\"\"\nTransportation Model\n\"\"\"\n\nfrom __future__ import annotations\nfrom typing import Union\nimport json\nfrom datetime import datetime, timezone\nfrom models.abstract_db_model import DB_MODEL\nfrom bson import ObjectId\nfrom bson import json_util\n\n\nclass TransportationEntry(DB_MODEL):\n    oid: ObjectId\n    user_id: ObjectId\n    bus: int\n    train: int\n    motorbike: int\n    electric_car: int\n    gasoline_car: int\n    carbon_emissions: int\n    date: datetime\n\n    def __init__(self, oid: ObjectId, user_id: ObjectId, bus: int, train: int, motorbike: int,\n                 electric_car: int, gasoline_car: int, carbon_emissions: int, date: Union[str, datetime]) -> None:\n        super().__init__(oid)\n        self.user_id = ObjectId(user_id)\n        self.bus = bus\n        self.train = train\n        self.motorbike = motorbike\n        self.electric_car = electric_car\n        self.gasoline_car = gasoline_car\n        self.carbon_emissions = carbon_emissions\n        if isinstance(date, datetime):\n            self.date = date\n        else:\n            self.date = datetime.fromisoformat(date)\n\n    def to_json(self, for_mongodb: bool = False) -> json:\n        res = {\n            '_id': self.oid.__str__(),\n            'user_id': self.user_id.__str__(),\n            'bus': self.bus,\n            'train': self.train,\n            'motorbike': self.motorbike,\n            'electric_car': self.electric_car,\n            'gasoline_car': self.gasoline_car,\n            'carbon_emissions': self.calculate_carbon_emissions(),\n            'date': self.date.__str__()\n        }\n        if for_mongodb:\n            return res\n        return json.loads(json_util.dumps(res))\n\n    @staticmethod\n    def from_json(doc: json) -> TransportationEntry:\n        return TransportationEntry(\n            oid=ObjectId(doc[\"_id\"]),\n            user_id=ObjectId(doc['user_id']),\n            bus=doc[\"bus\"],\n            train=doc[\"train\"],\n            motorbike=doc[\"motorbike\"],\n            electric_car=doc[\"electric_car\"],\n            gasoline_car=doc[\"gasoline_car\"],\n            carbon_emissions=doc[\"carbon_emissions\"],\n            date=doc[\"date\"]\n        )\n\n    def calculate_carbon_emissions(self) -> int:\n        bus_carbon_emissions = self.bus * 0.103\n        train_carbon_emissions = self.train * 0.037\n        motorbike_carbon_emissions = self.motorbike * 0.113\n        electric_car_carbon_emissions = self.electric_car * 0.4\n        gasoline_car_carbon_emissions = self.gasoline_car * 2.3\n        return int(sum([bus_carbon_emissions, train_carbon_emissions, motorbike_carbon_emissions,\n                        electric_car_carbon_emissions, gasoline_car_carbon_emissions]))\n\n    @staticmethod\n    def get_monthly_view(start: datetime, end: datetime,\n                         transportationEntries: list[TransportationEntry]) -> list[dict[str, Union[list[float], str]]]:\n        monthly_data = []\n\n        # Make start date offset-aware (assuming UTC for simplicity)\n        start = start.replace(tzinfo=timezone.utc)\n\n        current_month = start\n        while current_month <= end:\n            # Add the current month to the list\n            monthly_data.append({\n                'month': current_month.strftime('%B'),\n                'year': current_month.strftime('%Y'),\n                'data': [0, 0, 0, 0]\n            })\n\n            # Move to the next month\n            if current_month.month == 12:\n                current_month = datetime(current_month.year + 1, 1, 1, tzinfo=timezone.utc)\n            else:\n                current_month = datetime(current_month.year, current_month.month + 1, 1, tzinfo=timezone.utc)\n\n        for transportation_entry in transportationEntries:\n            for monthly_entry in monthly_data:\n                if transportation_entry.date.strftime('%B') == monthly_entry['month'] \\\n                        and transportation_entry.date.strftime('%Y') == monthly_entry['year']:\n                    if transportation_entry.date.day < 7:\n                        monthly_entry['data'][0] = transportation_entry.calculate_carbon_emissions()\n                    elif transportation_entry.date.day < 14:\n                        monthly_entry['data'][1] = transportation_entry.calculate_carbon_emissions()\n                    elif transportation_entry.date.day < 21:\n                        monthly_entry['data'][2] = transportation_entry.calculate_carbon_emissions()\n                    elif transportation_entry.date.day < 28:\n                        monthly_entry['data'][3] += transportation_entry.calculate_carbon_emissions()\n                    else:  # If a Month has 5 sunday, we add them to the fourth week\n                        monthly_entry['data'][3] += transportation_entry.calculate_carbon_emissions() / 4\n\n        return monthly_data\n\n    def __repr__(self) -> str:\n        return f'Transportation ID: {self.oid.__str__()}'\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/models/transportation.py b/backend/models/transportation.py
+--- a/backend/models/transportation.py	(revision d4edc6c19458df589e5752bf1f7086854ea6d375)
++++ b/backend/models/transportation.py	(date 1700864519080)
+@@ -39,15 +39,15 @@
+ 
+     def to_json(self, for_mongodb: bool = False) -> json:
+         res = {
+-            '_id': self.oid.__str__(),
+-            'user_id': self.user_id.__str__(),
++            '_id': self.oid,
++            'user_id': self.user_id,
+             'bus': self.bus,
+             'train': self.train,
+             'motorbike': self.motorbike,
+             'electric_car': self.electric_car,
+             'gasoline_car': self.gasoline_car,
+             'carbon_emissions': self.calculate_carbon_emissions(),
+-            'date': self.date.__str__()
++            'date': self.date
+         }
+         if for_mongodb:
+             return res
+Index: frontend/src/screens/signup.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/* eslint-disable react-native/no-unused-styles */\nimport * as React from 'react';\nimport { StyleSheet, Text, View, TouchableOpacity } from 'react-native';\nimport { useFonts } from 'expo-font';\nimport { type RootStackParamList } from '../components/types';\nimport { type StackNavigationProp } from '@react-navigation/stack';\nimport { useNavigation } from '@react-navigation/native';\nimport Colors from '../../assets/colorConstants';\nimport firebaseService from '../utilities/firebase';\nimport { createUser } from '../APIs/UsersAPI';\nimport ObjectID from 'bson-objectid';\nimport { Formik } from 'formik';\nimport * as Yup from 'yup';\nimport FormTextField from '../components/forms/formTextField';\n\nexport type StackNavigation = StackNavigationProp<RootStackParamList>;\n\ninterface ISignUpFields {\n  fullName: string;\n  email: string;\n  password: string;\n}\n\nconst SignUpSchema = Yup.object().shape({\n  fullName: Yup.string().required('Full Name is required'),\n  email: Yup.string().email('Invalid email').required('Email is required'),\n  password: Yup.string().required('Password is required'),\n  repeatPassword: Yup.string()\n    .oneOf([Yup.ref('password')], 'Passwords must match')\n    .required('Password confirmation is required'),\n});\n\nexport default function SignUp(): JSX.Element {\n  const navigation = useNavigation<StackNavigation>();\n\n  // TODO: fonts should be loaded at the global level, and not at the component level.\n\n  const [loaded] = useFonts({\n    Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),\n    Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),\n  });\n\n  if (!loaded) {\n    return <></>;\n  }\n  const handleSignUp = async (fields: ISignUpFields): Promise<void> => {\n    const { fullName, email, password } = fields;\n    try {\n      await firebaseService.createUser(email, password);\n      await createUser({\n        _id: new ObjectID(),\n        full_name: fullName,\n        email,\n        badges: [],\n        friends: [],\n        score: 0,\n      });\n      console.log('User was created succesfully:', email);\n      navigation.navigate('DashBoard');\n    } catch (error) {\n      console.error('Error when creating User:', error);\n    }\n  };\n\n  return (\n    <>\n      <Formik\n        initialValues={{ fullName: '', email: '', password: '', repeatPassword: '' }}\n        validationSchema={SignUpSchema}\n        onSubmit={async (values) => await handleSignUp(values)}\n      >\n        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (\n          <View style={styles.headerContainer}>\n            <View style={styles.headerBox}>\n              <Text style={styles.header}>Sign Up</Text>\n\n              <FormTextField\n                placeholder=\"Full Name\"\n                handleChange={handleChange('fullName')}\n                handleBlur={handleBlur('fullName')}\n                value={values.fullName}\n                touchedValue={touched.fullName}\n                errorValue={errors.fullName}\n                secureTextEntry={false}\n              />\n\n              <FormTextField\n                placeholder=\"Email Address\"\n                handleChange={handleChange('email')}\n                handleBlur={handleBlur('email')}\n                value={values.email}\n                touchedValue={touched.email}\n                errorValue={errors.email}\n                secureTextEntry={false}\n              />\n\n              <FormTextField\n                placeholder=\"Password\"\n                handleChange={handleChange('password')}\n                handleBlur={handleBlur('password')}\n                value={values.password}\n                touchedValue={touched.password}\n                errorValue={errors.password}\n                secureTextEntry={true}\n              />\n\n              <FormTextField\n                placeholder=\"Repeat Password\"\n                handleChange={handleChange('repeatPassword')}\n                handleBlur={handleBlur('repeatPassword')}\n                value={values.repeatPassword}\n                touchedValue={touched.repeatPassword}\n                errorValue={errors.repeatPassword}\n                secureTextEntry={true}\n              />\n\n              <TouchableOpacity style={styles.buttoning} onPress={() => handleSubmit()}>\n                <Text style={styles.altContainerText}>Next</Text>\n              </TouchableOpacity>\n            </View>\n          </View>\n        )}\n      </Formik>\n    </>\n  );\n}\n\nconst styles = StyleSheet.create({\n  altContainerText: {\n    color: Colors.WHITE,\n    fontFamily: 'Montserrat',\n    fontSize: 18,\n    marginHorizontal: 5,\n    textAlign: 'center',\n    fontWeight: '700',\n  },\n  buttoning: {\n    backgroundColor: Colors.DARKGREEN,\n    borderRadius: 10,\n    marginBottom: 20,\n    padding: 18,\n  },\n  header: {\n    color: Colors.DARKGREEN,\n    fontFamily: 'Montserrat',\n    fontSize: 30,\n    fontWeight: '700',\n    marginBottom: 30,\n  },\n  headerBox: {\n    paddingHorizontal: 30,\n  },\n  headerContainer: {\n    flex: 1,\n    justifyContent: 'center',\n  },\n});\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/src/screens/signup.tsx b/frontend/src/screens/signup.tsx
+--- a/frontend/src/screens/signup.tsx	(revision d4edc6c19458df589e5752bf1f7086854ea6d375)
++++ b/frontend/src/screens/signup.tsx	(date 1700869428968)
+@@ -7,7 +7,7 @@
+ import { useNavigation } from '@react-navigation/native';
+ import Colors from '../../assets/colorConstants';
+ import firebaseService from '../utilities/firebase';
+-import { createUser } from '../APIs/UsersAPI';
++import { UsersAPI } from '../APIs/UsersAPI';
+ import ObjectID from 'bson-objectid';
+ import { Formik } from 'formik';
+ import * as Yup from 'yup';
+@@ -46,9 +46,13 @@
+   const handleSignUp = async (fields: ISignUpFields): Promise<void> => {
+     const { fullName, email, password } = fields;
+     try {
+-      await firebaseService.createUser(email, password);
+-      await createUser({
+-        _id: new ObjectID(),
++      await firebaseService.createUser(email, password).then((res) => {
++        console.log("res: " + res)
++      }).catch((err): void => {
++        console.log("err: " + err)
++      });
++      await UsersAPI.createUser({
++        _id: (new ObjectID()).toHexString(),
+         full_name: fullName,
+         email,
+         badges: [],
+Index: backend/app.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Python Imports\nfrom flask import Flask, render_template\nfrom flask_cors import CORS\n\n# Imports\nfrom routes.users import users\nfrom routes.transportation import transportation_service\n\n\napp = Flask(__name__)\n\n# Services\napp.register_blueprint(users, url_prefix=\"/users\")\napp.register_blueprint(transportation_service, url_prefix=\"/transportation\")\nCORS(app)\n\n\n@app.route(\"/\")\ndef home() -> str:\n    return 'Carbon Track APP BACKEND API :: UNAUTHORIZED ACCESS'\n\n\n# This is just for testing\n@app.route(\"/google\")\ndef test_google() -> str:\n    return render_template('index.html')\n\n\nif __name__ == '__main__':\n\n    app.run(host='0.0.0.0', port=6050, debug=True)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/app.py b/backend/app.py
+--- a/backend/app.py	(revision d4edc6c19458df589e5752bf1f7086854ea6d375)
++++ b/backend/app.py	(date 1700865005539)
+@@ -28,4 +28,4 @@
+ 
+ if __name__ == '__main__':
+ 
+-    app.run(host='0.0.0.0', port=6050, debug=True)
++    app.run(host='0.0.0.0', port=6050, debug=True, threaded=False)

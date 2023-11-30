@@ -6,7 +6,6 @@ from __future__ import annotations
 import json
 from models.abstract_db_model import DB_MODEL
 from bson import ObjectId
-from bson import json_util
 
 
 class User(DB_MODEL):
@@ -16,27 +15,33 @@ class User(DB_MODEL):
     badges: list[str]
     friends: list[str]
     score: int
+    province: str
+    household: int
+    fuel_efficiency: float
 
-    def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], score:int) -> None:
+    def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], score:int, province:str, household:int, fuel_efficiency: float) -> None:
         super().__init__(oid)
         self.full_name = str(full_name)
         self.email = str(email)
         self.badges = badges
         self.friends = friends
         self.score = score
+        self.province = province
+        self.household = household
+        self.fuel_efficiency = fuel_efficiency
 
-    def to_json(self, for_mongodb: bool = False) -> json:
-        res = {
+    def to_json(self) -> json:
+        return {
             '_id': self.oid,
             'full_name': self.full_name,
             'email': self.email,
             'badges': self.badges,
             'friends': self.friends,
-            'score': self.score
+            'score': self.score,
+            'province': self.province,
+            'household': self.household,
+            'fuel_efficiency': self.fuel_efficiency
         }
-        if for_mongodb:
-            return res
-        return json.loads(json_util.dumps(res))
 
     @staticmethod
     def from_json(doc: json) -> User:
@@ -46,7 +51,10 @@ class User(DB_MODEL):
             email=doc["email"],
             badges=doc["badges"],
             friends=doc["friends"],
-            score=doc["score"]
+            score=doc["score"],
+            province=doc["province"],
+            household=doc["household"],
+            fuel_efficiency=doc["fuel_efficiency"]
         )
 
     def __repr__(self) -> str:

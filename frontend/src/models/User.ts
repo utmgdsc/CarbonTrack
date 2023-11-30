@@ -1,13 +1,16 @@
-import type ObjectID from "bson-objectid";
+import { type ObjectId } from "mongodb";
 
 
 export interface User {
-    _id: ObjectID
+    _id: ObjectId
     full_name: string
     email: string
     badges: string[]
-    friends: ObjectID[]
+    friends: ObjectId[]
     score: number
+    province: string
+    household: number
+    fuel_efficiency: number
 }
 
 

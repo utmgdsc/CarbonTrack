@@ -1,7 +1,7 @@
 """
 DB Model
 
-All class that are storable in the db must inherit from this abstract class
+All classes that are storable in the db must inherit from this abstract class
 """
 from __future__ import annotations
 import json
@@ -15,7 +15,7 @@ class DB_MODEL:
     def __init__(self, oid: ObjectId) -> None:
         self.oid = ObjectId(oid)
 
-    def to_json(self, for_mongodb: bool = False) -> json:
+    def to_json(self) -> json:
         raise NotImplementedError
 
     @staticmethod

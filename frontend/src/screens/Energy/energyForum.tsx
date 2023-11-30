@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import * as React from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
-import { type RootStackParamList } from '../components/types';
+import { type RootStackParamList } from '../../components/types';
 import { useFonts } from 'expo-font';
-import Colors from '../../assets/colorConstants';
+import Colors from '../../../assets/colorConstants';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,8 +12,8 @@ export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function EnergyForum(): JSX.Element {
   const [loaded] = useFonts({
-    Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
-    Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
+    Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
+    Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
   const navigation = useNavigation<StackNavigation>();

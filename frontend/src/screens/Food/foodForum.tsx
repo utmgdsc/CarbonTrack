@@ -1,32 +1,26 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import * as React from 'react';
-import { useState } from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
-import { type RootStackParamList } from '../components/types';
-import { useNavigation } from '@react-navigation/native';
+import { type RootStackParamList } from '../../components/types';
 import { useFonts } from 'expo-font';
-import Colors from '../../assets/colorConstants';
+import Colors from '../../../assets/colorConstants';
+import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import foodSliderData from '../../../assets/foodQuestions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
-export default function TransportationForum(): JSX.Element {
-  interface SliderData {
-    id: number;
-    label: string;
-    minValue: number;
-    maxValue: number;
-    initialValue: number;
-  }
+export default function FoodForum(): JSX.Element {
+  const [loaded] = useFonts({
+    Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
+    Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
+  });
 
-  const slidersData: SliderData[] = [
-    { id: 1, label: 'Car', minValue: 0, maxValue: 800, initialValue: 0 },
-    { id: 2, label: 'Bus', minValue: 0, maxValue: 800, initialValue: 0 },
-    { id: 3, label: 'Train', minValue: 0, maxValue: 800, initialValue: 0 },
-    { id: 4, label: 'Motobike', minValue: 0, maxValue: 800, initialValue: 0 },
-    // Add more slider data as needed
-  ];
+  const navigation = useNavigation<StackNavigation>();
+
+  const slidersData = foodSliderData;
 
   const [sliderValues, setSliderValues] = useState<number[]>(
     slidersData.map((data) => data.initialValue)
@@ -38,44 +32,46 @@ export default function TransportationForum(): JSX.Element {
     setSliderValues(updatedValues);
     switch (index) {
       case 0:
-        setCarTravel(value);
+        setBeefServing(value);
         break;
       case 1:
-        setBusTravel(value);
+        setLambServing(value);
         break;
       case 2:
-        setTrainTravel(value);
+        setPorkServing(value);
         break;
       case 3:
-        setBikeTravel(value);
+        setChickenServing(value);
+        break;
+      case 4:
+        setCheeseServing(value);
         break;
       default:
         break;
     }
   };
 
-  const [loaded] = useFonts({
-    Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
-    Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
-  });
-
-  const navigation = useNavigation<StackNavigation>();
-
-  const [carTravel, setCarTravel] = useState(0);
-  const [busTravel, setBusTravel] = useState(0);
-  const [trainTravel, setTrainTravel] = useState(0);
-  const [bikeTravel, setBikeTravel] = useState(0);
+  const [beefServing, setBeefServing] = useState(0);
+  const [lambServing, setLambServing] = useState(0);
+  const [porkServing, setPorkServing] = useState(0);
+  const [chickenServing, setChickenServing] = useState(0);
+  const [cheeseServing, setCheeseServing] = useState(0);
+  const [milkServing, setMilkServing] = useState(0);
+  const [foodWaste, setFoodWaste] = useState(0);
 
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
     console.log('Survey Responses:', {
-      carTravel,
-      busTravel,
-      trainTravel,
-      bikeTravel,
+      beefServing,
+      lambServing,
+      porkServing,
+      chickenServing,
+      cheeseServing,
+      milkServing,
+      foodWaste,
     });
 
-    navigation.navigate('FoodForum');
+    navigation.navigate('EnergyForum');
   };
 
   if (!loaded) {
@@ -85,22 +81,23 @@ export default function TransportationForum(): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-        <Text style={styles.header}>Calculate your emissions from transportation:</Text>
+        <Text style={styles.header}>Calculate your emissions from food:</Text>
 
         <Text style={styles.header}>
-          On average, how much distance do you travel using the following methods per week:
+          On average, how many servings of the following food do you consume per week (Each serving
+          is 100g):
         </Text>
 
         {slidersData.map((slider, index) => (
           <View style={styles.questionContainer} key={slider.id}>
             <Text style={styles.question}>
-              {slider.label}: {sliderValues[index]} km
+              {slider.label}: {sliderValues[index]} Servings
             </Text>
             <Slider
               style={styles.silder}
               minimumValue={slider.minValue}
               maximumValue={slider.maxValue}
-              step={50}
+              step={1}
               minimumTrackTintColor={Colors.DARKGREEN}
               maximumTrackTintColor={Colors.FILLGREEN}
               thumbTintColor={Colors.WHITE}
@@ -114,6 +111,32 @@ export default function TransportationForum(): JSX.Element {
             {/* You can include additional components related to this slider here */}
           </View>
         ))}
+
+        <View style={styles.questionContainer}>
+          <Text style={styles.question}>How many cups of milk do you drink per week:</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            placeholder="Input"
+            onChangeText={(text) => {
+              setMilkServing(Number(text));
+            }}
+          />
+        </View>
+
+        <View style={styles.questionContainer}>
+          <Text style={styles.question}>
+            On average, how much food waste do you produce, in grams:
+          </Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            placeholder="Input"
+            onChangeText={(text) => {
+              setFoodWaste(Number(text) / 100);
+            }}
+          />
+        </View>
 
         <TouchableOpacity style={styles.buttoning} onPress={handleSurveySubmit}>
           <Text style={styles.buttoningText}>Next</Text>
@@ -157,6 +180,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.DARKGREEN,
     marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: Colors.GREY,
+    padding: 8,
+    margin: 10,
+    width: 200,
+    backgroundColor: Colors.WHITE,
   },
   buttoning: {
     backgroundColor: Colors.DARKGREEN,

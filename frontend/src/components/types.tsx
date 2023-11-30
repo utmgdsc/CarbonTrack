@@ -1,16 +1,20 @@
+import { type User } from '../models/User';
+
 export interface RootStackParamList {
   Home: undefined;
   LogIn: undefined;
   SignUp: undefined;
+  MainApp: { screen: string } | undefined;
   DashBoard: undefined;
   Forum: undefined;
   FoodForum: undefined;
+  CommunityHub: undefined;
   EnergyForum: undefined;
   TransportationForum: undefined;
   FoodHistory: undefined;
   TransportationHistory: undefined;
   SignUpQuestions: undefined;
-  [key: string]: undefined;
+  [key: string]: { screen: string } | undefined;
 }
 
 export interface GoogleSVGType {
@@ -24,8 +28,6 @@ export interface WidgetBoxProps {
 }
 
 export interface profileWidgetBoxProps {
-  pplavatar: string;
-  name: string;
-  rank: string;
-  level: number;
+  photoURL: string;
+  user: User;
 }
