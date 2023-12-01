@@ -26,7 +26,7 @@ CORS(app)
 
 @app.route("/")
 def home() -> Response:
-    return jsonify('Carbon Track APP BACKEND API :: UNAUTHORIZED ACCESS')
+    return jsonify('Carbon Track APP BACKEND API :: If You Can See This Message You Can Reach This API')
 
 
 # Error handler for 400 Bad Request errors
