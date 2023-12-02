@@ -40,7 +40,7 @@
     <script type="module">
         // Import the necessary Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -64,6 +64,35 @@
             signInWithPopup(auth, provider)
                 .then((result) => {
                     // User signed in with Google
+                    displayUserInfo(result.user);
+                })
+                .catch((error) => {
+                    // Handle sign-in errors
+                    console.error(error);
+                });
+        };
+
+        window.signInWithEmailAndPasswordCT = function () {
+            const provider = new GoogleAuthProvider();
+            signInWithEmailAndPassword(auth, provider)
+                .then((result) => {
+                    // User signed in with Google
+                    displayUserInfo(result.user);
+                })
+                .catch((error) => {
+                    // Handle sign-in errors
+                    console.error(error);
+                });
+        };
+
+        // Function to sign in with email and password
+        window.signInWithEmailAndPassword = function () {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((result) => {
+                    // User signed in with email/password
                     displayUserInfo(result.user);
                 })
                 .catch((error) => {
@@ -100,8 +129,9 @@
             copyButton.textContent = "Copy Token";
             copyButton.onclick = function () {
                 // Copy the token to the clipboard
-                navigator.clipboard.writeText(user.accessToken);
-                alert("Token copied to clipboard!");
+                navigator.clipboard.writeText(user.accessToken).then(() => {
+                    alert("Token copied to clipboard!");
+                });
             };
 
             // Append the token and copy button to the container
@@ -115,7 +145,15 @@
 
 <body>
     <h1>Login with Firebase</h1>
-    <!-- Add a button to trigger the sign-in -->
+    <!-- Add input fields for email and password -->
+    <label for="email"></label>
+    <input type="email" id="email" placeholder="Email">
+
+    <label for="password"></label>
+    <input type="password" id="password" placeholder="Password">
+    <!-- Add a button to trigger the email/password sign-in -->
+    <button onclick="signInWithEmailAndPasswordCT()">Sign in with Email/Password</button>
+    <!-- Add a button to trigger the sign-in with Google -->
     <button onclick="signInWithGoogle()">Sign in with Google</button>
 </body>
 
