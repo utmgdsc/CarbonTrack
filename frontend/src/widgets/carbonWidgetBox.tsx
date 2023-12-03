@@ -19,6 +19,7 @@ const CarbonWidgetBox: React.FC<carbonWidgetProps> = ({ carbonUser }) => {
         <View>
             <Text style={styles.header}> Carbon Footprint </Text>
             <Text style={styles.footprint}> getUserFootprint  </Text>
+
         </View>
     </View>
     );
@@ -27,9 +28,9 @@ const CarbonWidgetBox: React.FC<carbonWidgetProps> = ({ carbonUser }) => {
 const styles = StyleSheet.create({
     boxContainer: {
         backgroundColor: Colors.DARKGREEN,
-        borderRadius: 10,
+        borderRadius: 15,
         height: 150,
-        width: 300,
+        width: 325,
         flexDirection: 'column',
         // ios shadow
         shadowColor: Colors.BLACK,

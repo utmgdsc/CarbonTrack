@@ -79,7 +79,7 @@ export default function DashBoardScreen(): JSX.Element {
               <CarbonWidgetBox carbonUser={user} />
             </TouchableOpacity>
           </View>
-          <View style={styles.widgetBoarder}>
+          <View style={styles.profileWidgetContainer}>
               <ChallengesWidget challenges={sampleChallenges}/>
           </View>
       </View>

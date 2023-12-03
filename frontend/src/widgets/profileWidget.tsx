@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../assets/colorConstants';
 import { type profileWidgetBoxProps } from '../components/types';
 import { useFonts } from 'expo-font';
@@ -22,8 +22,13 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ photoURL, user }) =
           <Text style={styles.name}> {user.full_name} </Text>
           <Text style={styles.level}> Level: {getUserLevel(user)} </Text>
           <View style={styles.buttonsContainer}>
-            <Text style={styles.button}> Badges </Text>
-            <Text style={styles.button}> Rank getUserRank </Text>
+            <TouchableOpacity style={styles.button}> 
+              <Text style={styles.buttonText} > Badges </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}> 
+              <Text style={styles.buttonText}> Rank getUserRank </Text>            
+            </TouchableOpacity>
+            
           </View>
         </View>
           
@@ -38,10 +43,10 @@ const styles = StyleSheet.create({
   boxContainer: {
     alignItems: 'center',
     backgroundColor: Colors.DARKGREEN,
-    borderRadius: 10,
+    borderRadius: 15,
     justifyContent: 'center',
-    height: 300,
-    width: '80%',
+    height: 350,
+    width: 325,
     flexDirection: 'column',
     // ios shadow
     shadowColor: Colors.BLACK,
@@ -54,14 +59,16 @@ const styles = StyleSheet.create({
   buttonsContainer:{
     flexDirection: 'row',
     justifyContent: 'center',
-    margin: 20
   },
   button:{
     backgroundColor: Colors.DARKTRANS,
-    color: Colors.WHITE,
     marginHorizontal: 10,
-    padding: 10,
-    borderRadius: 10
+    padding: 15,
+    borderRadius: 10,
+    top: '5%'
+  },
+  buttonText:{
+    color: Colors.WHITE,
   },
   level:{
     fontSize: 16,
