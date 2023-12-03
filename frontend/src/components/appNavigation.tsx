@@ -23,7 +23,7 @@ import FoodEntryEdit from '../screens/Food/foodEntryEdit';
 import SettingsScreen from '../screens/settings';
 import YourForms from '../screens/yourForms';
 import CommunityHub from '../screens/communityHub';
-
+import FootprintDecomp from '../screens/footpringDecomp';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -36,9 +36,18 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="MainApp" component={MainAppTabs} options={{ headerShown: false }} />
-
-        <Stack.Screen name="Forum" component={Forum} options={{ headerShown: false }} />
-
+        <Stack.Screen name="Forum" component={Forum}  />
+        
+        <Stack.Screen name='FootprintDecomp'
+          component={FootprintDecomp}
+          options={{
+            title: 'Your Footprint Decomposition',
+            headerStyle: {
+              backgroundColor: Colors.DARKGREEN,
+            },
+            headerTintColor: Colors.WHITE,
+          }}
+        />
         <Stack.Screen
           name="TransportationForum"
           component={TransportationForum}

@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-import ProfileWidgetBox from '../widgets/profileWidget';
-import CarbonWidgetBox from '../widgets/carbonWidgetBox';
-import ChallengesWidget from '../widgets/challengesWidgetBox';
+import WidgetBox from '../widgets/widgetBox';
 import type { RootStackParamList } from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
@@ -16,16 +14,14 @@ import { type FoodEntry } from '../models/Food';
 import { type EnergyEntry } from '../models/Energy';
 import { FoodAPI } from '../APIs/FoodAPI';
 import { EnergyAPI } from '../APIs/EnergyAPI';
-import sampleChallenges from '../components/sampleData/sampleChllgInput';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
-export default function DashBoardScreen(): JSX.Element {
+export default function FootprintDecomp(): JSX.Element {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
   const [foodEntry, setFoodEntry] = useState<FoodEntry>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
 
-  const [photoURL] = useState<string>("https://cdn.vox-cdn.com/thumbor/osQ-EchVP5I1xQlgtouC48YqzNc=/0x0:1750x941/1200x800/filters:focal(735x331:1015x611)/cdn.vox-cdn.com/uploads/chorus_image/image/53111667/Mewtwo_M01.0.0.png");
 
   const navigation = useNavigation<StackNavigation>();
 
@@ -63,28 +59,39 @@ export default function DashBoardScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.profileWidgetContainer}>
+      <View style={styles.widgetContainer}>
         <View style={styles.widgetBoarder}>
-            <ProfileWidgetBox
-            photoURL={photoURL}
-            user={user}
-            />
-          </View>
-          <View style={styles.widgetBoarder}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('FootprintDecomp');
-              }}
-            >
-              <CarbonWidgetBox carbonUser={user} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.widgetBoarder}>
-              <ChallengesWidget challenges={sampleChallenges}/>
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('TransportationHistory');
+            }}
+          >
+            <WidgetBox title="Transportatin" content={transportationEntry.carbon_emissions.toString()} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.widgetBoarder}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('FoodHistory');
+            }}
+          >
+            <WidgetBox title="Food" content={foodEntry.carbon_emissions.toString()} />
+          </TouchableOpacity>
+        </View>
       </View>
-    
- 
+
+      <View style={styles.widgetContainer}>
+        <View style={styles.widgetBoarder}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('EnergyHistory');
+            }}
+          >
+            <WidgetBox title="Energy" content={energyEntry.carbon_emissions.toString()} />
+          </TouchableOpacity>
+        </View>
+      </View>
 
     </ScrollView>
   );
@@ -95,9 +102,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.LIGHTFGREEN,
     flexGrow: 1,
   },
-  profileWidgetContainer: {
-    alignItems: 'center', 
-    marginHorizontal: 10
+  widgetContainer: {
+    flexDirection: 'row',
+    alignContent: 'center',
+    justifyContent: 'center'
   },
   widgetBoarder: {
     padding: 10,

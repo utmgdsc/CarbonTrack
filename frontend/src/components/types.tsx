@@ -31,3 +31,16 @@ export interface profileWidgetBoxProps {
   photoURL: string;
   user: User;
 }
+
+export interface carbonWidgetProps {
+  carbonUser: User;
+}
+
+export interface challenge {
+  id: number;
+  title: string;
+  description: string;
+}
+export interface challengesProps {
+  challenges: challenge[];
+}

@@ -18,11 +18,18 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ photoURL, user }) =
   return (
     <View style={styles.boxContainer}>
         <Image source={{ uri: photoURL }} style={styles.profilePicture} />
-        <View>
+        <View style={styles.nameBox}>
           <Text style={styles.name}> {user.full_name} </Text>
-          <Text style={styles.level}> Email: {user.email} </Text>
           <Text style={styles.level}> Level: {getUserLevel(user)} </Text>
+          <View style={styles.buttonsContainer}>
+            <Text style={styles.button}> Badges </Text>
+            <Text style={styles.button}> Rank getUserRank </Text>
+          </View>
         </View>
+          
+          
+          
+          
     </View>
   );
 };
@@ -34,25 +41,46 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     height: 300,
-    width: 300,
+    width: '80%',
     flexDirection: 'column',
+    // ios shadow
+    shadowColor: Colors.BLACK,
+    shadowOffset: { width: 2, height: 4 },
+    shadowOpacity: 0.6,
+    shadowRadius: 15,
+    // andriod shadow
+    elevation: 5,
+  },
+  buttonsContainer:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: 20
+  },
+  button:{
+    backgroundColor: Colors.DARKTRANS,
+    color: Colors.WHITE,
+    marginHorizontal: 10,
+    padding: 10,
+    borderRadius: 10
   },
   level:{
-    color: Colors.WHITE,
     fontSize: 16,
-    flex: 1,
-    },
+    color: Colors.WHITE
+  },
   name: {
-    flex: 1,
-    fontSize: 16,
+    fontSize: 20,
     color: Colors.WHITE,
     fontWeight: '700',
+  },
+  nameBox: {
     top: '20%',
+    flex: 1,
+    alignItems: 'center'
   },
   profilePicture: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     alignItems: 'flex-start',
     top: '15%',
 
