@@ -45,19 +45,19 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     challengeContainer: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.WHITE,
-    backgroundColor: Colors.DARKGREEN2, 
-    borderRadius: 10,
-    },
+        padding: 10,
+        borderBottomWidth: 1,
+        backgroundColor: Colors.DARKGREEN2, 
+        borderRadius: 10,
+        margin: 5
+        },
     challengeTitle: {
-    fontSize: 16,
-    color: Colors.WHITE,
+        fontSize: 16,
+        color: Colors.WHITE,
     },
     challengeDescription: {
-    marginTop: 5,
-    color: Colors.BLACK
+        marginTop: 5,
+        color: Colors.BLACK
     },
     header: {
         fontSize: 18, 
