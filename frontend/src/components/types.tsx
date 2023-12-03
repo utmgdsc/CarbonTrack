@@ -44,9 +44,3 @@ export interface challenge {
 export interface challengesProps {
   challenges: challenge[];
 }
-
-export interface CircularProgressProps {
-  progress: number
-  size?: number
-  strokeWidth?: number
-}

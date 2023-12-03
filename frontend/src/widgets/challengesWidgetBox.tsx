@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import Colors from '../../assets/colorConstants';
-import { type challengesProps } from '../components/types';
+import { type challengesProps, type RootStackParamList } from '../components/types';
 import { useFonts } from 'expo-font';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+
+export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
     const [loaded] = useFonts({
@@ -12,7 +16,7 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
 
     const [expandedChallenge, setExpandedChallenge] = useState<number | null>(null);
     const containerHeight = useRef(new Animated.Value(0)).current;
-
+    const navigation = useNavigation<StackNavigation>();
     const handleChallengePress = (challengeId: number): void => {
         setExpandedChallenge((prev) => (prev === challengeId ? null : challengeId));
     };
@@ -51,6 +55,9 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
             </View>
         ))}
         </View>
+        <TouchableOpacity onPress={()=> navigation.navigate('CommunityHub')}>
+            <Text style={styles.viewMore}> View More </Text>
+        </TouchableOpacity>
     </Animated.View>
     );
     };
@@ -109,6 +116,13 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
         zIndex: 1,
         marginBottom: 10
     },
+    viewMore:{
+        color: Colors.WHITE,
+        textAlign: 'right',
+        marginHorizontal: 20,
+        marginBottom: 5,
+
+    }
     });
 
 export default ChallengesWidget;

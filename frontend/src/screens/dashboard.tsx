@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
+
 import ProfileWidgetBox from '../widgets/profileWidget';
 import CarbonWidgetBox from '../widgets/carbonWidgetBox';
 import ChallengesWidget from '../widgets/challengesWidgetBox';
+
 import type { RootStackParamList } from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+
 import { type User } from '../models/User';
 import { UsersAPI } from '../APIs/UsersAPI';
 import { type TransportationEntry } from '../models/Transportation';
