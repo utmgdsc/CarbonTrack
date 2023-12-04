@@ -13,6 +13,7 @@ const Colors = {
   TRANSGREEN: '#366959',
   BLACKTRANS: '#000000aa',
   BLUE: 'blue',
+  TEAL: '#6bcfca'
 };
 
 export default Colors;

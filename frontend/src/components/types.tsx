@@ -44,3 +44,7 @@ export interface challenge {
 export interface challengesProps {
   challenges: challenge[];
 }
+
+export interface ExpProgressBarProps {
+  thisUser: User,
+}

@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../assets/colorConstants';
 import { type profileWidgetBoxProps } from '../components/types';
 import { useFonts } from 'expo-font';
-import { getUserLevel } from '../models/User';
+import ExpProgressBar from '../components/expProgressBar';
 
 const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ photoURL, user }) => {
   const [loaded] = useFonts({
@@ -20,7 +20,9 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ photoURL, user }) =
         <Image source={{ uri: photoURL }} style={styles.profilePicture} />
         <View style={styles.nameBox}>
           <Text style={styles.name}> {user.full_name} </Text>
-          <Text style={styles.level}> Level: {getUserLevel(user)} </Text>
+          <View style={styles.progressBar}>
+            <ExpProgressBar thisUser={user}/>
+          </View>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity style={styles.button}> 
               <Text style={styles.buttonText} > Badges </Text>
@@ -70,10 +72,6 @@ const styles = StyleSheet.create({
   buttonText:{
     color: Colors.WHITE,
   },
-  level:{
-    fontSize: 16,
-    color: Colors.WHITE
-  },
   name: {
     fontSize: 20,
     color: Colors.WHITE,
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
   },
   nameBox: {
     top: '20%',
-    flex: 1,
+    flex: 2,
     alignItems: 'center'
   },
   profilePicture: {
@@ -90,8 +88,10 @@ const styles = StyleSheet.create({
     borderRadius: 45,
     alignItems: 'flex-start',
     top: '15%',
-
   },
+  progressBar:{
+  }
+
 });
 
 export default ProfileWidgetBox;
