@@ -3,7 +3,7 @@ from datetime import datetime
 import flask
 from bson import ObjectId
 from flask import Blueprint, Response, abort, jsonify, request
-from models.energy import EnergyEntry
+from models.energy import EnergyEntry, EnergyEntryRecommendation
 from models.user import User
 from mongodb_api.carbon_track_db import CarbonTrackDB
 from routes import carbon_auth
@@ -94,5 +94,22 @@ def update_energy(oid: str) -> Response:
         item = CarbonTrackDB.energy_coll.find_one(query)
         item = EnergyEntry.from_json(item).to_json()
         return jsonify({'energy': item})
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
+
+@energy_service.route("/get_energy_recommendation_for_today", methods=['GET'])
+@carbon_auth.auth.login_required
+def get_energy_recommendation_for_today() -> Response:
+    try:
+        user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
+        query = {"user_id": ObjectId(user.oid), "date": weekly_metric_reset(datetime.now())}
+        item = CarbonTrackDB.energy_coll.find_one(query)
+        if item is None:
+            create_energy(ObjectId(user.oid))
+            return get_energy_metric_for_today()
+        else:
+            item = EnergyEntry.from_json(item)
+            energy_recommendation = EnergyEntryRecommendation.from_energy_entry(item).to_json()
+            return jsonify({'energy_recommendation': energy_recommendation})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
