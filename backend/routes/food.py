@@ -68,7 +68,7 @@ def get_food_metric_for_today() -> Response:
         abort(code=400, description=f"{e}")
 
 
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def create_food(user_id: ObjectId) -> Response:
     try:
         food = FoodEntry(
@@ -83,7 +83,7 @@ def create_food(user_id: ObjectId) -> Response:
 
 
 @food_service.route("/food/<oid>", methods=["PATCH"])
-#@carbon_auth.auth.login_required
+@carbon_auth.auth.login_required
 def update_food(oid: str) -> Response:
     try:
         query = {"_id": ObjectId(oid)}
@@ -99,15 +99,15 @@ def update_food(oid: str) -> Response:
         abort(code=400, description=f"{e}")
 
 
-@food_service.route("/get_food_recommendation_for_today/<user_id>", methods=['GET'])
-#@carbon_auth.auth.login_required
-def get_food_recommendation_for_today(user_id:str) -> Response:
+@food_service.route("/get_food_recommendation_for_today", methods=['GET'])
+@carbon_auth.auth.login_required
+def get_food_recommendation_for_today() -> Response:
     try:
-        #user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
-        query = {"user_id": ObjectId(user_id), "date": weekly_metric_reset(datetime.now())}
+        user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
+        query = {"user_id": ObjectId(user.oid), "date": weekly_metric_reset(datetime.now())}
         item = CarbonTrackDB.food_coll.find_one(query)
         if item is None:
-            create_food(ObjectId(user_id))
+            create_food(ObjectId(user.oid))
             return get_food_metric_for_today()
         else:
             item = FoodEntry.from_json(item)
