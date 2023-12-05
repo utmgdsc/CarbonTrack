@@ -2,13 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../assets/colorConstants';
 import { useFonts } from 'expo-font';
-import {type RootStackParamList, type settingsPageProps} from '../components/types';
+import {type RootStackParamList} from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
-// const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
 
-export default function SettingsScreen({ theUser }: settingsPageProps): JSX.Element {
+export default function SettingsScreen(): JSX.Element {
 
   const navigation = useNavigation<StackNavigation>();
 

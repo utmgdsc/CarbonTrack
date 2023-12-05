@@ -6,10 +6,10 @@ import {
   signOut,
   initializeAuth,
   getReactNativePersistence,
+  updateProfile
 } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-
-
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA8d5XfMBK2X4Udf-pD9vWHS1SYeex8Qo4',
@@ -23,6 +23,7 @@ const app = initializeApp(firebaseConfig);
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 });
+const storage = getStorage(app);
 
 const firebaseService = {
   getFirebaseUser: async () => {
@@ -47,6 +48,36 @@ const firebaseService = {
 
   signOutUser: async () => {
     await signOut(auth);
+  },
+
+  uploadProfilePicture: async (userId: string, imageUri: string): Promise<void> => {
+    const storagePath = `profilePictures/${userId}/profilePicture.jpg`; 
+    const profilePictureRef = storageRef(storage, storagePath);
+
+    try {
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+
+      await uploadBytes(profilePictureRef, blob);
+
+      const downloadURL = await getDownloadURL(profilePictureRef);
+
+      const user = getAuth().currentUser;
+      if (user != null) {
+        await updateProfile(user, { photoURL: downloadURL });
+      }
+    } catch (error) {
+      console.error('Error occurred while uploading profile picture:', error);
+    }
+  },
+  getProfilePicture: async (): Promise<string | null> => {
+    const user = getAuth().currentUser;
+
+    if (user?.photoURL != null) {
+      return user.photoURL;
+    }
+
+    return null;
   },
 
 };

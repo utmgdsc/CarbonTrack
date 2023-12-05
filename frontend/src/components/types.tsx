@@ -48,14 +48,4 @@ export interface ExpProgressBarProps {
   thisUser: User,
 }
 
-export interface settingsPageProps {
-  theUser?: User,
-}
-export interface editProfileProps {
-  theUser?: User,
-}
-export interface updatePasswordProps {
-  theUser?: User,
-}
-
 

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../assets/colorConstants';
 import { type profileWidgetBoxProps } from '../components/types';
 import { useFonts } from 'expo-font';
 import ExpProgressBar from '../components/expProgressBar';
+import firebaseService from '../utilities/firebase';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
   const [loaded] = useFonts({
@@ -11,13 +13,35 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+
+  const fetchProfilePicture = useCallback(async () => {
+    try {
+      const picture = await firebaseService.getProfilePicture();
+      setProfilePicture(picture);
+    } catch (error) {
+      console.error('Error fetching profile picture:', error);
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      void fetchProfilePicture();
+    }, [fetchProfilePicture])
+  );
+
+  if (!loaded) {
+    return <></>;
+  }
+
+
   if (!loaded) {
     return <></>;
   }
 
   return (
     <View style={styles.boxContainer}>
-        <Image source={{ uri: user.photoURL }} style={styles.profilePicture} />
+        <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
         <View style={styles.nameBox}>
           <Text style={styles.name}> {user.full_name} </Text>
           <View style={styles.progressBar}>
@@ -33,9 +57,6 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
             
           </View>
         </View>
-          
-          
-          
           
     </View>
   );
@@ -83,9 +104,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   profilePicture: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     alignItems: 'flex-start',
     top: '15%',
     backgroundColor: Colors.TRANSGREENBACK,

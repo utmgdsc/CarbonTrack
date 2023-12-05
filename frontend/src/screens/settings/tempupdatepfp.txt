@@ -1,0 +1,58 @@
+// export default function UpdateProfileScreen(): JSX.Element {
+//   const [loaded] = useFonts({
+//     Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
+//     Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
+//   });
+
+//   const [userid, setUserid] = useState<string>('');
+//   const [photoURL, setPhotoURL] = useState<string | null>(null);
+
+//   const navigation = useNavigation<StackNavigation>();
+
+//   useEffect(() => {
+//     const fetchUserData = async (): Promise<void> => {
+//       const user = await firebaseService.getFirebaseUser();
+//       setUserid(user?.uid ?? '');
+//     };
+
+//     void fetchUserData();
+//   }, []);
+
+
+//   const handleProfilePictureUpload = async (): Promise<void> => {
+//     try {
+//       const result: ImagePickerResult = await launchImageLibraryAsync({
+//         mediaTypes: MediaTypeOptions.Images,
+//         allowsEditing: true,
+//         aspect: [1, 1],
+//         quality: 1,
+//       });
+
+//       if (!result.canceled) {
+//         await firebaseService.uploadProfilePicture(userid, result.assets[0].uri);
+//         setPhotoURL(result.assets[0].uri);
+        
+        
+//       }
+//     } catch (error) {
+//       console.error('Error occurred while selecting profile picture:', error);
+//     }
+//   };
+
+//   if (!loaded) {
+//     return <></>;
+//   }
+
+/// profile widget
+
+  // const [profilePicture, setProfilePicture] = useState<string | null>(null);
+
+  // useEffect(() => {
+  //   const fetchProfilePicture = async (): Promise<void> => {
+  //     const picture = await firebaseService.getProfilePicture();
+  //     setProfilePicture(picture);
+  //   };
+
+  //   void fetchProfilePicture();
+  // }, []); 
+

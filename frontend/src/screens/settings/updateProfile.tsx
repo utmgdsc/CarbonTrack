@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Colors from '../../../assets/colorConstants';
 import type { RootStackParamList } from '../../components/types';
@@ -6,24 +6,53 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
+import firebaseService from '../../utilities/firebase';
+import { launchImageLibraryAsync, type ImagePickerResult, MediaTypeOptions, } from 'expo-image-picker';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
-
 export default function UpdateProfileScreen(): JSX.Element {
+  const navigation = useNavigation<StackNavigation>();
   const [loaded] = useFonts({
     Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
+  const [userid, setUserid] = useState<string>('');
+  const [photoURL, setPhotoURL] = useState<string | null>(null);
+  const [rerenderKey, setRerenderKey] = useState<number>(0);
 
-  const [photoURL] = useState<string>("https://cdn.vox-cdn.com/thumbor/osQ-EchVP5I1xQlgtouC48YqzNc=/0x0:1750x941/1200x800/filters:focal(735x331:1015x611)/cdn.vox-cdn.com/uploads/chorus_image/image/53111667/Mewtwo_M01.0.0.png");
+  useEffect(() => {
+    const fetchUserData = async (): Promise<void> => {
+      const user = await firebaseService.getFirebaseUser();
+      setUserid(user?.uid ?? '');
+    };
 
+    void fetchUserData();
+  }, [rerenderKey]); 
 
-  const navigation = useNavigation<StackNavigation>();
+  const handleProfilePictureUpload = async (): Promise<void> => {
+    try {
+      const result: ImagePickerResult = await launchImageLibraryAsync({
+        mediaTypes: MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+      if (!result.canceled) {
+        await firebaseService.uploadProfilePicture(userid, result.assets[0].uri);
+        setPhotoURL(result.assets[0].uri);
+        setRerenderKey((prevKey) => prevKey + 1);
+      }
+    } catch (error) {
+      console.error('Error occurred while selecting profile picture:', error);
+    }
+  };
 
   if (!loaded) {
     return <></>;
   }
+
+
 
   return (
     <ScrollView style={styles.container}>
@@ -39,7 +68,7 @@ export default function UpdateProfileScreen(): JSX.Element {
         <View>
           <Image source={{ uri: photoURL }} style={styles.profilePicture} />
           <View style={styles.semiCircle}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleProfilePictureUpload}>
               <Text style={styles.editPhotoText}> Edit Photo </Text>
             </TouchableOpacity>
             
@@ -49,14 +78,12 @@ export default function UpdateProfileScreen(): JSX.Element {
       </View>
 
       <View style={styles.infoContainer}>
-        {/* handle updating w/ formik */}
         
       
       </View>
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
