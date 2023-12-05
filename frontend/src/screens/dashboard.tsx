@@ -28,7 +28,6 @@ export default function DashBoardScreen(): JSX.Element {
   const [foodEntry, setFoodEntry] = useState<FoodEntry>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
 
-  const [photoURL] = useState<string>("https://cdn.vox-cdn.com/thumbor/osQ-EchVP5I1xQlgtouC48YqzNc=/0x0:1750x941/1200x800/filters:focal(735x331:1015x611)/cdn.vox-cdn.com/uploads/chorus_image/image/53111667/Mewtwo_M01.0.0.png");
 
   const navigation = useNavigation<StackNavigation>();
 
@@ -69,7 +68,6 @@ export default function DashBoardScreen(): JSX.Element {
       <View style={styles.profileWidgetContainer}>
         <View style={styles.widgetBoarder}>
             <ProfileWidgetBox
-            photoURL={photoURL}
             user={user}
             />
           </View>

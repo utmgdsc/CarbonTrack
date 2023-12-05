@@ -60,6 +60,7 @@ export default function SignUp(): JSX.Element {
             province: '',
             household: 0,
             fuel_efficiency: 0,
+            photoURL: ''
           }).then((res): void => {
             console.log(res);
             if (typeof res === 'string') {

@@ -11,6 +11,7 @@ export interface User {
     province: string
     household: number
     fuel_efficiency: number
+    photoURL: string;
 }
 
 

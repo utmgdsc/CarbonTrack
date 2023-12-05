@@ -5,9 +5,11 @@ import {
   signInWithEmailAndPassword,
   signOut,
   initializeAuth,
-  getReactNativePersistence
+  getReactNativePersistence,
 } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA8d5XfMBK2X4Udf-pD9vWHS1SYeex8Qo4',
@@ -46,6 +48,7 @@ const firebaseService = {
   signOutUser: async () => {
     await signOut(auth);
   },
+
 };
 
 export default firebaseService;

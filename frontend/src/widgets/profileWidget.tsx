@@ -5,7 +5,7 @@ import { type profileWidgetBoxProps } from '../components/types';
 import { useFonts } from 'expo-font';
 import ExpProgressBar from '../components/expProgressBar';
 
-const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ photoURL, user }) => {
+const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
@@ -17,7 +17,7 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ photoURL, user }) =
 
   return (
     <View style={styles.boxContainer}>
-        <Image source={{ uri: photoURL }} style={styles.profilePicture} />
+        <Image source={{ uri: user.photoURL }} style={styles.profilePicture} />
         <View style={styles.nameBox}>
           <Text style={styles.name}> {user.full_name} </Text>
           <View style={styles.progressBar}>
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button:{
-    backgroundColor: Colors.DARKTRANS,
+    backgroundColor: Colors.TRANSGREENBACK,
     marginHorizontal: 10,
     padding: 15,
     borderRadius: 10,
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 45,
     alignItems: 'flex-start',
     top: '15%',
+    backgroundColor: Colors.TRANSGREENBACK,
   },
   progressBar:{
   }
