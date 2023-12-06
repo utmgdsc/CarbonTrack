@@ -73,20 +73,6 @@
         };
 
         window.signInWithEmailAndPasswordCT = function () {
-            const provider = new GoogleAuthProvider();
-            signInWithEmailAndPassword(auth, provider)
-                .then((result) => {
-                    // User signed in with Google
-                    displayUserInfo(result.user);
-                })
-                .catch((error) => {
-                    // Handle sign-in errors
-                    console.error(error);
-                });
-        };
-
-        // Function to sign in with email and password
-        window.signInWithEmailAndPassword = function () {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
@@ -149,12 +135,22 @@
     <label for="email"></label>
     <input type="email" id="email" placeholder="Email">
 
+    <br/>
+
     <label for="password"></label>
     <input type="password" id="password" placeholder="Password">
+
+    <br/>
+
     <!-- Add a button to trigger the email/password sign-in -->
     <button onclick="signInWithEmailAndPasswordCT()">Sign in with Email/Password</button>
+
+    <br/><br/><br/><br/>
     <!-- Add a button to trigger the sign-in with Google -->
     <button onclick="signInWithGoogle()">Sign in with Google</button>
+    <br/>
+    <br/>
+
 </body>
 
 </html>

@@ -14,6 +14,13 @@ export interface User {
 }
 
 
+export interface TopUsers {
+    top_monthly_users: User[]
+    top_yearly_users: User[]
+    top_overall_users: User[]
+}
+
+
 export function getUserLevel(user: User): number {
     if (user.score < 250) {
         return 1;

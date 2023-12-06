@@ -6,14 +6,13 @@ from firebase_admin import credentials, auth
 from models.user import User
 from mongodb_api.carbon_track_db import CarbonTrackDB
 
-cred = credentials.Certificate("firebase.json")
+cred = credentials.Certificate("secrets.json")
 APP = firebase_admin.initialize_app(cred)
 
 
 class FirebaseAPI:
     @staticmethod
     def verify_google_token(id_token: str) -> Optional[dict]:
-        print(id_token)
         return auth.verify_id_token(
             id_token=id_token, check_revoked=True
         )

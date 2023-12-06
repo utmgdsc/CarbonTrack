@@ -26,6 +26,19 @@ export const UsersAPI = {
       return undefined;
     }
   },
+
+  getTopUsers: async (count: number)=> {
+    try {
+      const res = await FLASK_HTTPS.post(routeName + '/get_top_users', {
+        count,
+      });
+      return res.data.top_users as User;
+    } catch (error) {
+      console.error('Error fetching user from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
+  },
   
   getUserByEmail: async (email: string)=> {
     try {
