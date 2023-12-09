@@ -32,7 +32,8 @@ export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Eleme
       await firebaseService.signInUser(email, password).then(async () => {
         await UsersAPI.GetLoggedInUser().then((res) => {
           if (res != null) {
-            navigation.navigate('MainApp', { screen: 'DashBoard' });
+            // navigation.navigate('MainApp', { screen: 'DashBoard' });
+            navigation.navigate('SignUpQuestions');
           } else {
             console.warn('User was not logged in: ' + res);
           }

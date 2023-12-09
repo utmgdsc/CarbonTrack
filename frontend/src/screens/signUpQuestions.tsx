@@ -8,7 +8,6 @@ import {
   Modal,
   Linking,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import * as React from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../components/types';
@@ -17,9 +16,10 @@ import Colors from '../../assets/colorConstants';
 import { useState } from 'react';
 import { CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import transportationQuestions from '../../assets/questions';
+
+import Dropdown from '../components/dropDown';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -42,12 +42,12 @@ export default function SignUpQuestions(): JSX.Element {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleValueChange = (itemValue: string): void => {
-    setProvince(itemValue);
+  const provinces = ['British Columbia', 'Alberta', 'Manitoba', 'Sasketchewan', 'Ontario', 'Quebec', 'Newfoundland and Labrador', 'Prince Edward Island', 'New Brunswick', 'Nova Scotia'];
+  const handleDropdownChange = (value: string): void => {
+    setProvince(value);
+    console.log('Selected value:', province);
   };
-
   const handleSurveySubmit = (): void => {
-    // Process survey responses, e.g., send them to a server
     console.log('Survey Responses:', {
       province,
       numOfPpl,
@@ -80,155 +80,110 @@ export default function SignUpQuestions(): JSX.Element {
     updatedResponses[questionId] = data[questionId].options[optionIndex];
     setResponses(updatedResponses);
   };
+  
 
   if (!loaded) {
     return <></>;
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollContainer}>
-        <View style={styles.questionContainer}>
-          <Text style={styles.question}>Province:</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={province}
-              style={styles.picker}
-              onValueChange={handleValueChange}
-            >
-              <Picker.Item label="Ontario" value="Ontario" />
-              <Picker.Item label="Saskatchewan" value="Saskatchewan" />
-              <Picker.Item label="PEI" value="PEI" />
-              <Picker.Item label="Nunavut" value="Nunavut" />
-              <Picker.Item label="Alberta" value="Alberta" />
-              <Picker.Item label="Manitoba" value="Manitoba" />
-              <Picker.Item label="Quebec" value="Quebec" />
-              <Picker.Item label="Newfoundland and Labrador" value="Newfoundland and Labrador" />
-              <Picker.Item label="British Columbia" value="British Columbia" />
-              <Picker.Item label="Nova Scotia" value="Nova Scotia" />
-              <Picker.Item label="Northwest Territories" value="Northwest Territories" />
-              <Picker.Item label="New Brunswick" value="New Brunswick" />
-              <Picker.Item label="Yukon" value="Yukon" />
-              {/* Add more Picker.Item components for additional options */}
-            </Picker>
-          </View>
+    <ScrollView style={styles.scrollContainer}>
+
+        <Text style={styles.questionText}>What province do you live in? </Text>
+        <Dropdown items={provinces} onValueChange={handleDropdownChange} placeholder={'Province'}/>
+        <Text style={styles.questionText}>How many people live in your household:</Text>
+        <View style={styles.textbox}>
+          <TextInput
+            style={styles.textInputBox}
+            keyboardType="numeric"
+            placeholder="Input"
+            onChangeText={(text) => {
+              setNumOfPpl(Number(text));
+            }}
+          />
         </View>
 
-        <View style={styles.questionContainer}>
-          <Text style={styles.question}>How many people live in your household:</Text>
-          <View style={styles.textbox}>
-            <TextInput
-              style={styles.textInputBox}
-              keyboardType="numeric"
-              placeholder="Input"
-              onChangeText={(text) => {
-                setNumOfPpl(Number(text));
-              }}
-            />
-          </View>
-        </View>
+        <Text style={styles.questionText}>{data[0].question}</Text>
+        {data[0].options.map((option, index) => (
+          <CheckBox
+            checkedColor={Colors.DARKGREEN}
+            textStyle={styles.answer}
+            containerStyle={
+              responses[data[0].id] === option ? styles.selectedOption : styles.unSelectedOption
+            }
+            key={index}
+            title={option}
+            checked={responses[data[0].id] === option}
+            onPress={() => {
+              handleOptionSelect(data[0].id, index);
+              setFuelType(data[0].options[index]);
+            }}
+          />
+        ))}
 
-        <View style={styles.questionContainer}>
-          <Text style={styles.question}>{data[0].question}</Text>
-          {data[0].options.map((option, index) => (
-            <CheckBox
-              checkedColor={Colors.DARKGREEN}
-              textStyle={styles.answer}
-              containerStyle={
-                responses[data[0].id] === option ? styles.selectedOption : styles.unSelectedOption
-              }
-              key={index}
-              title={option}
-              checked={responses[data[0].id] === option}
-              onPress={() => {
-                handleOptionSelect(data[0].id, index);
-                setFuelType(data[0].options[index]);
-              }}
-            />
-          ))}
+      <View style={styles.questionContainer}>
+        <View style={styles.questionWithIcon}>
+          <Text style={styles.questionText}>Your vehicle&apos;s fuel efficiency:</Text>
+          <TouchableOpacity
+            style={styles.questionIcon}
+            onPress={() => setModalVisible(!modalVisible)}
+          >
+            <Icon name="question-circle" size={30} color={Colors.DARKGREEN} />
+          </TouchableOpacity>
         </View>
+        <View style={styles.textbox}>
+          <TextInput
+            style={styles.textInputBox}
+            keyboardType="numeric"
+            placeholder="Input"
+            onChangeText={(text) => {
+              setFuelEfficiency(Number(text));
+            }}
+          />
+        </View>
+      </View>
 
-        <View style={styles.questionContainer}>
-          <View style={styles.questionWithIcon}>
-            <Text style={styles.question}>Your vehicle&apos;s fuel efficiency:</Text>
+      <Modal transparent={true} visible={modalVisible}>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.infoText}>
+              If you don&apos;t know your vehicle&apos;s fuel efficiency, it&apos;s available
+              online{' '}
+              <Text style={styles.linkText} onPress={handleLinkPress}>
+                here
+              </Text>
+              . Select the &quot;combination&quot; value under Comsumption in L/100km. The average
+              fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L / 100
+              km.
+            </Text>
             <TouchableOpacity
-              style={styles.questionIcon}
+              style={styles.closeIcon}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Icon name="question-circle" size={30} color={Colors.DARKGREEN} />
+              <Icon name="times-circle" size={30} color={Colors.DARKGREEN} />
             </TouchableOpacity>
           </View>
-          <View style={styles.textbox}>
-            <TextInput
-              style={styles.textInputBox}
-              keyboardType="numeric"
-              placeholder="Input"
-              onChangeText={(text) => {
-                setFuelEfficiency(Number(text));
-              }}
-            />
-          </View>
         </View>
-
-        <Modal transparent={true} visible={modalVisible}>
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContainer}>
-              <Text style={styles.infoText}>
-                If you don&apos;t know your vehicle&apos;s fuel efficiency, it&apos;s available
-                online{' '}
-                <Text style={styles.linkText} onPress={handleLinkPress}>
-                  here
-                </Text>
-                . Select the &quot;combination&quot; value under Comsumption in L/100km. The average
-                fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L / 100
-                km.
-              </Text>
-              <TouchableOpacity
-                style={styles.closeIcon}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Icon name="times-circle" size={30} color={Colors.DARKGREEN} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-        <TouchableOpacity style={styles.buttoning} onPress={handleSurveySubmit}>
-          <Text style={styles.buttoningText}>Complete Sign Up</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+      </Modal>
+      <TouchableOpacity style={styles.buttoning} onPress={handleSurveySubmit}>
+        <Text style={styles.buttoningText}>Complete Sign Up</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   scrollContainer: {
-    paddingTop: 30,
+    paddingTop: '40%',
     flex: 1,
     paddingHorizontal: 30,
+    backgroundColor: Colors.LIGHTFGREEN,
+    alignContent: 'center'
   },
   questionContainer: {
     paddingBottom: 30,
   },
-  pickerContainer: {
-    height: 50,
-    width: 250,
-    backgroundColor: Colors.WHITE,
-    borderColor: Colors.GREY,
-    borderRadius: 5,
-    borderBottomWidth: 1,
-  },
-  picker: { height: 50, width: 250 },
-  question: {
-    fontFamily: 'Montserrat',
-    fontSize: 20,
-    fontWeight: '700',
-    color: Colors.DARKGREEN,
-    marginBottom: 20,
-  },
+
   buttoning: {
     backgroundColor: Colors.DARKGREEN,
     borderRadius: 10,
@@ -270,6 +225,12 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     marginLeft: 'auto',
+  },
+  questionText:{
+    color: Colors.DARKGREEN,
+    fontSize: 16,
+    fontWeight: '600'
+
   },
   questionIcon: {
     marginLeft: 15,
