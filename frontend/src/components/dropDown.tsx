@@ -1,98 +1,85 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import Colors from '../../assets/colorConstants';
 
-interface DropdownProps {
-  items: string[];
-  placeholder: string;
-  onValueChange: (value: string) => void;
+interface CustomDropdownProps {
+  options: string[];
+  onSelect: (selectedItem: string) => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ items, placeholder, onValueChange }) => {
-  const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-  const dropdownRef = useRef<View>(null); // Change null to View
+const CustomDropdown = ({ options, onSelect }: CustomDropdownProps): React.JSX.Element | null => {
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState('');
 
-  useEffect(() => {
-    if (dropdownRef.current != null) {
-      dropdownRef.current.measure((x, y, width, height, pageX, pageY) => {
-        setDropdownPosition({ top: pageY + height, left: pageX });
-      });
-    }
-  }, [isDropdownVisible]);
-
-  const handleOptionPress = (value: string): void => {
-    setSelectedValue(value);
-    onValueChange(value);
-    setDropdownVisible(false);
+  const handleDropdownToggle = (): void => {
+    setDropdownVisible(!dropdownVisible);
   };
 
+  const handleOptionSelect = (option: string): void => {
+    setSelectedItem(option); 
+    setDropdownVisible(false);
+    onSelect(option);
+  };
+
+  if (!Array.isArray(options)) {
+    console.error('Options must be an array');
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => setDropdownVisible(!isDropdownVisible)}
-        ref={dropdownRef as React.RefObject<TouchableOpacity>}
-      >
-        <View style={styles.selectedValueContainer}>
-          <Text style={styles.selectedValue}>{selectedValue ?? placeholder}</Text>
-        </View>
+    <View style={styles.dropdownContainer}>
+      <TouchableOpacity style={styles.dropdownButton} onPress={handleDropdownToggle}>
+        <Text style={styles.dropdownButtonText}>
+          {selectedItem !== '' ? selectedItem : 'Select Province'} 
+        </Text>
       </TouchableOpacity>
-  
-      {isDropdownVisible && (
-        <View style={[styles.modalContainer, { top: dropdownPosition.top + 10, left: dropdownPosition.left }]}>
-          <ScrollView>
-            {items.map((item) => (
-              <TouchableOpacity key={item} onPress={() => handleOptionPress(item)}>
-                <Text style={styles.optionText}>{item}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
+      {dropdownVisible && (
+        <ScrollView style={styles.dropdownList}>
+          {options.map((item, index) => (
+            <TouchableOpacity key={index} onPress={() => handleOptionSelect(item)}>
+              <Text style={styles.dropdownItem}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  dropdownContainer: {
+    position: 'relative',
     zIndex: 1,
-    
   },
-  selectedValueContainer: {
-    borderWidth: 1,
-    borderColor: Colors.GREY,
+  dropdownButton: {
+    backgroundColor: Colors.DARKGREEN,
+    borderRadius: 10,
     padding: 10,
-    borderRadius: 5,
+    margin: 10,
   },
-  selectedValue: {
+  dropdownButtonText: {
+    color: Colors.WHITE,
     fontSize: 16,
-  },
-  modalContainer: {
-    position: 'absolute',
-    backgroundColor: Colors.WHITE,
-    zIndex: 2,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: Colors.DARKLIMEGREEN,
-    maxHeight: 150,
-    overflow: 'scroll',
-    top: 0,
-  },
-  optionText: {
-    fontSize: 18,
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.DARKLIMEGREEN,
-    width: '100%',
+    fontWeight: '700',
     textAlign: 'center',
+  },
+  dropdownList: {
+    position: 'absolute',
+    top: 51,
+    left: 0,
+    maxHeight: 200,
+    width: '100%',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.DARKGREEN,
+    backgroundColor: Colors.WHITE,
+  },
+  dropdownItem: {
+    padding: 10,
+    fontSize: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.DARKGREEN,
   },
 });
 
-export default Dropdown;
+export default CustomDropdown;

@@ -67,7 +67,8 @@ export default function SignUp(): JSX.Element {
               console.warn('User was not created: ' + res);
             } else {
               console.log('User was created succesfully:', email);
-              navigation.navigate('SignUpQuestions');
+              navigation.navigate('Welcome');
+              // navigation.navigate('SignUpQuestions');
             }
           });
         })

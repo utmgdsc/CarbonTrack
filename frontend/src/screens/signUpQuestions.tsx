@@ -1,25 +1,26 @@
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
-  Text,
   View,
-  ScrollView,
+  Text,
   TouchableOpacity,
+  StyleSheet,
+  ScrollView,
   TextInput,
   Modal,
   Linking,
 } from 'react-native';
-import * as React from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../components/types';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-import { useState } from 'react';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Image } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import transportationQuestions from '../../assets/questions';
 
-import Dropdown from '../components/dropDown';
+import CustomDropdown from '../components/dropDown';
+import { UsersAPI } from '../APIs/UsersAPI';
+import { type User } from '../models/User';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -39,14 +40,23 @@ export default function SignUpQuestions(): JSX.Element {
   const [numOfPpl, setNumOfPpl] = useState(0);
   const [fuelType, setFuelType] = useState<string>('');
   const [fuelEfficiency, setFuelEfficiency] = useState(0);
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const provinces = ['British Columbia', 'Alberta', 'Manitoba', 'Sasketchewan', 'Ontario', 'Quebec', 'Newfoundland and Labrador', 'Prince Edward Island', 'New Brunswick', 'Nova Scotia'];
-  const handleDropdownChange = (value: string): void => {
-    setProvince(value);
-    console.log('Selected value:', province);
-  };
+  const provinces = [
+    'British Columbia',
+    'Alberta',
+    'Manitoba',
+    'Saskatchewan',
+    'Ontario',
+    'Quebec',
+    'Newfoundland and Labrador',
+    'Prince Edward Island',
+    'New Brunswick',
+    'Nova Scotia',
+  ];
+
   const handleSurveySubmit = (): void => {
     console.log('Survey Responses:', {
       province,
@@ -81,45 +91,68 @@ export default function SignUpQuestions(): JSX.Element {
     setResponses(updatedResponses);
   };
   
+  useEffect(() => {
+    void UsersAPI.GetLoggedInUser().then((res) => {
+      if (res != null) {
+        setUser(res);
+      }
+    });
+  }, [loaded]);
 
-  if (!loaded) {
+  useEffect(() => {
+    console.log("Updated Province:", province);
+  }, [province]); // sanity check
+
+  if (!loaded || user === undefined) {
     return <></>;
   }
 
+
   return (
-    <ScrollView style={styles.scrollContainer}>
-
-        <Text style={styles.questionText}>What province do you live in? </Text>
-        <Dropdown items={provinces} onValueChange={handleDropdownChange} placeholder={'Province'}/>
-        <Text style={styles.questionText}>How many people live in your household:</Text>
-        <View style={styles.textbox}>
-          <TextInput
-            style={styles.textInputBox}
-            keyboardType="numeric"
-            placeholder="Input"
-            onChangeText={(text) => {
-              setNumOfPpl(Number(text));
-            }}
+    <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.contentContainer}>
+      <Text style={styles.pageHeader}>Before jump right in, let&apos;s get to know you a little more, {user.full_name}!</Text>
+      <View style={styles.sectionDiv}>
+      <Text style={styles.questionText}>How many people live in your household:</Text>
+      <View style={styles.textbox}>
+        <TextInput
+          style={styles.textInputBox}
+          keyboardType="numeric"
+          placeholder="Eg. 3"
+          onChangeText={(text) => {
+            setNumOfPpl(Number(text));
+          }}
+        />
+      </View>
+      <View style={styles.provincialContainer}>
+          <Text style={styles.questionText}>What province do you live in? </Text>
+          <CustomDropdown
+            options={provinces}
+            onSelect={(selectedProvince: React.SetStateAction<string>) => setProvince(selectedProvince)}
           />
+          <Image source={{ uri: 'https://pngimg.com/d/frog_PNG3839.png' }} style={styles.frogie}  />
         </View>
+      </View>
+      
 
-        <Text style={styles.questionText}>{data[0].question}</Text>
-        {data[0].options.map((option, index) => (
-          <CheckBox
-            checkedColor={Colors.DARKGREEN}
-            textStyle={styles.answer}
-            containerStyle={
-              responses[data[0].id] === option ? styles.selectedOption : styles.unSelectedOption
-            }
-            key={index}
-            title={option}
-            checked={responses[data[0].id] === option}
-            onPress={() => {
-              handleOptionSelect(data[0].id, index);
-              setFuelType(data[0].options[index]);
-            }}
-          />
-        ))}
+
+
+      <Text style={styles.questionText}>{data[0].question}</Text>
+      {data[0].options.map((option, index) => (
+        <CheckBox
+          checkedColor={Colors.DARKGREEN}
+          textStyle={styles.answer}
+          containerStyle={
+            responses[data[0].id] === option ? styles.selectedOption : styles.unSelectedOption
+          }
+          key={index}
+          title={option}
+          checked={responses[data[0].id] === option}
+          onPress={() => {
+            handleOptionSelect(data[0].id, index);
+            setFuelType(data[0].options[index]);
+          }}
+        />
+      ))}
 
       <View style={styles.questionContainer}>
         <View style={styles.questionWithIcon}>
@@ -152,9 +185,9 @@ export default function SignUpQuestions(): JSX.Element {
               <Text style={styles.linkText} onPress={handleLinkPress}>
                 here
               </Text>
-              . Select the &quot;combination&quot; value under Comsumption in L/100km. The average
-              fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L / 100
-              km.
+              . Select the &quot;combination&quot; value under Consumption in L/100km. The
+              average fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L
+              / 100 km.
             </Text>
             <TouchableOpacity
               style={styles.closeIcon}
@@ -174,21 +207,25 @@ export default function SignUpQuestions(): JSX.Element {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    paddingTop: '40%',
-    flex: 1,
-    paddingHorizontal: 30,
     backgroundColor: Colors.LIGHTFGREEN,
-    alignContent: 'center'
+  },
+  contentContainer: {
+    paddingHorizontal: 30,
+    paddingTop: '30%',
+    alignContent: 'center',
   },
   questionContainer: {
     paddingBottom: 30,
   },
-
   buttoning: {
     backgroundColor: Colors.DARKGREEN,
     borderRadius: 10,
     marginBottom: 70,
     padding: 18,
+  },
+  frogie:{ 
+    width: 192, 
+    height: 192 
   },
   buttoningText: {
     color: Colors.WHITE,
@@ -203,7 +240,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: Colors.WHITE,
     marginHorizontal: 50,
-    marginVertical: 180,
+    marginVertical: 280,
     padding: 20,
     borderRadius: 10,
     flex: 1,
@@ -226,11 +263,18 @@ const styles = StyleSheet.create({
   closeIcon: {
     marginLeft: 'auto',
   },
-  questionText:{
+  pageHeader:{
+    fontSize: 26,
+    fontWeight: '600',
+    paddingBottom: 30,
+  },
+  provincialContainer: {
+    paddingBottom: '10%',
+  },
+  questionText: {
     color: Colors.DARKGREEN,
     fontSize: 16,
-    fontWeight: '600'
-
+    fontWeight: '600',
   },
   questionIcon: {
     marginLeft: 15,
@@ -242,15 +286,19 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.DARKGREEN,
   },
+  sectionDiv:{
+    margin: 10,
+  },
   textInputBox: {
     flex: 1,
-    paddingVertical: 0,
+    paddingVertical: 2,
+    marginTop: 5,
   },
   textbox: {
     borderBottomColor: Colors.GREY,
     borderBottomWidth: 1,
     flexDirection: 'row',
     marginBottom: 25,
-    paddingBotton: 8,
+    paddingBottom: 8,
   },
 });
