@@ -67,5 +67,35 @@ export const UsersAPI = {
       console.error('Temp tip: have you started the backend?: ');
       return undefined;
     }
-  }
+  },
+  updateUserEmail: async (userId: ObjectId, newEmail: string) => {
+    try {
+      // Ensure that firebaseUser is defined before using it
+      const firebaseUser = await firebaseService.getFirebaseUser();
+      if (firebaseUser == null) {
+        // Handle the case when the user is not signed in
+        console.error('Firebase user is undefined');
+        return undefined;
+      }
+
+      // Get the refreshed token
+      const newToken = await firebaseUser.getIdToken(true);
+
+      // Make the request to update the email with the new token
+      const res = await FLASK_HTTPS.patch(
+        routeName + `/user/update_email/${userId.toHexString()}`,
+        { email: newEmail },
+        {
+          headers: {
+            Authorization: `Bearer ${newToken}`,
+          },
+        }
+      );
+
+      return res.data.user as User;
+    } catch (error) {
+      console.error('UsersAPI(frontend): updateUserEmailError:', error);
+      return undefined;
+    }
+  },
 }

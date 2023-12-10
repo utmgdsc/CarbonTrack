@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Alert, Modal } from 'react-native';
 import Colors from '../../../assets/colorConstants';
-import type { RootStackParamList } from '../../components/types';
+import {type RootStackParamList}  from '../../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
 import firebaseService from '../../utilities/firebase';
 import { launchImageLibraryAsync, type ImagePickerResult, MediaTypeOptions, } from 'expo-image-picker';
-
+import { type User } from '../../models/User';
+import { UsersAPI } from '../../APIs/UsersAPI';
+import { EmailAuthProvider, reauthenticateWithCredential, verifyBeforeUpdateEmail, onAuthStateChanged } from 'firebase/auth';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function UpdateProfileScreen(): JSX.Element {
@@ -20,15 +22,112 @@ export default function UpdateProfileScreen(): JSX.Element {
   const [userid, setUserid] = useState<string>('');
   const [photoURL, setPhotoURL] = useState<string | null>(null);
   const [rerenderKey, setRerenderKey] = useState<number>(0);
+  const [loggedUser, setLoggedUser] = useState<User | undefined>(undefined);
+  const [newEmail, setNewEmail] = useState<string>('');
+  const [newName, setNewName] = useState<string>('');  
+
 
   useEffect(() => {
     const fetchUserData = async (): Promise<void> => {
       const user = await firebaseService.getFirebaseUser();
       setUserid(user?.uid ?? '');
-    };
 
+      const userPhotoURL = user?.photoURL ?? null ;
+      setPhotoURL(userPhotoURL);
+      void UsersAPI.GetLoggedInUser().then((res) => {
+        if (res != null) {
+          setLoggedUser(res);
+        }
+      });
+    };
     void fetchUserData();
   }, [rerenderKey]); 
+
+
+  const handleUpdateEmail = async (): Promise<void> => {
+    try {
+      const user = await firebaseService.getFirebaseUser();
+  
+      if (user != null) {
+        const userCreds = await promptUserForCredentials();
+  
+        if (userCreds != null && user.email != null) {
+          const entireCreds = EmailAuthProvider.credential(user.email, userCreds.password);
+          await reauthenticateWithCredential(user, entireCreds);
+          console.log(newEmail);
+          await verifyBeforeUpdateEmail(user, newEmail);
+          await waitForEmailVerification(user);
+          await firebaseService.updateUserEmail(user, newEmail);
+  
+          // this i ask gpt
+          // Refresh the ID token after email update
+          await user.getIdToken(/* forceRefresh */ true);
+          // Update the email on the backend (MongoDB)
+          if (loggedUser != null) {
+            // Update the user in MongoDB
+            await UsersAPI.updateUserEmail(loggedUser._id, newEmail);
+          }
+        }
+      }
+    } catch (error: any) {
+      // Handle errors...
+      console.error('Error updating email:', error);
+  
+      if (error.code === 'auth/id-token-revoked') {
+        // Handle token revocation gracefully
+        Alert.alert('Your session has expired. Please sign in again.');
+        await firebaseService.signOutUser(); // Sign out locally
+        // Navigate to the login or authentication screen
+        // Update UI to reflect that the user is not authenticated
+        navigation.navigate('LogIn');
+      } else {
+        Alert.alert('An unexpected error occurred. Please try again.');
+        throw error;
+      }
+    }
+  };
+  
+  
+  
+  
+  
+  
+  
+  
+  const waitForEmailVerification = async (user: any): Promise<void> => {
+    return await new Promise<void>((resolve, reject) => {
+      const unsubscribe = onAuthStateChanged(user, (updatedUser) => {
+        if ((updatedUser?.emailVerified) ?? false) {
+          unsubscribe();
+          resolve();
+        }
+      }, reject);
+    });
+  };
+  
+  
+
+
+  const promptUserForCredentials = async (): Promise<{ password: string } | null> => {
+    return await new Promise((resolve) => {
+      Alert.prompt(
+        'Reauthentication',
+        'Please enter your current password:',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => resolve(null),
+            style: 'cancel',
+          },
+          {
+            text: 'Submit',
+            onPress: (password) => resolve({ password: password ?? '' }),
+          },
+        ],
+        'secure-text'
+      );
+    });
+  };
 
   const handleProfilePictureUpload = async (): Promise<void> => {
     try {
@@ -52,8 +151,6 @@ export default function UpdateProfileScreen(): JSX.Element {
     return <></>;
   }
 
-
-
   return (
     <ScrollView style={styles.container}>
       
@@ -71,28 +168,43 @@ export default function UpdateProfileScreen(): JSX.Element {
             <TouchableOpacity onPress={handleProfilePictureUpload}>
               <Text style={styles.editPhotoText}> Edit Photo </Text>
             </TouchableOpacity>
-            
-            
           </View>
         </View>
+
+        <View style={styles.textInputBox}>
+            <Text style={styles.label}>Name</Text>
+            <TextInput
+              placeholder="new name"
+              defaultValue={loggedUser?.full_name}
+              style={styles.textInput}
+              onChangeText={(text) => setNewName(text)}
+            />
+
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+              placeholder="new email"
+              defaultValue={loggedUser?.email}
+              style={styles.textInput}
+              onChangeText={(text) =>setNewEmail(text)}
+            />
+        </View>
+        <TouchableOpacity style={styles.saveButton} onPress={handleUpdateEmail}> 
+          <Text style={styles.saveButtonText}> Update Profile </Text>
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.infoContainer}>
-        
-      
-      </View>
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: Colors.DARKGREEN,
+    backgroundColor: Colors.DARKDARKGREEN,
   },
   profileContainer:{
     height: 645, 
     width: '85%',
-    backgroundColor: Colors.TRANSGREENBACK, 
+    backgroundColor: Colors.DARKGREEN, 
     borderRadius: 20,  
     alignSelf: 'center',
     margin: 40
@@ -149,9 +261,42 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     top: 15,
   },
-  infoContainer:{
-    padding: 5,
+  textInputBox:{
+    alignSelf: 'center', 
+    top: '10%',
+    padding: 10,
+  }, 
+  label:{
+    fontSize: 16, 
+    opacity: 0.5,
+    color: Colors.WHITE
+  },
+  textInput: {
+    paddingHorizontal: 5,
+    marginBottom: 30,
+    marginTop: 10,
+    borderRadius: 10,
+    fontSize: 16,
+    borderBottomWidth: 1,
+    borderColor: Colors.WHITE,
+    color: Colors.WHITE,
+    width: 270
+  },
+  saveButton: {
+    borderRadius: 5,
+    alignSelf: 'center',
+    top: '20%',
+  },
+  saveButtonText:{
+    color: Colors.LIGHTFGREEN, 
+    fontSize: 16,
+    textDecorationLine: 'underline',
+    fontWeight: '400',
+    shadowColor: Colors.LIGHTFGREEN,
+    
+
   }
+
 
 
 });

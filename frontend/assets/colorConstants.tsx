@@ -1,6 +1,6 @@
 const Colors = {
   LIGHTFGREEN: '#E0EEC6',
-  DARKGREEN: '#243E36',
+  DARKGREEN: '#10302b',
   DARKGREEN2: '#224A3E',
   DARKGREEN3: '#2E5C4E',
   WHITE: '#fff',
@@ -14,7 +14,9 @@ const Colors = {
   BLUE: 'blue',
   TEAL: '#6bcfca',
   TRANSLIGHTGREEN: '#c6dbb2',
-  TRANSGREENBACK: '#07332b'
+  TRANSLIGHTGREEN2: '#b3c99d',
+  TRANSGREENBACK: '#07332b',
+  DARKDARKGREEN: '#031c19',
 };
 
 export default Colors;

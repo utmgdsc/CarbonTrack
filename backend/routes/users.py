@@ -82,4 +82,19 @@ def update_user(user_id: str) -> Response:
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
 
+@users.route("/user/update_email/<user_id>", methods=["PATCH"])
+@carbon_auth.auth.login_required
+def update_user_email(user_id: str) -> Response:
+    try:
+        query = {"_id": ObjectId(user_id)}
+        new_email = request.get_json().get('email', '')
+        current_user = carbon_auth.auth.current_user()
+        new_token = FirebaseAPI.refresh_token(current_user.uid)
+        CarbonTrackDB.users_coll.update_one(query, {'$set': {'email': new_email}})
+        item = CarbonTrackDB.users_coll.find_one(query)
+        item = User.from_json(item).to_json()
+        return jsonify({'user': item})
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
+
 

@@ -6,7 +6,9 @@ import {
   signOut,
   initializeAuth,
   getReactNativePersistence,
-  updateProfile
+  updateProfile, 
+  updateEmail,
+  type User,
 } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -49,7 +51,6 @@ const firebaseService = {
   signOutUser: async () => {
     await signOut(auth);
   },
-
   uploadProfilePicture: async (userId: string, imageUri: string): Promise<void> => {
     const storagePath = `profilePictures/${userId}/profilePicture.jpg`; 
     const profilePictureRef = storageRef(storage, storagePath);
@@ -79,6 +80,16 @@ const firebaseService = {
 
     return null;
   },
+  updateUserEmail: async(user: User, newEmail: string) =>{
+    try {
+      await updateEmail(user, newEmail);
+      console.log('Firebase (frontend): Email updated successfully in Firebase');
+    } catch (error) {
+      console.error('Firebase(frontend: Error updating email in Firebase:', error);
+      throw error; 
+    }
+  
+  }
 
 };
 

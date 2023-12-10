@@ -157,23 +157,6 @@ const MainAppTabs = (): JSX.Element => {
         }}
       />
       <Tab.Screen
-        name="SettingsPage"
-        component={SettingsScreen}
-        options={{
-          title: 'Settings',
-          headerStyle: { backgroundColor: Colors.DARKGREEN },
-          headerTintColor: '#fff',
-          headerTitleStyle: { fontWeight: 'bold' },
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name={'settings'}
-              size={24}
-              style={{ color: (focused as boolean) ? Colors.LIGHTFGREEN : Colors.WHITE }}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="YourForms"
         component={YourForms}
         options={{
@@ -209,7 +192,25 @@ const MainAppTabs = (): JSX.Element => {
           ),
         }}
       />
+            <Tab.Screen
+        name="SettingsPage"
+        component={SettingsScreen}
+        options={{
+          title: 'Settings',
+          headerStyle: { backgroundColor: Colors.DARKGREEN },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: 'bold' },
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name={'settings'}
+              size={24}
+              style={{ color: (focused as boolean) ? Colors.LIGHTFGREEN : Colors.WHITE }}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
+
   );
 };
 

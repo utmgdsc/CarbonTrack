@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     width: '85%', 
     height: 56,
     borderRadius: 15,
-    backgroundColor: Colors.TRANSLIGHTGREEN,
+    backgroundColor: Colors.TRANSLIGHTGREEN2,
     marginVertical: 10,
     justifyContent: 'center',
   }, 
