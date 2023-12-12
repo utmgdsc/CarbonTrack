@@ -6,12 +6,14 @@ import {
   signOut,
   initializeAuth,
   getReactNativePersistence,
-  updateProfile, 
+  updateProfile,
   updateEmail,
   type User,
+  type UserCredential,
+  sendEmailVerification,
 } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA8d5XfMBK2X4Udf-pD9vWHS1SYeex8Qo4',
@@ -35,12 +37,17 @@ const firebaseService = {
     }
   },
 
-  createUser: async (email: string, password: string) => {
+  createUser: async (email: string, password: string): Promise<UserCredential> => {
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('User is created successfully with email:', userCred.user.email);
+      console.log(
+        '[firebase.ts - createUser]: User created successfully in Firebase',
+        userCred.user.email
+      );
+      return userCred;
     } catch (error) {
-      console.error('Error occured creating the user account:', error);
+      console.error('[firebase.ts - createUser] Error creating user in Firebase', error);
+      throw error;
     }
   },
 
@@ -52,7 +59,7 @@ const firebaseService = {
     await signOut(auth);
   },
   uploadProfilePicture: async (userId: string, imageUri: string): Promise<void> => {
-    const storagePath = `profilePictures/${userId}/profilePicture.jpg`; 
+    const storagePath = `profilePictures/${userId}/profilePicture.jpg`;
     const profilePictureRef = storageRef(storage, storagePath);
 
     try {
@@ -80,17 +87,15 @@ const firebaseService = {
 
     return null;
   },
-  updateUserEmail: async(user: User, newEmail: string) =>{
+  updateUserEmail: async (user: User, newEmail: string) => {
     try {
       await updateEmail(user, newEmail);
       console.log('Firebase (frontend): Email updated successfully in Firebase');
     } catch (error) {
       console.error('Firebase(frontend: Error updating email in Firebase:', error);
-      throw error; 
+      throw error;
     }
-  
-  }
-
+  },
 };
 
 export default firebaseService;
