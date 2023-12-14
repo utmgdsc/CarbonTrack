@@ -15,7 +15,6 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
 import firebaseService from '../../utilities/firebase';
-import { type User } from '../../models/User';
 import {
   onAuthStateChanged,
   getAuth,
@@ -26,65 +25,76 @@ import {
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function UpdateProfileScreen(): JSX.Element {
+
   const navigation = useNavigation<StackNavigation>();
   const [loaded] = useFonts({
     Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
-  const [userid, setUserid] = useState<string>('');
-  const [rerenderKey, setRerenderKey] = useState<number>(0);
-  const [loggedUser, setLoggedUser] = useState<User | undefined>(undefined);
-  const [newPass, setNewPass] = useState<string | undefined>('');
-
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user === null) {
-      navigation.navigate('LogIn');
-    }
-  });
+  const [newPass, setNewPass] = useState<string | undefined>('');  
 
   useEffect(() => {
-    const fetchUserData = async (): Promise<void> => {
-      const user = await firebaseService.getFirebaseUser();
-      setUserid(user?.uid ?? '');
+    const checkAuthState = async (): Promise<void> => {
+      const currentUser = await firebaseService.getFirebaseUser();
+      if (currentUser === null) {
+        navigation.navigate('LogIn');
+      }
     };
-    void fetchUserData();
-  }, [rerenderKey]);
 
-  const handleUpdatePassword = async (): Promise<void> => {
+    const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
+      if (currentUser === null) {
+        navigation.navigate('LogIn');
+      } else {
+        void checkAuthState();
+      }
+    });
+
+    return () => {
+      unsubscribe(); // Cleanup on component unmount
+    };
+  }, [navigation]);
+
+
+  const handleUpdatePassword = async ():Promise<void> => {
     try {
       const user = await firebaseService.getFirebaseUser();
       if (user != null) {
-        if (newPass != null && user.email != null){
+        if (newPass != null && user.email != null) {
+          // get user password to reauth
           const userCreds = await promptUserForCredentials();
-          if (userCreds != null){
-            const creds =  EmailAuthProvider.credential(user.email, userCreds.password);
-            await reauthenticateWithCredential(user, creds)
-            .then( async (result) => {
-              await updatePassword(user, newPass)
-              .then(() => alert('Password reset email has be sent. Please check your inbox for next steps. You will now be logged out.'))
-              .catch((error: any) => console.log('update password after alert error:', error));
-              console.log('Firebase (frontend): Update password sucess (maybay)')
-    
-              await firebaseService.signOutUser();
-              navigation.navigate('LogIn');
-              // await sendPasswordResetEmail(auth, user.email)
-              // .then(() => alert('Password reset email has be sent. Please check your inbox for next steps.'))
-              // .catch((error: any) => console.log('Password email error:', error))
+          if (userCreds != null) {
+            const creds = EmailAuthProvider.credential(user.email, userCreds.password);
+            // reauth user
+            try {
+              await reauthenticateWithCredential(user, creds);
+  
+              // after reauthing, update password
+              try {
+                await updatePassword(user, newPass);
+                alert('Password reset email has been sent. Please check your inbox for next steps. You will now be logged out.');
+                console.log('Firebase (frontend): Update password success (maybe)');
+                // sign out user after changing password
+                await firebaseService.signOutUser();
+                navigation.navigate('LogIn');
+              } catch (updateError: any) {
+                console.error('Updating password error:', updateError);
+                if (updateError.code === "auth/weak-password") {
+                  Alert.alert('Invalid Password', 'Please make sure your password is strong enough.');
+                }
               }
-            );
+            } catch (reauthError: any) {
+              Alert.alert('Reauthentification Error', 'An error occured trying to reauthorize your account. Please try again.');
+              console.error('Reauthenticating user error:', reauthError);
+            }
           }
-          
         }
-
-
-
       }
     } catch (error: any) {
-      // Log any errors
-      console.error('Error updating email in Update Password screen: ', error);
+      console.error('Error handling password update: ', error);
     }
+    return await Promise.resolve();
   };
+  
 
   const promptUserForCredentials = async (): Promise<{ password: string } | null> => {
     return await new Promise((resolve) => {
@@ -123,15 +133,14 @@ export default function UpdateProfileScreen(): JSX.Element {
       </View>
       <View style={styles.profileContainer}>
         <View style={styles.textInputBox}>
-          <Text style={styles.label}>Name</Text>
+          <Text style={styles.label}>New Password:</Text>
           <TextInput
             placeholder="New Password"
             style={styles.textInput}
             onChangeText={(text) => setNewPass(text)}
           />
         </View>
-        <TouchableOpacity style={styles.saveButton} onPress={handleUpdatePassword} >
-        {/* f onPress={handleUpdatePassword} */}
+        <TouchableOpacity style={styles.saveButton} onPress={()  => { void handleUpdatePassword()}}>
           <Text style={styles.saveButtonText}> Update Password </Text>
         </TouchableOpacity>
       </View>

@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  Modal,
   Alert,
 } from 'react-native';
 import Colors from '../../../assets/colorConstants';
@@ -84,6 +83,7 @@ export default function UpdateProfileScreen(): JSX.Element {
             // email update
             await verifyBeforeUpdateEmail(user, newEmail);
 
+            // TODO: when Error (auth/missing-new-email).] --make alert (email up to date)
             Alert.alert(
               'A verification email has been sent to your new! Please verify it and login again.'
             );
@@ -121,6 +121,17 @@ export default function UpdateProfileScreen(): JSX.Element {
     });
   };
 
+  const handleNewName = async (): Promise<void> => {
+    if (newName != null && loggedUser != null) {
+      const updatedUser = await UsersAPI.updateUserName(loggedUser, newName);
+  
+      if (updatedUser != null) {
+        setLoggedUser(updatedUser);
+        console.log(loggedUser.full_name)
+      }
+    }
+  }
+
   const handleProfilePictureUpload = async (): Promise<void> => {
     try {
       const result: ImagePickerResult = await launchImageLibraryAsync({
@@ -154,37 +165,40 @@ export default function UpdateProfileScreen(): JSX.Element {
       </View>
       <View style={styles.profileContainer}>
         <View>
-          <Image source={{ uri: photoURL }} style={styles.profilePicture} />
+          <Image source={{ uri: photoURL ?? '' }} style={styles.profilePicture} />
           <View style={styles.semiCircle}>
-            <TouchableOpacity onPress={handleProfilePictureUpload}>
+            <TouchableOpacity onPress={() => {void handleProfilePictureUpload}}>
               <Text style={styles.editPhotoText}> Edit Photo </Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.textInputBox}>
-          <Text style={styles.label}>Name</Text>
+          <Text style={styles.label}>New Name:</Text>
           <TextInput
-            placeholder="new name"
+            placeholder="My New Name"
             defaultValue={loggedUser?.full_name}
             style={styles.textInput}
             onChangeText={(text) => setNewName(text)}
           />
 
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>New Email:</Text>
           <TextInput
-            placeholder="new email"
+            placeholder="mynew@email.com"
             defaultValue={loggedUser?.email}
             style={styles.textInput}
             onChangeText={(text) => setNewEmail(text)}
           />
         </View>
-        <TouchableOpacity style={styles.saveButton} onPress={handleUpdateEmail}>
-          <Text style={styles.saveButtonText}> Update Profile </Text>
+        <TouchableOpacity style={styles.saveButton} onPress={() => { void handleUpdateEmail()}}>
+          <Text style={styles.saveButtonText}> Update Email </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.saveButton} onPress={() => {void handleNewName()}} >
+          <Text style={styles.saveButtonText}> Update Name </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
-  );
+  ); 
 }
 const styles = StyleSheet.create({
   container: {
@@ -275,6 +289,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignSelf: 'center',
     top: '20%',
+    padding: 10,
   },
   saveButtonText: {
     color: Colors.LIGHTFGREEN,

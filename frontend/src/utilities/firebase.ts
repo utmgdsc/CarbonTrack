@@ -10,7 +10,6 @@ import {
   updateEmail,
   type User,
   type UserCredential,
-  updatePassword,
 } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';

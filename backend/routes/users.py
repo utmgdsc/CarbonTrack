@@ -139,3 +139,23 @@ def update_user_email(uid: str) -> Response:
         return jsonify({"user": item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
+
+@users.route("/user/update_name/<user_id>", methods=["PATCH"])
+@carbon_auth.auth.login_required
+def update_user_name(user_id: str) -> Response:
+    try:
+        new_name = request.get_json().get("newName", "")
+        
+        query = {"uid": user_id}
+        
+        current_user = carbon_auth.auth.current_user()
+
+        CarbonTrackDB.users_coll.update_one(query, {"$set": {"full_name": new_name}})
+
+        item = CarbonTrackDB.users_coll.find_one(query)
+
+        item = User.from_json(item).to_json()
+
+        return jsonify({"user": item}), 200
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")

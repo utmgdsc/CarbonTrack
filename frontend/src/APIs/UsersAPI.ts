@@ -113,7 +113,7 @@ export const UsersAPI = {
 
       // Make the request to update the email with the new token
       const res = await FLASK_HTTPS.patch(
-        routeName + `/user/update_email/${userId.toHexString()}`,
+        routeName + `/user/update_email/${firebaseUser.uid.toString()}`,
         { email },
         {
           headers: {
@@ -128,4 +128,17 @@ export const UsersAPI = {
       return undefined;
     }
   },
+  updateUserName: async (user: User, newName: string) => {
+    try {
+      const res = await FLASK_HTTPS.patch(
+        routeName + `/user/update_name/${user.uid.toString()}`,
+        { newName },
+      );
+
+      return res.data.user as User;
+    } catch (error) {
+      console.error('UsersAPI(frontend): updateUserEmailError:', error);
+      return undefined;
+    }
+  }
 };
