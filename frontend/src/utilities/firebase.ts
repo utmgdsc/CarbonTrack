@@ -10,7 +10,7 @@ import {
   updateEmail,
   type User,
   type UserCredential,
-  sendEmailVerification,
+  updatePassword,
 } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -96,6 +96,16 @@ const firebaseService = {
       throw error;
     }
   },
+  // updateUserPassword: async (user: User, newPassword: string) => {
+  //   try{
+  //     await updatePassword(user, newPassword)
+  //     .then(() => alert('Password reset email has be sent. Please check your inbox for next steps. You will now be logged out.'))
+  //     .catch((error: any) => console.log('update password after alert error:', error));
+  //     console.log('Firebase (frontend): Update password sucess (maybay)')
+  //   } catch (error){
+  //     console.error('UpdatePassword Error:', error);
+  //   }
+  // },
 };
 
 export default firebaseService;

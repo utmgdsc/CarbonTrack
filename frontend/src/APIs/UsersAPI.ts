@@ -2,7 +2,7 @@ import FLASK_HTTPS from './FLASK_API';
 import type { User } from '../models/User';
 import firebaseService from '../utilities/firebase';
 import { type ObjectId } from 'mongodb';
-import axios, { AxiosError } from 'axios';
+import axios, { type AxiosError } from 'axios';
 
 const routeName = '/users';
 
@@ -114,7 +114,7 @@ export const UsersAPI = {
       // Make the request to update the email with the new token
       const res = await FLASK_HTTPS.patch(
         routeName + `/user/update_email/${userId.toHexString()}`,
-        { email: email },
+        { email },
         {
           headers: {
             Authorization: `Bearer ${newToken}`,

@@ -66,24 +66,12 @@ const AppNavigation = (): JSX.Element => {
 
         <Stack.Screen name='UpdatePassword'
           component={UpdatePasswordScreen}
-          options={{
-            title: 'Update Your Password',
-            headerStyle: {
-              backgroundColor: Colors.DARKGREEN,
-            },
-            headerTintColor: Colors.WHITE,
-          }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen name='UpdateHomeInfo'
           component={UpdateHomeScreen}
-          options={{
-            title: 'Edit Home Info',
-            headerStyle: {
-              backgroundColor: Colors.DARKGREEN,
-            },
-            headerTintColor: Colors.WHITE,
-          }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
