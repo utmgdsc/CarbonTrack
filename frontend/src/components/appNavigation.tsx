@@ -24,6 +24,7 @@ import SettingsScreen from '../screens/settings';
 import YourForms from '../screens/yourForms';
 import CommunityHub from '../screens/communityHub';
 import FootprintDecomp from '../screens/footpringDecomp';
+import WelcomeScreen from '../screens/welcomePage';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -85,6 +86,11 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen
           name="SignUpQuestions"
           component={SignUpQuestions}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
