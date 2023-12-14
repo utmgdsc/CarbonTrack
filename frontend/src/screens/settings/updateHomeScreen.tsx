@@ -21,10 +21,9 @@ export type StackNavigation = StackNavigationProp<RootStackParamList>;
 export default function UpdateHomeScreen(): JSX.Element {
 
   const [newProvince, setNewProvince] = useState<string>('');
-  const [newOccupancy, setNewOccupancy] = useState<number>();
+  const [newOccupancy, setNewOccupancy] = useState<number>(0);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [userid, setUserid] = useState<string>('');
-  const [rerenderKey, setRerenderKey] = useState<number>(0);
 
 
   const navigation = useNavigation<StackNavigation>();
@@ -44,33 +43,8 @@ export default function UpdateHomeScreen(): JSX.Element {
       });
     };
     void fetchUserData();
-  }, [rerenderKey]);
-
-  // const handleUpdateHome = async ():Promise<void> => {
-  //   try{
-  //     console.log('updaing home info')
-  //     if (newProvince !== undefined && user !== undefined) {
-  //       console.log('updaing province')
-  //       const updatedProvincialUser = await UsersAPI.updateUserProvince(user, newProvince);
-  //       if (updatedProvincialUser != null) {
-  //         setUser(updatedProvincialUser);
-  //         console.log('updated province')
-  //       }
-  //     }
-  //     if (newOccupancy !== undefined && user !== undefined){
-  //       console.log('updaing occupancy')
-  //       const updatedOccupancyUser = await UsersAPI.updateUserOccupancy(user, newOccupancy);
-  //       if (updatedOccupancyUser != null){
-  //         setUser(updatedOccupancyUser);
-  //         console.log('updated occupancy')
-  //       }
-  //       console.log(user.household);
-  //     }
-      
-  //   }catch(e){
-  //     console.error("Updating Home Info error occured:", e);
-  //   } 
-  //   }
+  }, []);
+  console.log(userid)
 
 
   const handleUpdateHome = async (): Promise<void> => {
@@ -109,10 +83,6 @@ export default function UpdateHomeScreen(): JSX.Element {
     }
     return await Promise.resolve();
   };
-  
-  
-  
-
 
   if (!loaded) {
     return <></>;
@@ -132,14 +102,16 @@ export default function UpdateHomeScreen(): JSX.Element {
           <Text style={styles.label}>How many people live in your home?:</Text>
           <TextInput
             keyboardType="numeric"
-            placeholder="hi"
+            placeholder= {'Currently: '+String(user?.household)}
+            placeholderTextColor={Colors.WHITE}
             style={styles.textInput}
             onChangeText={(number) => setNewOccupancy(parseInt(number))}
           />
           <Text style={styles.label}>Your Province:</Text>
           <TextInput
             
-            placeholder="Eg. ON"
+            placeholder={'Currently: '+ String(user?.province)}
+            placeholderTextColor={Colors.WHITE}
             style={styles.textInput}
             onChangeText={(text) => setNewProvince(text)}
           />

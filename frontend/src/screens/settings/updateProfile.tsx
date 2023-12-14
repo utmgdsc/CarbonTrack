@@ -167,7 +167,7 @@ export default function UpdateProfileScreen(): JSX.Element {
         <View>
           <Image source={{ uri: photoURL ?? '' }} style={styles.profilePicture} />
           <View style={styles.semiCircle}>
-            <TouchableOpacity onPress={() => {void handleProfilePictureUpload}}>
+            <TouchableOpacity onPress={() => {void handleProfilePictureUpload()}}>
               <Text style={styles.editPhotoText}> Edit Photo </Text>
             </TouchableOpacity>
           </View>

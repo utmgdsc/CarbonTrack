@@ -180,29 +180,12 @@ def update_user_province(user_id: str) -> Response:
         return jsonify({"user": updated_user}), 200
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
-        
-    #     query = {"uid": user_id}
-        
-    #     current_user = carbon_auth.auth.current_user()
-
-    #     CarbonTrackDB.users_coll.update_one(query, {"$set": {"province": new_province}})
-
-    #     item = CarbonTrackDB.users_coll.find_one(query)
-
-    #     item = User.from_json(item).to_json()
-
-    #     return jsonify({"user": item}), 200
-    # except CarbonTrackError as e:
-    #     abort(code=400, description=f"{e}")
 
 @users.route("/user/update_occupancy/<user_id>", methods=["PATCH"])
 def update_user_occupancy(user_id: str) -> Response:
     try:
         print("Updating occupancy...")
-        
-        # Print received JSON payload
         print(request.get_json())
-
         new_occupancy = request.get_json().get("newOccupancy", 0)
         query = {"uid": user_id}
         
