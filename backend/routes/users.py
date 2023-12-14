@@ -129,6 +129,7 @@ def update_user_email(uid: str) -> Response:
         new_email = request.get_json().get("email", "")
 
         current_user = carbon_auth.auth.current_user()
+        print(current_user)
 
         CarbonTrackDB.users_coll.update_one(query, {"$set": {"email": new_email}})
 
@@ -149,6 +150,7 @@ def update_user_name(user_id: str) -> Response:
         query = {"uid": user_id}
         
         current_user = carbon_auth.auth.current_user()
+        print(current_user)
 
         CarbonTrackDB.users_coll.update_one(query, {"$set": {"full_name": new_name}})
 
@@ -190,6 +192,7 @@ def update_user_occupancy(user_id: str) -> Response:
         query = {"uid": user_id}
         
         current_user = carbon_auth.auth.current_user()
+        print(current_user)
 
         print(f"Updating occupancy for user {user_id} to {new_occupancy}")
 
