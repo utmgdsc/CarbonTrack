@@ -15,54 +15,55 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
 import firebaseService from '../../utilities/firebase';
-import { type User } from '../../models/User';
-import { UsersAPI } from '../../APIs/UsersAPI';
 import {
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  verifyBeforeUpdateEmail,
   onAuthStateChanged,
   getAuth,
 } from 'firebase/auth';
+import {type User} from '../../models/User'
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
-export default function UpdateProfileScreen(): JSX.Element {
+export default function UpdateHomeScreen(): JSX.Element {
+
+  const [newProvince, setNewProvince] = useState<string>('');
+  const [newNumOfPpl, setNewNumOfPpl] = useState(0);
+  const [user, setUser] = useState<User | undefined>(undefined);
+
   const navigation = useNavigation<StackNavigation>();
   const [loaded] = useFonts({
     Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
-  const [userid, setUserid] = useState<string>('');
-  const [rerenderKey, setRerenderKey] = useState<number>(0);
-  const [loggedUser, setLoggedUser] = useState<User | undefined>(undefined);
-
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user === null) {
-      navigation.navigate('LogIn');
-    }
-  });
 
   useEffect(() => {
-    const fetchUserData = async (): Promise<void> => {
-      const user = await firebaseService.getFirebaseUser();
-      setUserid(user?.uid ?? '');
-    };
-    void fetchUserData();
-  }, [rerenderKey]);
-
-  const handleUpdateHome = async (): Promise<void> => {
-    try {
-      const user = await firebaseService.getFirebaseUser();
-
-      if (user != null) {
-        console.log('update home')
+    const checkAuthState = async (): Promise<void> => {
+      const currentUser = await firebaseService.getFirebaseUser();
+      if (currentUser === null) {
+        navigation.navigate('LogIn');
       }
-    } catch (error: any) {
-      // Log any errors
-      console.error('Error updating email in UpdateProfile: ', error);
+    };
+
+    const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
+      if (currentUser === null) {
+        navigation.navigate('LogIn');
+      } else {
+        void checkAuthState();
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation]);
+
+  const handleUpdateHome = async ():Promise<void> => {
+    try{
+      console.log('update home info')
+    }catch(e){
+      console.error("Updating Home Info error occured:", e);
+    } 
     }
-  };
+  
+
 
   if (!loaded) {
     return <></>;
@@ -79,16 +80,15 @@ export default function UpdateProfileScreen(): JSX.Element {
       </View>
       <View style={styles.profileContainer}>
         <View style={styles.textInputBox}>
-
-          <Text style={styles.label}> Henlo mate </Text>
+          <Text style={styles.label}>Update homeinfor:</Text>
           <TextInput
-            placeholder="new email"
-            defaultValue={loggedUser?.email}
+            placeholder="hi"
             style={styles.textInput}
+            // onChangeText={(text) => setNewPass(text)}
           />
         </View>
-        <TouchableOpacity style={styles.saveButton} onPress={() => handleUpdateHome}>
-          <Text style={styles.saveButtonText}> Confirm Change </Text>
+        <TouchableOpacity style={styles.saveButton} onPress={()  => { void handleUpdateHome()}}>
+          <Text style={styles.saveButtonText}> Update Password </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -142,6 +142,11 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     color: Colors.WHITE,
   },
+  saveButton: {
+    borderRadius: 5,
+    alignSelf: 'center',
+    top: '20%',
+  },
   textInput: {
     paddingHorizontal: 5,
     marginBottom: 30,
@@ -152,11 +157,6 @@ const styles = StyleSheet.create({
     borderColor: Colors.WHITE,
     color: Colors.WHITE,
     width: 270,
-  },
-  saveButton: {
-    borderRadius: 5,
-    alignSelf: 'center',
-    top: '20%',
   },
   saveButtonText: {
     color: Colors.LIGHTFGREEN,
