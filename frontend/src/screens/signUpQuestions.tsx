@@ -110,7 +110,7 @@ export default function SignUpQuestions(): JSX.Element {
 
   return (
     <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.pageHeader}>Before jump right in, let&apos;s get to know you a little more, {user.full_name}!</Text>
+      <Text style={styles.pageHeader}>Before jump right in, why don&apos;t we get to know you a little more, {user.full_name}!</Text>
       <View style={styles.sectionDiv}>
       <Text style={styles.questionText}>How many people live in your household:</Text>
       <View style={styles.textbox}>

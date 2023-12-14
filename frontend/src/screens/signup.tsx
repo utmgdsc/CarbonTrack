@@ -68,7 +68,6 @@ export default function SignUp(): JSX.Element {
             } else {
               console.log('User was created succesfully:', email);
               navigation.navigate('Welcome');
-              // navigation.navigate('SignUpQuestions');
             }
           });
         })
