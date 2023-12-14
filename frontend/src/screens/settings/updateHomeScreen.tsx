@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Alert,
 } from 'react-native';
 import Colors from '../../../assets/colorConstants';
 import { type RootStackParamList } from '../../components/types';
@@ -14,19 +13,19 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
-import firebaseService from '../../utilities/firebase';
-import {
-  onAuthStateChanged,
-  getAuth,
-} from 'firebase/auth';
 import {type User} from '../../models/User'
+import { UsersAPI } from '../../APIs/UsersAPI';
+import firebaseService from '../../utilities/firebase';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function UpdateHomeScreen(): JSX.Element {
 
   const [newProvince, setNewProvince] = useState<string>('');
-  const [newNumOfPpl, setNewNumOfPpl] = useState(0);
+  const [newOccupancy, setNewOccupancy] = useState<number>();
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [userid, setUserid] = useState<string>('');
+  const [rerenderKey, setRerenderKey] = useState<number>(0);
+
 
   const navigation = useNavigation<StackNavigation>();
   const [loaded] = useFonts({
@@ -35,33 +34,83 @@ export default function UpdateHomeScreen(): JSX.Element {
   });
 
   useEffect(() => {
-    const checkAuthState = async (): Promise<void> => {
-      const currentUser = await firebaseService.getFirebaseUser();
-      if (currentUser === null) {
-        navigation.navigate('LogIn');
-      }
+    const fetchUserData = async (): Promise<void> => {
+      const user = await firebaseService.getFirebaseUser();
+      setUserid(user?.uid ?? '');
+      void UsersAPI.GetLoggedInUser().then((res) => {
+        if (res != null) {
+          setUser(res);
+        }
+      });
     };
+    void fetchUserData();
+  }, [rerenderKey]);
 
-    const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
-      if (currentUser === null) {
-        navigation.navigate('LogIn');
-      } else {
-        void checkAuthState();
+  // const handleUpdateHome = async ():Promise<void> => {
+  //   try{
+  //     console.log('updaing home info')
+  //     if (newProvince !== undefined && user !== undefined) {
+  //       console.log('updaing province')
+  //       const updatedProvincialUser = await UsersAPI.updateUserProvince(user, newProvince);
+  //       if (updatedProvincialUser != null) {
+  //         setUser(updatedProvincialUser);
+  //         console.log('updated province')
+  //       }
+  //     }
+  //     if (newOccupancy !== undefined && user !== undefined){
+  //       console.log('updaing occupancy')
+  //       const updatedOccupancyUser = await UsersAPI.updateUserOccupancy(user, newOccupancy);
+  //       if (updatedOccupancyUser != null){
+  //         setUser(updatedOccupancyUser);
+  //         console.log('updated occupancy')
+  //       }
+  //       console.log(user.household);
+  //     }
+      
+  //   }catch(e){
+  //     console.error("Updating Home Info error occured:", e);
+  //   } 
+  //   }
+
+
+  const handleUpdateHome = async (): Promise<void> => {
+    try {
+      console.log('Updating home info');
+      console.log(newProvince)
+      console.log(newOccupancy)
+  
+      if (newProvince !== '' && user !== undefined) {
+        console.log('Updating province');
+        const updatedProvincialUser = await UsersAPI.updateUserProvince(user, newProvince);
+  
+        console.log('Updated user:', updatedProvincialUser);
+  
+        if (updatedProvincialUser != null) {
+          setUser(updatedProvincialUser);
+          console.log('Updated province');
+        }
       }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [navigation]);
-
-  const handleUpdateHome = async ():Promise<void> => {
-    try{
-      console.log('update home info')
-    }catch(e){
-      console.error("Updating Home Info error occured:", e);
-    } 
+  
+      if (newOccupancy !== undefined && user !== undefined) {
+        console.log('Updating occupancy');
+        const updatedOccupancyUser = await UsersAPI.updateUserOccupancy(user, newOccupancy);
+  
+        console.log('Updated user:', updatedOccupancyUser);
+  
+        if (updatedOccupancyUser != null) {
+          setUser(updatedOccupancyUser);
+          console.log('Updated occupancy');
+        }
+  
+        console.log('User household:', updatedOccupancyUser?.household);
+      }
+    } catch (e) {
+      console.error('Updating Home Info error occurred:', e);
     }
+    return await Promise.resolve();
+  };
+  
+  
   
 
 
@@ -80,15 +129,23 @@ export default function UpdateHomeScreen(): JSX.Element {
       </View>
       <View style={styles.profileContainer}>
         <View style={styles.textInputBox}>
-          <Text style={styles.label}>Update homeinfor:</Text>
+          <Text style={styles.label}>How many people live in your home?:</Text>
           <TextInput
+            keyboardType="numeric"
             placeholder="hi"
             style={styles.textInput}
-            // onChangeText={(text) => setNewPass(text)}
+            onChangeText={(number) => setNewOccupancy(parseInt(number))}
+          />
+          <Text style={styles.label}>Your Province:</Text>
+          <TextInput
+            
+            placeholder="Eg. ON"
+            style={styles.textInput}
+            onChangeText={(text) => setNewProvince(text)}
           />
         </View>
         <TouchableOpacity style={styles.saveButton} onPress={()  => { void handleUpdateHome()}}>
-          <Text style={styles.saveButtonText}> Update Password </Text>
+          <Text style={styles.saveButtonText}> Confirm Update </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -155,8 +212,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderBottomWidth: 1,
     borderColor: Colors.WHITE,
-    color: Colors.WHITE,
     width: 270,
+    color: Colors.WHITE,
   },
   saveButtonText: {
     color: Colors.LIGHTFGREEN,

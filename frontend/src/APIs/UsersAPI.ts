@@ -137,7 +137,33 @@ export const UsersAPI = {
 
       return res.data.user as User;
     } catch (error) {
-      console.error('UsersAPI(frontend): updateUserEmailError:', error);
+      console.error('UsersAPI(frontend): updateUserNameError:', error);
+      return undefined;
+    }
+  },
+  updateUserProvince: async (user: User, newProvince: string) => {
+    try {
+      const res = await FLASK_HTTPS.patch(
+        routeName + `/user/update_province/${user.uid.toString()}`,
+        { newProvince },
+      );
+
+      return res.data.user as User;
+    } catch (error) {
+      console.error('UsersAPI(frontend): updateUserProvinceError:', error);
+      return undefined;
+    }
+  },
+  updateUserOccupancy: async (user: User, newOccupancy: number) => {
+    try {
+      const res = await FLASK_HTTPS.patch(
+        routeName + `/user/update_occupancy/${user.uid.toString()}`,
+        { newOccupancy },
+      );
+
+      return res.data.user as User;
+    } catch (error) {
+      console.error('UsersAPI(frontend): updateUserOccupancyError:', error);
       return undefined;
     }
   }

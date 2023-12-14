@@ -159,3 +159,65 @@ def update_user_name(user_id: str) -> Response:
         return jsonify({"user": item}), 200
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
+        
+
+@users.route("/user/update_province/<user_id>", methods=["PATCH"])
+def update_user_province(user_id: str) -> Response:
+    try:
+        print("Updating province...")
+        new_province = request.get_json().get("newProvince", "")
+        print("Updating province...")
+        query = {"uid": user_id}
+        
+        updated_user = CarbonTrackDB.users_coll.find_one_and_update(
+            query,
+            {"$set": {"province": new_province}},
+            return_document=ReturnDocument.AFTER
+        )
+
+        updated_user = User.from_json(updated_user).to_json()
+
+        return jsonify({"user": updated_user}), 200
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
+        
+    #     query = {"uid": user_id}
+        
+    #     current_user = carbon_auth.auth.current_user()
+
+    #     CarbonTrackDB.users_coll.update_one(query, {"$set": {"province": new_province}})
+
+    #     item = CarbonTrackDB.users_coll.find_one(query)
+
+    #     item = User.from_json(item).to_json()
+
+    #     return jsonify({"user": item}), 200
+    # except CarbonTrackError as e:
+    #     abort(code=400, description=f"{e}")
+
+@users.route("/user/update_occupancy/<user_id>", methods=["PATCH"])
+def update_user_occupancy(user_id: str) -> Response:
+    try:
+        print("Updating occupancy...")
+        
+        # Print received JSON payload
+        print(request.get_json())
+
+        new_occupancy = request.get_json().get("newOccupancy", 0)
+        query = {"uid": user_id}
+        
+        current_user = carbon_auth.auth.current_user()
+
+        print(f"Updating occupancy for user {user_id} to {new_occupancy}")
+
+        CarbonTrackDB.users_coll.update_one(query, {"$set": {"household": new_occupancy}})
+
+        item = CarbonTrackDB.users_coll.find_one(query)
+
+        item = User.from_json(item).to_json()
+
+        print(f"User updated: {item}")
+
+        return jsonify({"user": item}), 200
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
