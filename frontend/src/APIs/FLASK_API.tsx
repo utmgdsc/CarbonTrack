@@ -1,6 +1,6 @@
 import axios from "axios";
 import firebaseService from "../utilities/firebase";
-const FLASK_LOCAL_ADDRESS: string = "http://10.0.0.72:6050";
+const FLASK_LOCAL_ADDRESS: string = "http://192.168.2.12:6050";
 
 // Function to get the Firebase authentication token
 const getFirebaseAuthToken = async (): Promise<string | null> => {

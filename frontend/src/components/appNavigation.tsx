@@ -46,7 +46,7 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="LogIn" component={LogInScreen} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="MainApp" component={MainAppTabs} options={{ headerShown: false }} />
         <Stack.Screen name="Forum" component={Forum}  />
         
