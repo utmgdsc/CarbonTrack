@@ -5,10 +5,10 @@ const FLASK_LOCAL_ADDRESS: string = "http://10.0.0.72:6050";
 // Function to get the Firebase authentication token
 const getFirebaseAuthToken = async (): Promise<string | null> => {
   // Assume you have a Firebase authentication instance
-  const firebaseUser = await firebaseService.getFirebaseUser()
+  const firebaseUser = await firebaseService.getFirebaseUser();
   if (firebaseUser != null) {
-      // Get the user token
-    const token = await firebaseUser.getIdToken();
+    // Get the user token
+    const token = await firebaseUser.getIdToken(true);
     return token;
   } else {
     // Handle the case when the user is not signed in
@@ -24,17 +24,21 @@ const instance = axios.create({
 });
 
 // Add an interceptor to include the token in the headers of each request
-instance.interceptors.request.use(async (config) => {
-  const token = await getFirebaseAuthToken();
+instance.interceptors.request.use(
+  async (config) => {
+    const token = await getFirebaseAuthToken();
+    console.log(token);
 
-  if (token != null) {
-    config.headers.Authorization = `Bearer ${token}`;
+    if (token != null) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  async (error) => {
+    // Handle request error
+    return await Promise.reject(error);
   }
-
-  return config;
-}, async (error) => {
-  // Handle request error
-  return await Promise.reject(error);
-});
+);
 
 export default instance;

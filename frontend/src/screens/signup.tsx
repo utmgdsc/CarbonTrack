@@ -44,38 +44,37 @@ export default function SignUp(): JSX.Element {
   if (!loaded) {
     return <></>;
   }
+
   const handleSignUp = async (fields: ISignUpFields): Promise<void> => {
     const { fullName, email, password } = fields;
+
+    // create user in firebase then flask
     try {
-      await firebaseService
-        .createUser(email, password)
-        .then(async () => {
-          await UsersAPI.createUser({
-            _id: new ObjectID().toHexString() as unknown as ObjectId,
-            full_name: fullName,
-            email,
-            badges: [],
-            friends: [],
-            score: 0,
-            province: '',
-            household: 0,
-            fuel_efficiency: 0,
-          }).then((res): void => {
-            console.log(res);
-            if (typeof res === 'string') {
-              // TODO: Can we make a warning on the screen using proper design?
-              console.warn('User was not created: ' + res);
-            } else {
-              console.log('User was created succesfully:', email);
-              navigation.navigate('Welcome');
-            }
-          });
-        })
-        .catch((err) => {
-          console.warn('User was not created: ' + err);
-        });
-    } catch (error) {
-      console.error('Error when creating User:', error);
+      const userCredentials = await firebaseService.createUser(email, password);
+
+      const res = await UsersAPI.createUser({
+        _id: new ObjectID().toHexString() as unknown as ObjectId,
+        uid: userCredentials.user?.uid,
+        full_name: fullName,
+        email,
+        badges: [],
+        friends: [],
+        score: 0,
+        province: '',
+        household: 0,
+        fuel_efficiency: 0,
+        photoURL: '',
+      });
+
+      if (typeof res === 'string') {
+        console.warn('[signup.tsx - handleSignUp] User created not in Flask: ' + res);
+      } else {
+        console.log('[signup.tsx - handleSignUp] User created in Flask:', res);
+        navigation.navigate('Welcome');
+      }
+    } catch (err) {
+      console.error('[signup.tsx - handleSignUp] User not created in Flask:', err);
+
     }
   };
 

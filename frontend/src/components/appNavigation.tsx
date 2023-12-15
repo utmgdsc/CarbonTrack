@@ -5,26 +5,37 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Fontisto, AntDesign } from '@expo/vector-icons';
 import Colors from '../../assets/colorConstants';
+
 import HomeScreen from '../screens/home';
 import LogInScreen from '../screens/login';
 import SignUpScreen from '../screens/signup';
-import DashBoardScreen from '../screens/dashboard';
-import Forum from '../screens/forum';
+import WelcomeScreen from '../screens/welcomePage';
 import SignUpQuestions from '../screens/signUpQuestions';
+
+import Forum from '../screens/forum';
 import FoodForum from '../screens/Food/foodForum';
 import EnergyForum from '../screens/Energy/energyForum';
 import TransportationForum from '../screens/Transportation/transportationForum';
+import YourForms from '../screens/yourForms';
+
+import DashBoardScreen from '../screens/dashboard';
+import CommunityHub from '../screens/communityHub';
+import FootprintDecomp from '../screens/footpringDecomp';
+
+import SettingsScreen from '../screens/settings';
+import UpdatePasswordScreen from '../screens/settings/updatePassword';
+import UpdateProfileScreen from '../screens/settings/updateProfile';
+import UpdateHomeScreen from '../screens/settings/updateHomeScreen';
+
+
+
 import TransportationEntryEdit from '../screens/Transportation/transportationEntryEdit';
 import FoodHistory from '../screens/Food/foodHistory';
 import TransportationHistory from '../screens/Transportation/transportationHistory';
 import EnergyHistory from '../screens/Energy/energyHistory';
 import EnergyEntryEdit from '../screens/Energy/energyEntryEdit';
 import FoodEntryEdit from '../screens/Food/foodEntryEdit';
-import SettingsScreen from '../screens/settings';
-import YourForms from '../screens/yourForms';
-import CommunityHub from '../screens/communityHub';
-import FootprintDecomp from '../screens/footpringDecomp';
-import WelcomeScreen from '../screens/welcomePage';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +46,7 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="LogIn" component={LogInScreen} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="MainApp" component={MainAppTabs} options={{ headerShown: false }} />
         <Stack.Screen name="Forum" component={Forum}  />
         
@@ -48,6 +60,21 @@ const AppNavigation = (): JSX.Element => {
             headerTintColor: Colors.WHITE,
           }}
         />
+
+        <Stack.Screen name='UpdateProfile'
+          component={UpdateProfileScreen}
+          options={{ headerShown: false }} />
+
+        <Stack.Screen name='UpdatePassword'
+          component={UpdatePasswordScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen name='UpdateHomeInfo'
+          component={UpdateHomeScreen}
+          options={{ headerShown: false }}
+        />
+
         <Stack.Screen
           name="TransportationForum"
           component={TransportationForum}
@@ -124,23 +151,6 @@ const MainAppTabs = (): JSX.Element => {
         }}
       />
       <Tab.Screen
-        name="SettingsPage"
-        component={SettingsScreen}
-        options={{
-          title: 'Settings',
-          headerStyle: { backgroundColor: Colors.DARKGREEN },
-          headerTintColor: '#fff',
-          headerTitleStyle: { fontWeight: 'bold' },
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name={'settings'}
-              size={24}
-              style={{ color: (focused as boolean) ? Colors.LIGHTFGREEN : Colors.WHITE }}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="YourForms"
         component={YourForms}
         options={{
@@ -176,7 +186,25 @@ const MainAppTabs = (): JSX.Element => {
           ),
         }}
       />
+            <Tab.Screen
+        name="SettingsPage"
+        component={SettingsScreen}
+        options={{
+          title: 'Settings',
+          headerStyle: { backgroundColor: Colors.DARKGREEN },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: 'bold' },
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name={'settings'}
+              size={24}
+              style={{ color: (focused as boolean) ? Colors.LIGHTFGREEN : Colors.WHITE }}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
+
   );
 };
 

@@ -26,3 +26,11 @@ class FirebaseAPI:
             item = CarbonTrackDB.users_coll.find_one(query)
             item = User.from_json(item)
             return item
+    @staticmethod
+    def refresh_token(user_id):
+        try:
+            user = auth.get_user(user_id)
+            new_id_token = user.refresh_id_tokens()
+            return new_id_token
+        except auth.AuthError as e:
+            raise e
