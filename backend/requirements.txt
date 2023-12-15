@@ -4,3 +4,5 @@ Flask_Cors==4.0.0
 Flask_HTTPAuth==4.8.0
 pymongo==4.6.0
 ruff==0.1.4
+typing~=3.7.4.3
+werkzeug~=3.0.1

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,19 +8,13 @@ import {
   ImageBackground,
   FlatList,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
 import type { RootStackParamList } from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
+import { UsersAPI } from '../APIs/UsersAPI';
+import { getUserLevel, type RankUser } from '../models/User';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
-
-interface User {
-  rank: number;
-  name: string;
-  footprint: number;
-  level: number;
-}
 
 interface Challenge {
   id: number;
@@ -35,34 +29,14 @@ export default function DashBoardScreen(): JSX.Element {
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
-  const topUsersMonthly: User[] = [
-    { rank: 1, name: 'User 1', footprint: 90, level: 10 },
-    { rank: 2, name: 'User 2', footprint: 100, level: 9 },
-    { rank: 3, name: 'User 3', footprint: 110, level: 9 },
-    { rank: 4, name: 'User 4', footprint: 115, level: 8 },
-    { rank: 5, name: 'User 5', footprint: 120, level: 8 },
-    { rank: 6, name: 'User 6', footprint: 125, level: 7 },
-    { rank: 7, name: 'User 7', footprint: 130, level: 7 },
-    { rank: 8, name: 'User 8', footprint: 135, level: 7 },
-    // Monthly Leaderboard
-    // Add more user data up to rank 10
-  ];
-  const topUsersOverall: User[] = [
-    { rank: 1, name: 'User 1', footprint: 80, level: 14 },
-    { rank: 2, name: 'User 2', footprint: 90, level: 13 },
-    { rank: 3, name: 'User 3', footprint: 110, level: 9 },
-    { rank: 4, name: 'User 4', footprint: 115, level: 8 },
-    { rank: 5, name: 'User 5', footprint: 120, level: 8 },
-    { rank: 6, name: 'User 6', footprint: 125, level: 7 },
-    { rank: 7, name: 'User 7', footprint: 130, level: 7 },
-    { rank: 8, name: 'User 8', footprint: 135, level: 7 },
-    // Overall LeaderBoard
-    // Add more user data up to rank 10
-  ];
+  const [topUsersMonthly, setMonthlyUsers] = useState<RankUser[]>([]);
+  const [, setYearlyUsers] = useState<RankUser[]>([]);
+  const [topUsersOverall, setOverallUsers] = useState<RankUser[]>([]);
+
   // User's monthly rank
-  const userRankMonthly: User = { rank: 89, name: 'Squishyhoshi', footprint: 200, level: 5 };
+  const userRankMonthly: RankUser = { rank: 89, name: 'Squishyhoshi', footprint: 200, score: 5 };
   // User's yearly/overall rank
-  const userRankOverall: User = { rank: 89, name: 'Squishyhoshi', footprint: 200, level: 5 };
+  const userRankOverall: RankUser = { rank: 89, name: 'Squishyhoshi', footprint: 200, score: 5 };
 
   const MonthlyLeaderboard = (): JSX.Element => {
     return (
@@ -79,7 +53,7 @@ export default function DashBoardScreen(): JSX.Element {
                   {item.name}
                 </Text>
                 <Text style={styles.item}>{item.footprint}</Text>
-                <Text style={styles.item}>{item.level}</Text>
+                <Text style={styles.item}>{getUserLevel(item.score)}</Text>
               </View>
             )}
             nestedScrollEnabled
@@ -91,7 +65,7 @@ export default function DashBoardScreen(): JSX.Element {
             {userRankMonthly.name}
           </Text>
           <Text style={styles.item}>{userRankMonthly.footprint}</Text>
-          <Text style={styles.item}>{userRankMonthly.level}</Text>
+          <Text style={styles.item}>{getUserLevel(userRankMonthly.score)}</Text>
         </View>
       </View>
     );
@@ -112,7 +86,7 @@ export default function DashBoardScreen(): JSX.Element {
                   {item.name}
                 </Text>
                 <Text style={styles.item}>{item.footprint}</Text>
-                <Text style={styles.item}>{item.level}</Text>
+                <Text style={styles.item}>{getUserLevel(item.score)}</Text>
               </View>
             )}
             nestedScrollEnabled
@@ -124,7 +98,7 @@ export default function DashBoardScreen(): JSX.Element {
             {userRankOverall.name}
           </Text>
           <Text style={styles.item}>{userRankOverall.footprint}</Text>
-          <Text style={styles.item}>{userRankOverall.level}</Text>
+          <Text style={styles.item}>{getUserLevel(userRankOverall.score)}</Text>
         </View>
       </View>
     );
@@ -183,12 +157,25 @@ export default function DashBoardScreen(): JSX.Element {
     );
   };
 
+  useEffect(() => {
+    void UsersAPI.getTopUsers(10).then(async (res) => {
+      if (res != null) {
+        if (res.top_monthly_users != null && res.top_yearly_users != null && res.top_overall_users != null) {
+          setMonthlyUsers(res.top_monthly_users);
+          setYearlyUsers(res.top_yearly_users);
+          setOverallUsers(res.top_overall_users);
+          console.log(res.top_overall_users)
+        }
+      }
+    });
+  }, [loaded]);
+
   if (!loaded) {
     return <></>;
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.halfScreen}>
           <ImageBackground
@@ -255,7 +242,7 @@ export default function DashBoardScreen(): JSX.Element {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
