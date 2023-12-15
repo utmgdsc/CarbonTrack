@@ -59,7 +59,7 @@ export default function SignUp(): JSX.Element {
         email,
         badges: [],
         friends: [],
-        score: 0,
+        overall_score: 0,
         province: '',
         household: 0,
         fuel_efficiency: 0,
