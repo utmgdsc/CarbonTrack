@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal, Linking } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import * as React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useEffect, useState } from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
@@ -56,31 +55,12 @@ export default function TransportationEntryEdit(): JSX.Element {
     }
   };
 
-  const openLink = async (url: string): Promise<void> => {
-    const supported = await Linking.canOpenURL(url);
-
-    if (supported) {
-      await Linking.openURL(url);
-    } else {
-      console.error('Cannot open the URL');
-    }
-  };
-
-  const handleLinkPress = (): void => {
-    const url = 'https://fcr-ccc.nrcan-rncan.gc.ca/en';
-    openLink(url).catch((error) => {
-      console.error('Error opening link:', error);
-    });
-  };
-
   const [loaded] = useFonts({
     Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
   const navigation = useNavigation<StackNavigation>();
-
-  const [modalVisible, setModalVisible] = useState(false);
 
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
@@ -97,7 +77,7 @@ export default function TransportationEntryEdit(): JSX.Element {
         date: transportationEntry.date,
       };
       void TransportationAPI.updateTransportation(newEntry).then(() => {
-        navigation.navigate('TransportationHistory');
+        navigation.navigate('DashBoard');
       });
     }
   };
@@ -160,29 +140,6 @@ export default function TransportationEntryEdit(): JSX.Element {
       <ScrollView style={styles.scrollContainer}>
         <Text style={styles.header}>Calculate your emissions from transportation:</Text>
 
-        <Modal transparent={true} visible={modalVisible}>
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContainer}>
-              <Text style={styles.infoText}>
-                If you don&apos;t know your vehicle&apos;s fuel efficiency, it&apos;s available
-                online{' '}
-                <Text style={styles.linkText} onPress={handleLinkPress}>
-                  here
-                </Text>
-                . Select the &quot;combination&quot; value under Comsumption in L/100km. The average
-                fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L / 100
-                km.
-              </Text>
-              <TouchableOpacity
-                style={styles.closeIcon}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Icon name="times-circle" size={30} color={Colors.DARKGREEN} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-
         <Text style={styles.header}>
           On average, how much distance do you travel using the following methods per week:
         </Text>
@@ -231,19 +188,6 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 12,
   },
-  modalBackground: {
-    backgroundColor: Colors.BLACKTRANS,
-    flex: 1,
-  },
-  modalContainer: {
-    backgroundColor: Colors.WHITE,
-    marginHorizontal: 50,
-    marginVertical: 180,
-    padding: 20,
-    borderRadius: 10,
-    flex: 1,
-    flexDirection: 'row',
-  },
   scrollContainer: {
     paddingTop: 30,
     flex: 1,
@@ -281,16 +225,6 @@ const styles = StyleSheet.create({
   },
   questionContainer: {
     paddingBottom: 30,
-  },
-  infoText: {
-    fontSize: 20,
-    color: Colors.DARKGREEN,
-  },
-  linkText: {
-    color: Colors.BLUE,
-  },
-  closeIcon: {
-    marginLeft: 'auto',
   },
   silder: {
     height: 50,
