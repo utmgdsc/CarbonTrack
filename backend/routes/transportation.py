@@ -6,7 +6,7 @@ import flask
 from models.user import User
 from models.transportation import TransportationEntry, TransportationEntryRecommendation
 from mongodb_api.carbon_track_db import CarbonTrackDB
-from routes import carbon_auth, users
+from routes import carbon_auth
 from utils.carbon_track_errors import CarbonTrackError
 from utils.metric_resets import weekly_metric_reset
 from utils.FirebaseAPI import FirebaseAPI

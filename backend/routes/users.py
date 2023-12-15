@@ -8,17 +8,6 @@ from utils.carbon_track_errors import CarbonTrackError
 
 users = Blueprint('/users', __name__)
 
-@carbon_auth.auth.login_required
-def get_user_obj(user_id: ObjectId) -> User:
-    try:
-        query = {"_id": user_id}
-        item = CarbonTrackDB.users_coll.find_one(query)
-        user = User.from_json(item)
-        return user
-    except CarbonTrackError as e:
-        abort(code=400, description=f"{e}")
-
-
 @users.route("/user/<user_id>", methods=['GET'])
 @carbon_auth.auth.login_required
 def get_user(user_id: str) -> Response:
