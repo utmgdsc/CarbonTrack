@@ -14,19 +14,23 @@ class User(DB_MODEL):
     email: str
     badges: list[str]
     friends: list[str]
-    score: int
+    monthly_score: int
+    yearly_score: int
+    overall_score: int
     province: str
     household: int
     fuel_efficiency: float
 
-    def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], 
-                 score:int, province:str, household:int, fuel_efficiency: float) -> None:
+    def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], monthly_score:int,
+                 yearly_score:int, overall_score:int, province:str, household:int, fuel_efficiency: float) -> None:
         super().__init__(oid)
         self.full_name = str(full_name)
         self.email = str(email)
         self.badges = badges
         self.friends = friends
-        self.score = score
+        self.monthly_score = monthly_score
+        self.yearly_score = yearly_score
+        self.overall_score = overall_score
         self.province = province
         self.household = household
         self.fuel_efficiency = fuel_efficiency
@@ -38,7 +42,9 @@ class User(DB_MODEL):
             'email': self.email,
             'badges': self.badges,
             'friends': self.friends,
-            'score': self.score,
+            'monthly_score': self.monthly_score,
+            'yearly_score': self.yearly_score,
+            'overall_score': self.overall_score,
             'province': self.province,
             'household': self.household,
             'fuel_efficiency': self.fuel_efficiency
@@ -52,7 +58,9 @@ class User(DB_MODEL):
             email=doc["email"],
             badges=doc["badges"],
             friends=doc["friends"],
-            score=doc["score"],
+            monthly_score=doc["monthly_score"],
+            yearly_score=doc["yearly_score"],
+            overall_score=doc["overall_score"],
             province=doc["province"],
             household=doc["household"],
             fuel_efficiency=doc["fuel_efficiency"]
