@@ -70,10 +70,11 @@ export default function SignUp(): JSX.Element {
         console.warn('[signup.tsx - handleSignUp] User created not in Flask: ' + res);
       } else {
         console.log('[signup.tsx - handleSignUp] User created in Flask:', res);
-        navigation.navigate('SignUpQuestions');
+        navigation.navigate('Welcome');
       }
     } catch (err) {
       console.error('[signup.tsx - handleSignUp] User not created in Flask:', err);
+
     }
   };
 

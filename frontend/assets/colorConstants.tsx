@@ -3,7 +3,9 @@ const Colors = {
   DARKGREEN: '#10302b',
   DARKGREEN2: '#224A3E',
   DARKGREEN3: '#2E5C4E',
-  WHITE: '#fff',
+  LIGHTGREENBUTTON: '#a5ba8f',
+  LIGHTGREENBACK: '#C7E0A6',
+  WHITE: '#ffffff',
   BLACK: '#000000',
   DARKLIMEGREEN: '#4B8552',
   GREY: '#ccc',
@@ -17,6 +19,7 @@ const Colors = {
   TRANSLIGHTGREEN2: '#b3c99d',
   TRANSGREENBACK: '#07332b',
   DARKDARKGREEN: '#031c19',
+  GREYGREEN: '#B4C792',
 };
 
 export default Colors;

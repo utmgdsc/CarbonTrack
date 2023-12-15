@@ -9,6 +9,14 @@ import Colors from '../../assets/colorConstants';
 import HomeScreen from '../screens/home';
 import LogInScreen from '../screens/login';
 import SignUpScreen from '../screens/signup';
+import WelcomeScreen from '../screens/welcomePage';
+import SignUpQuestions from '../screens/signUpQuestions';
+
+import Forum from '../screens/forum';
+import FoodForum from '../screens/Food/foodForum';
+import EnergyForum from '../screens/Energy/energyForum';
+import TransportationForum from '../screens/Transportation/transportationForum';
+import YourForms from '../screens/yourForms';
 
 import DashBoardScreen from '../screens/dashboard';
 import CommunityHub from '../screens/communityHub';
@@ -20,12 +28,6 @@ import UpdateProfileScreen from '../screens/settings/updateProfile';
 import UpdateHomeScreen from '../screens/settings/updateHomeScreen';
 
 
-import Forum from '../screens/forum';
-import SignUpQuestions from '../screens/signUpQuestions';
-import FoodForum from '../screens/Food/foodForum';
-import EnergyForum from '../screens/Energy/energyForum';
-import TransportationForum from '../screens/Transportation/transportationForum';
-import YourForms from '../screens/yourForms';
 
 import TransportationEntryEdit from '../screens/Transportation/transportationEntryEdit';
 import FoodHistory from '../screens/Food/foodHistory';
@@ -33,7 +35,6 @@ import TransportationHistory from '../screens/Transportation/transportationHisto
 import EnergyHistory from '../screens/Energy/energyHistory';
 import EnergyEntryEdit from '../screens/Energy/energyEntryEdit';
 import FoodEntryEdit from '../screens/Food/foodEntryEdit';
-
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -112,6 +113,11 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen
           name="SignUpQuestions"
           component={SignUpQuestions}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

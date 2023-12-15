@@ -5,12 +5,12 @@ import { getUserLevel } from '../models/User';
 import { type ExpProgressBarProps } from './types';
 
 const ExpProgressBar: React.FC<ExpProgressBarProps> = ({ thisUser }) => {
-    const lvl = getUserLevel(thisUser); 
+    const lvl = getUserLevel(thisUser.overall_score); 
     // testing--const lvl = 7;
     const lvlThresh = [250, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000];
     const maxExp = lvlThresh[lvl - 1];
 
-    const curr = thisUser.score;
+    const curr = thisUser.overall_score;
     // testing--const curr = 14039;
 
   const progress = (curr / maxExp) * 100;

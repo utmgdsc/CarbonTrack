@@ -1,5 +1,5 @@
 import FLASK_HTTPS from './FLASK_API';
-import type { User } from '../models/User';
+import type { TopUsersLists, User } from '../models/User';
 import firebaseService from '../utilities/firebase';
 import { type ObjectId } from 'mongodb';
 import axios, { type AxiosError } from 'axios';
@@ -34,7 +34,20 @@ export const UsersAPI = {
       return undefined;
     }
   },
-
+  
+  getTopUsers: async (count: number)=> {
+    try {
+      const res = await FLASK_HTTPS.post(routeName + '/get_top_users', {
+        count,
+      });
+      return res.data as TopUsersLists;
+    } catch (error) {
+      console.error('Error fetching user from Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
+  },
+  
   getUserByEmail: async (email: string) => {
     try {
       const res = await FLASK_HTTPS.get(routeName + '/user_email/' + email);
