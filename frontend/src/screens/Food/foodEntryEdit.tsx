@@ -1,14 +1,5 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Modal,
-  Linking,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import * as React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useEffect, useState } from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
@@ -76,31 +67,12 @@ export default function FoodEntryEdit(): JSX.Element {
     }
   };
 
-  const openLink = async (url: string): Promise<void> => {
-    const supported = await Linking.canOpenURL(url);
-
-    if (supported) {
-      await Linking.openURL(url);
-    } else {
-      console.error('Cannot open the URL');
-    }
-  };
-
-  const handleLinkPress = (): void => {
-    const url = 'https://fcr-ccc.nrcan-rncan.gc.ca/en';
-    openLink(url).catch((error) => {
-      console.error('Error opening link:', error);
-    });
-  };
-
   const [loaded] = useFonts({
     Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
   const navigation = useNavigation<StackNavigation>();
-
-  const [modalVisible, setModalVisible] = useState(false);
 
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
@@ -118,24 +90,22 @@ export default function FoodEntryEdit(): JSX.Element {
         cheese: cheeseConsumption,
         milk: milkConsumption,
         food_waste: foodWaste,
-      }
+      };
       void FoodAPI.updateFood(newEntry).then(() => {
-        navigation.navigate('FoodHistory');
-      })
+        navigation.navigate('DashBoard');
+      });
     }
   };
 
   useEffect(() => {
     if (foodEntry != null) {
       setSliderData([
-        { id: 1, label: 'Beef', minValue: 0, maxValue: 800, initialValue: foodEntry.beef },
-        { id: 2, label: 'Lamb', minValue: 0, maxValue: 800, initialValue: foodEntry.lamb },
-        { id: 3, label: 'Pork', minValue: 0, maxValue: 800, initialValue: foodEntry.pork },
-        { id: 4, label: 'Chicken', minValue: 0, maxValue: 800, initialValue: foodEntry.chicken },
-        { id: 5, label: 'Fish', minValue: 0, maxValue: 800, initialValue: foodEntry.fish },
-        { id: 6, label: 'Cheese', minValue: 0, maxValue: 800, initialValue: foodEntry.cheese },
-        { id: 7, label: 'Milk', minValue: 0, maxValue: 800, initialValue: foodEntry.milk },
-        { id: 8, label: 'Food Waste', minValue: 0, maxValue: 800, initialValue: foodEntry.food_waste },
+        { id: 1, label: 'Beef', minValue: 0, maxValue: 8, initialValue: foodEntry.beef },
+        { id: 2, label: 'Lamb', minValue: 0, maxValue: 8, initialValue: foodEntry.lamb },
+        { id: 3, label: 'Pork', minValue: 0, maxValue: 8, initialValue: foodEntry.pork },
+        { id: 4, label: 'Chicken', minValue: 0, maxValue: 8, initialValue: foodEntry.chicken },
+        { id: 5, label: 'Fish', minValue: 0, maxValue: 8, initialValue: foodEntry.fish },
+        { id: 6, label: 'Cheese', minValue: 0, maxValue: 8, initialValue: foodEntry.cheese },
       ]);
       setBeefConsumption(foodEntry.beef);
       setLambConsumption(foodEntry.lamb);
@@ -151,10 +121,10 @@ export default function FoodEntryEdit(): JSX.Element {
   useEffect(() => {
     void FoodAPI.getFoodMetricForToday().then((res) => {
       if (res != null) {
-        setFoodEntry(res)
+        setFoodEntry(res);
       }
-    })
-  }, [loaded])
+    });
+  }, [loaded]);
 
   if (!loaded || slidersData.length === 0) {
     return <></>;
@@ -165,43 +135,16 @@ export default function FoodEntryEdit(): JSX.Element {
       <ScrollView style={styles.scrollContainer}>
         <Text style={styles.header}>Calculate your emissions from food:</Text>
 
-        <Modal transparent={true} visible={modalVisible}>
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContainer}>
-              <Text style={styles.infoText}>
-                If you don&apos;t know your vehicle&apos;s fuel efficiency, it&apos;s available
-                online{' '}
-                <Text style={styles.linkText} onPress={handleLinkPress}>
-                  here
-                </Text>
-                . Select the &quot;combination&quot; value under Comsumption in L/100km. The average
-                fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L / 100
-                km.
-              </Text>
-              <TouchableOpacity
-                style={styles.closeIcon}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Icon name="times-circle" size={30} color={Colors.DARKGREEN} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-
-        <Text style={styles.header}>
-          On average, how much distance do you travel using the following methods per week:
-        </Text>
-
         {slidersData.map((slider, index) => (
           <View style={styles.questionContainer} key={slider.id}>
             <Text style={styles.question}>
-              {slider.label}: {slidersData[index].initialValue} km
+              {slider.label}: {slidersData[index].initialValue} Servings
             </Text>
             <Slider
               style={styles.silder}
               minimumValue={slider.minValue}
               maximumValue={slider.maxValue}
-              step={50}
+              step={1}
               minimumTrackTintColor={Colors.DARKGREEN}
               maximumTrackTintColor={Colors.FILLGREEN}
               thumbTintColor={Colors.WHITE}
@@ -215,6 +158,32 @@ export default function FoodEntryEdit(): JSX.Element {
             {/* You can include additional components related to this slider here */}
           </View>
         ))}
+
+        <View style={styles.questionContainer}>
+          <Text style={styles.question}>How many cups of milk do you drink per week:</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            placeholder={String(foodEntry?.milk)}
+            onChangeText={(text) => {
+              setMilkConsumption(Number(text));
+            }}
+          />
+        </View>
+
+        <View style={styles.questionContainer}>
+          <Text style={styles.question}>
+            On average, how much food waste do you produce, in grams:
+          </Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            placeholder={String(foodEntry?.food_waste)}
+            onChangeText={(text) => {
+              setFoodWaste(Number(text) / 100);
+            }}
+          />
+        </View>
 
         <TouchableOpacity style={styles.buttoning} onPress={handleSurveySubmit}>
           <Text style={styles.buttoningText}>Save</Text>
@@ -235,19 +204,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 12,
-  },
-  modalBackground: {
-    backgroundColor: Colors.BLACKTRANS,
-    flex: 1,
-  },
-  modalContainer: {
-    backgroundColor: Colors.WHITE,
-    marginHorizontal: 50,
-    marginVertical: 180,
-    padding: 20,
-    borderRadius: 10,
-    flex: 1,
-    flexDirection: 'row',
   },
   scrollContainer: {
     paddingTop: 30,
@@ -287,15 +243,13 @@ const styles = StyleSheet.create({
   questionContainer: {
     paddingBottom: 30,
   },
-  infoText: {
-    fontSize: 20,
-    color: Colors.DARKGREEN,
-  },
-  linkText: {
-    color: Colors.BLUE,
-  },
-  closeIcon: {
-    marginLeft: 'auto',
+  input: {
+    borderWidth: 1,
+    borderColor: Colors.GREY,
+    padding: 8,
+    margin: 10,
+    width: 200,
+    backgroundColor: Colors.WHITE,
   },
   silder: {
     height: 50,
