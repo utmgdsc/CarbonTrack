@@ -55,10 +55,10 @@ def get_energy_entries_for_user_using_date_range() -> Response:
 def get_energy_metric_for_today(user_id: str) -> Response:
     try:
         user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
-        query = {"user_id": ObjectId(user.id), "date": weekly_metric_reset(datetime.now())}
+        query = {"user_id": ObjectId(user.oid), "date": weekly_metric_reset(datetime.now())}
         item = CarbonTrackDB.energy_coll.find_one(query)
         if item is None:
-            create_energy(ObjectId(user.id))
+            create_energy(ObjectId(user.oid))
             return get_energy_metric_for_today(user_id)
         else:
             item = EnergyEntry.from_json(item).to_json()
@@ -102,10 +102,10 @@ def update_energy(oid: str) -> Response:
 def get_energy_recommendation_for_today() -> Response:
     try:
         user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
-        query = {"user_id": ObjectId(user.id), "date": weekly_metric_reset(datetime.now())}
+        query = {"user_id": ObjectId(user.oid), "date": weekly_metric_reset(datetime.now())}
         item = CarbonTrackDB.energy_coll.find_one(query)
         if item is None:
-            create_energy(ObjectId(user.id))
+            create_energy(ObjectId(user.oid))
             return get_energy_metric_for_today()
         else:
             item = EnergyEntry.from_json(item)
