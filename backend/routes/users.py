@@ -84,13 +84,13 @@ def get_top_users() -> Response:
 @users.route("/user_email/<user_email>", methods=['GET'])
 @carbon_auth.auth.login_required
 def get_user_by_email(user_email: str) -> Response:
-    # try:
-    query = {"email": user_email}
-    item = CarbonTrackDB.users_coll.find_one(query)
-    item = User.from_json(item).to_json()
-    return jsonify({'user': item})
-    # except CarbonTrackError as e:
-    abort(code=400, description=f"{e}")
+    try:
+        query = {"email": user_email}
+        item = CarbonTrackDB.users_coll.find_one(query)
+        item = User.from_json(item).to_json()
+        return jsonify({'user': item})
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
 
 
 @users.route("/user", methods=['PUT'])
