@@ -1,5 +1,5 @@
 import FLASK_HTTPS from './FLASK_API';
-import type { User } from '../models/User';
+import type { TopUsersLists, User } from '../models/User';
 import firebaseService from '../utilities/firebase';
 import { type ObjectId } from 'mongodb';
 
@@ -32,7 +32,7 @@ export const UsersAPI = {
       const res = await FLASK_HTTPS.post(routeName + '/get_top_users', {
         count,
       });
-      return res.data.top_users as User;
+      return res.data as TopUsersLists;
     } catch (error) {
       console.error('Error fetching user from Flask BE: ', error);
       console.error('Temp tip: have you started the backend?: ');

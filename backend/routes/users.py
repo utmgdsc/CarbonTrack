@@ -28,16 +28,49 @@ def get_top_users() -> Response:
         count = request.get_json()["count"]
 
         # Monthly
-        top_monthly_users = CarbonTrackDB.users_coll.find().sort("score", -1).limit(count)
-        top_monthly_users = [User.from_json(user).to_json() for user in top_monthly_users]
+        _top_monthly_users = CarbonTrackDB.users_coll.find().sort("monthly_score", -1).limit(count)
+        top_monthly_users = []
+        rank = 1
+        for user in _top_monthly_users:
+            obj = User.from_json(user)
+            user = {
+                'rank': rank,
+                'name': obj.full_name,
+                'footprint': 0,
+                'score': obj.overall_score,
+            }
+            rank += 1
+            top_monthly_users.append(user)
 
         # Yearly
-        top_yearly_users = CarbonTrackDB.users_coll.find().sort("score", -1).limit(count)
-        top_yearly_users = [User.from_json(user).to_json() for user in top_yearly_users]
+        _top_yearly_users = CarbonTrackDB.users_coll.find().sort("yearly_score", -1).limit(count)
+        top_yearly_users = []
+        rank = 1
+        for user in _top_yearly_users:
+            obj = User.from_json(user)
+            user = {
+                'rank': rank,
+                'name': obj.full_name,
+                'footprint': 0,
+                'score': obj.overall_score,
+            }
+            rank += 1
+            top_yearly_users.append(user)
 
         # Overall
-        top_overall_users = CarbonTrackDB.users_coll.find().sort("score", -1).limit(count)
-        top_overall_users = [User.from_json(user).to_json() for user in top_overall_users]
+        _top_overall_users = CarbonTrackDB.users_coll.find().sort("overall_score", -1).limit(count)
+        top_overall_users = []
+        rank = 1
+        for user in _top_overall_users:
+            obj = User.from_json(user)
+            user = {
+                'rank': rank,
+                'name': obj.full_name,
+                'footprint': 0,
+                'score': obj.overall_score,
+            }
+            rank += 1
+            top_overall_users.append(user)
 
         return jsonify({
             'top_monthly_users': top_monthly_users,
@@ -51,13 +84,13 @@ def get_top_users() -> Response:
 @users.route("/user_email/<user_email>", methods=['GET'])
 @carbon_auth.auth.login_required
 def get_user_by_email(user_email: str) -> Response:
-    try:
-        query = {"email": user_email}
-        item = CarbonTrackDB.users_coll.find_one(query)
-        item = User.from_json(item).to_json()
-        return jsonify({'user': item})
-    except CarbonTrackError as e:
-        abort(code=400, description=f"{e}")
+    # try:
+    query = {"email": user_email}
+    item = CarbonTrackDB.users_coll.find_one(query)
+    item = User.from_json(item).to_json()
+    return jsonify({'user': item})
+    # except CarbonTrackError as e:
+    abort(code=400, description=f"{e}")
 
 
 @users.route("/user", methods=['PUT'])
@@ -108,5 +141,3 @@ def update_user(user_id: str) -> Response:
         return jsonify({'user': item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
-
-
