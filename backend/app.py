@@ -2,18 +2,20 @@
 from flask import Flask, Response, jsonify
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
+import ct_confiq
+from utils.customJSONEncoder import CustomJSONProvider
 
+# SERVICES
 from routes.ct_firebase_service import ct_firebase_service
-# Imports
 from routes.users import users
 from routes.transportation import transportation_service
-from utils.customJSONEncoder import CustomJSONProvider
 from routes.food import food_service
 from routes.energy import energy_service
 
 
 app = Flask(__name__)
 app.json = CustomJSONProvider(app)
+ct_confiq.run_carbon_track_configurations()
 
 # Services
 app.register_blueprint(users, url_prefix="/users")

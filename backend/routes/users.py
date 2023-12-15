@@ -21,6 +21,66 @@ def get_user(user_id: str) -> Response:
         abort(code=400, description=f"{e}")
 
 
+@users.route("/get_top_users", methods=['POST'])
+@carbon_auth.auth.login_required
+def get_top_users() -> Response:
+    try:
+        count = request.get_json()["count"]
+
+        # Monthly
+        _top_monthly_users = CarbonTrackDB.users_coll.find().sort("monthly_score", -1).limit(count)
+        top_monthly_users = []
+        rank = 1
+        for user in _top_monthly_users:
+            obj = User.from_json(user)
+            user = {
+                'rank': rank,
+                'name': obj.full_name,
+                'footprint': 0,
+                'score': obj.overall_score,
+            }
+            rank += 1
+            top_monthly_users.append(user)
+
+        # Yearly
+        _top_yearly_users = CarbonTrackDB.users_coll.find().sort("yearly_score", -1).limit(count)
+        top_yearly_users = []
+        rank = 1
+        for user in _top_yearly_users:
+            obj = User.from_json(user)
+            user = {
+                'rank': rank,
+                'name': obj.full_name,
+                'footprint': 0,
+                'score': obj.overall_score,
+            }
+            rank += 1
+            top_yearly_users.append(user)
+
+        # Overall
+        _top_overall_users = CarbonTrackDB.users_coll.find().sort("overall_score", -1).limit(count)
+        top_overall_users = []
+        rank = 1
+        for user in _top_overall_users:
+            obj = User.from_json(user)
+            user = {
+                'rank': rank,
+                'name': obj.full_name,
+                'footprint': 0,
+                'score': obj.overall_score,
+            }
+            rank += 1
+            top_overall_users.append(user)
+
+        return jsonify({
+            'top_monthly_users': top_monthly_users,
+            'top_yearly_users': top_yearly_users,
+            'top_overall_users': top_overall_users,
+        })
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
+
+
 @users.route("/user_email/<user_email>", methods=['GET'])
 @carbon_auth.auth.login_required
 def get_user_by_email(user_email: str) -> Response:
@@ -81,5 +141,3 @@ def update_user(user_id: str) -> Response:
         return jsonify({'user': item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
-
-
