@@ -3,6 +3,7 @@ from datetime import datetime
 from bson import ObjectId
 from flask import Blueprint, Response, abort, jsonify, request
 import flask
+from models.user import User
 from models.transportation import TransportationEntry, TransportationEntryRecommendation
 from mongodb_api.carbon_track_db import CarbonTrackDB
 from routes import carbon_auth, users
@@ -53,11 +54,11 @@ def get_transportation_entries_for_user_using_date_range() -> Response:
 def get_transportation_metric_for_today() -> Response:
     try:
         user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
-        query = {"user_id": ObjectId(user.oid), "date": weekly_metric_reset(datetime.now())}
+        query = {"user_id": ObjectId(user.id), "date": weekly_metric_reset(datetime.now())}
         item = CarbonTrackDB.transportation_coll.find_one(query)
         if item is None:
-            create_transportation(ObjectId(user.oid))
-            return get_transportation_metric_for_today()
+            create_transportation(ObjectId(user.id))
+            return get_transportation_metric_for_today(user.id)
         else:
             item = TransportationEntry.from_json(item).to_json()
             return jsonify({'transportation': item})
@@ -68,7 +69,7 @@ def get_transportation_metric_for_today() -> Response:
 @carbon_auth.auth.login_required
 def create_transportation(user_id: ObjectId) -> Response:
     try:
-        user = users.get_user_obj(user_id)
+        user = User.from_json(CarbonTrackDB.users_coll.find_one({'_id': user_id}))
         transportation = TransportationEntry(oid=ObjectId(), user_id=user_id, carbon_emissions=0, date=weekly_metric_reset(datetime.today()),
                                              bus=0, train=0, motorbike=0, electric_car=0, gasoline_car=0, fuel_efficiency=user.fuel_efficiency)
         transportation = transportation.to_json()
@@ -101,10 +102,10 @@ def update_transportation(oid: str) -> Response:
 def get_transportation_recommendation_for_today() -> Response:
     try:
         user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
-        query = {"user_id": ObjectId(user.oid), "date": weekly_metric_reset(datetime.now())}
+        query = {"user_id": ObjectId(user.id), "date": weekly_metric_reset(datetime.now())}
         item = CarbonTrackDB.transportation_coll.find_one(query)
         if item is None:
-            create_transportation(ObjectId(user.oid))
+            create_transportation(ObjectId(user.id))
             return get_transportation_recommendation_for_today()
         else:
             item = TransportationEntry.from_json(item)

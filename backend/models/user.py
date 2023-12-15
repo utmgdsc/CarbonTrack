@@ -19,7 +19,8 @@ class User(DB_MODEL):
     household: int
     fuel_efficiency: float
 
-    def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], score:int, province:str, household:int, fuel_efficiency: float) -> None:
+    def __init__(self, oid: ObjectId, full_name: str, email: str, badges: list[str], friends: list[str], 
+                 score:int, province:str, household:int, fuel_efficiency: float) -> None:
         super().__init__(oid)
         self.full_name = str(full_name)
         self.email = str(email)

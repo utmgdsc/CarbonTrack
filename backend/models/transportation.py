@@ -124,8 +124,8 @@ class TransportationEntryRecommendation(DB_MODEL):
         bus_carbon_emissions = transportation_entry.bus * 0.103
         train_carbon_emissions = transportation_entry.train * 0.037
         motorbike_carbon_emissions = transportation_entry.motorbike * 0.113
-        electric_car_carbon_emissions = transportation_entry.electric_car * 0.4
-        gasoline_car_carbon_emissions = transportation_entry.gasoline_car * 2.3
+        electric_car_carbon_emissions = ((transportation_entry.fuel_efficiency * 8.9 * 0.4)/100) * transportation_entry.electric_car
+        gasoline_car_carbon_emissions = ((transportation_entry.fuel_efficiency * 2.3)/100) * transportation_entry.gasoline_car 
 
         if bus_carbon_emissions > submetric_threshold:
             bus_recommendation = "Bus emissions too high"

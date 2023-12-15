@@ -165,10 +165,10 @@ class EnergyEntryRecommendation(CARBON_MODEL):
             heating_oil_recommendation = "Heating oil emissions too high"
 
         if natural_gas_carbon_emissions > submetric_threshold:
-            natural_gas_recommendation = "Heating oil emissions too high"
+            natural_gas_recommendation = "Natural gas emissions too high"
 
         if electricity_carbon_emissions > submetric_threshold:
-            electricity_recommendation = "Heating oil emissions too high"
+            electricity_recommendation = "Electricity emissions too high"
 
         return EnergyEntryRecommendation(heating_oil_recommendation, natural_gas_recommendation, electricity_recommendation)
         
