@@ -1,8 +1,8 @@
-import { type ObjectId } from "mongodb";
-
+import { type ObjectId } from 'mongodb';
 
 export interface User {
     _id: ObjectId
+    uid: string;
     full_name: string
     email: string
     badges: string[]
@@ -11,6 +11,7 @@ export interface User {
     province: string
     household: number
     fuel_efficiency: number
+    photoURL: string;
 }
 
 

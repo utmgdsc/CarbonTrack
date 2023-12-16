@@ -28,7 +28,6 @@ export interface WidgetBoxProps {
 }
 
 export interface profileWidgetBoxProps {
-  photoURL: string;
   user: User;
 }
 
@@ -48,3 +47,5 @@ export interface challengesProps {
 export interface ExpProgressBarProps {
   thisUser: User,
 }
+
+

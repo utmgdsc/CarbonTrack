@@ -4,11 +4,13 @@ import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
 import { useFonts } from 'expo-font';
 import Colors from '../../../assets/colorConstants';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import foodSliderData from '../../../assets/foodQuestions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
+import { FoodAPI } from '../../APIs/FoodAPI';
+import { type FoodEntry } from '../../models/Food';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -44,35 +46,66 @@ export default function FoodForum(): JSX.Element {
         setChickenServing(value);
         break;
       case 4:
+        setFishServing(value);
+        break;
+      case 5:
         setCheeseServing(value);
         break;
       default:
         break;
     }
   };
+  const [foodEntry, setFoodEntry] = useState<FoodEntry>();
 
   const [beefServing, setBeefServing] = useState(0);
   const [lambServing, setLambServing] = useState(0);
   const [porkServing, setPorkServing] = useState(0);
   const [chickenServing, setChickenServing] = useState(0);
   const [cheeseServing, setCheeseServing] = useState(0);
+  const [fishServing, setFishServing] = useState(0);
   const [milkServing, setMilkServing] = useState(0);
   const [foodWaste, setFoodWaste] = useState(0);
 
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
-    console.log('Survey Responses:', {
-      beefServing,
-      lambServing,
-      porkServing,
-      chickenServing,
-      cheeseServing,
-      milkServing,
-      foodWaste,
-    });
-
-    navigation.navigate('EnergyForum');
+    if (foodEntry != null) {
+      const newEntry: FoodEntry = {
+        _id: foodEntry._id,
+        user_id: foodEntry.user_id,
+        carbon_emissions: foodEntry.carbon_emissions,
+        date: foodEntry.date,
+        beef: beefServing,
+        lamb: lambServing,
+        pork: porkServing,
+        chicken: chickenServing,
+        fish: fishServing,
+        cheese: cheeseServing,
+        milk: milkServing,
+        food_waste: foodWaste,
+      };
+      void FoodAPI.updateFood(newEntry).then(() => {
+        navigation.navigate('EnergyForum');
+      });
+    }
   };
+  useEffect(() => {
+    if (foodEntry != null) {
+      setBeefServing(foodEntry.beef);
+      setLambServing(foodEntry.lamb);
+      setPorkServing(foodEntry.pork);
+      setChickenServing(foodEntry.chicken);
+      setFishServing(foodEntry.fish);
+      setCheeseServing(foodEntry.cheese);
+    }
+  }, [foodEntry]);
+
+  useEffect(() => {
+    void FoodAPI.getFoodMetricForToday().then((res) => {
+      if (res != null) {
+        setFoodEntry(res);
+      }
+    });
+  }, [loaded]);
 
   if (!loaded) {
     return <></>;

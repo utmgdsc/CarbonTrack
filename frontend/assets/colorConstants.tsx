@@ -1,7 +1,6 @@
 const Colors = {
-  LIGHTFGREEN: '#d8edc2',
-  DARKGREEN: '#012b26',
-  DARKTRANS: '#07332f',
+  LIGHTFGREEN: '#E0EEC6',
+  DARKGREEN: '#10302b',
   DARKGREEN2: '#224A3E',
   DARKGREEN3: '#2E5C4E',
   LIGHTGREENBUTTON: '#a5ba8f',
@@ -9,14 +8,18 @@ const Colors = {
   WHITE: '#ffffff',
   BLACK: '#000000',
   DARKLIMEGREEN: '#4B8552',
-  GREY: '#cccccc',
+  GREY: '#ccc',
   FILLGREEN: '#7CA982',
   ERROR: 'red',
   TRANSGREEN: '#366959',
   BLACKTRANS: '#000000aa',
   BLUE: 'blue',
+  TEAL: '#6bcfca',
+  TRANSLIGHTGREEN: '#c6dbb2',
+  TRANSLIGHTGREEN2: '#b3c99d',
+  TRANSGREENBACK: '#07332b',
+  DARKDARKGREEN: '#031c19',
   GREYGREEN: '#B4C792',
-  TEAL: '#6bcfca'
 };
 
 export default Colors;
