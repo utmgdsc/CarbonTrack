@@ -13,7 +13,11 @@ import Colors from '../../../assets/colorConstants';
 import { useFonts } from 'expo-font';
 import { BarChart } from 'react-native-chart-kit';
 import { EnergyAPI } from '../../APIs/EnergyAPI';
-import { type EnergyEntry, type MonthlyEntry } from '../../models/Energy';
+import {
+  type EnergyEntry,
+  type MonthlyEntry,
+  type EnergyEntryRecommendation,
+} from '../../models/Energy';
 import { useNavigation } from '@react-navigation/native';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
@@ -32,6 +36,7 @@ export default function EnergyHistory(): JSX.Element {
   const [endDate] = useState<Date>(new Date(2023, 11, 1));
   const navigation = useNavigation<StackNavigation>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
+  const [recommendationForToday, setRecommendationForToday] = useState<EnergyEntryRecommendation>();
 
   const toggleExpanded = (index: number): void => {
     const updatedStates = [...expandedStates];
@@ -61,30 +66,43 @@ export default function EnergyHistory(): JSX.Element {
         setEnergyEntry(res);
       }
     });
+    void EnergyAPI.getEnergyRecommendationForToday().then((res) => {
+      if (res != null) {
+        setRecommendationForToday(res);
+      }
+    });
   }, [endDate, loaded, startDate, navigation]);
+
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
 
-  const data: Recommendation[] = [
-    {
-      id: 1,
-      name: 'Electricity',
-      description:
-        'Your electricity usage is above the threshold, consider keeping your lights turned off when not needed.',
-    },
-    {
-      id: 2,
-      name: 'Natural gas',
-      description:
-        'Your natural gas usage is above the threshold, consider switching to a fuel efficient furnance to heat your home instead.',
-    },
-    {
-      id: 3,
-      name: 'Natural gas',
-      description:
-        'Your natural gas usage is above the threshold, consider installing a smart thermostat to heat your household more efficiently.',
-    },
-    // Add more items here
-  ];
+  const checkRecommendations = (): Recommendation[] => {
+    if (recommendationForToday == null) {
+      return []; // Return an empty array if recommendationForToday is null
+    }
+
+    // Populate data with recommendations if recommendationForToday is not null
+    const data: Recommendation[] = [
+      {
+        id: 1,
+        name: 'Heating Oil',
+        description: recommendationForToday.heating_oil_recommendation,
+      },
+      {
+        id: 2,
+        name: 'Natural Gas',
+        description: recommendationForToday.natural_gas_recommendation,
+      },
+      {
+        id: 3,
+        name: 'Electricity',
+        description: recommendationForToday.electricity_recommendation,
+      },
+    ];
+
+    return data;
+  };
+
+  const recommendations = checkRecommendations();
 
   const toggleExpand = (itemId: number): void => {
     setExpandedItem(expandedItem === itemId ? null : itemId);
@@ -205,7 +223,7 @@ export default function EnergyHistory(): JSX.Element {
             <Text style={styles.headerGreen}>Recommendations:</Text>
             <ScrollView style={styles.scrollChallengesContainer} horizontal>
               <FlatList
-                data={data}
+                data={recommendations}
                 renderItem={renderListItem}
                 keyExtractor={(item) => item.id.toString()}
                 nestedScrollEnabled

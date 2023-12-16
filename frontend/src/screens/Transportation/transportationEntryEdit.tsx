@@ -75,6 +75,7 @@ export default function TransportationEntryEdit(): JSX.Element {
         gasoline_car: gasolineCarTravel,
         carbon_emissions: transportationEntry.carbon_emissions,
         date: transportationEntry.date,
+        fuel_efficiency: 1,
       };
       void TransportationAPI.updateTransportation(newEntry).then(() => {
         navigation.navigate('DashBoard');

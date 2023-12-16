@@ -64,6 +64,16 @@ export default function SignUpQuestions(): JSX.Element {
       fuelEfficiency,
       fuelType,
     });
+    if (user != null) {
+      try {
+        void UsersAPI.updateUserProvince(user, province);
+        void UsersAPI.updateUserOccupancy(user, numOfPpl);
+      } catch (error) {
+        // Handle errors if any of the updates fail
+        console.error(error);
+        // You might want to handle the error or show a message to the user
+      }
+    }
 
     navigation.navigate('TransportationForum');
   };
@@ -90,7 +100,7 @@ export default function SignUpQuestions(): JSX.Element {
     updatedResponses[questionId] = data[questionId].options[optionIndex];
     setResponses(updatedResponses);
   };
-  
+
   useEffect(() => {
     void UsersAPI.GetLoggedInUser().then((res) => {
       if (res != null) {
@@ -100,41 +110,41 @@ export default function SignUpQuestions(): JSX.Element {
   }, [loaded]);
 
   useEffect(() => {
-    console.log("Updated Province:", province);
+    console.log('Updated Province:', province);
   }, [province]); // sanity check
 
   if (!loaded || user === undefined) {
     return <></>;
   }
 
-
   return (
     <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.pageHeader}>Before jump right in, why don&apos;t we get to know you a little more, {user.full_name}!</Text>
+      <Text style={styles.pageHeader}>
+        Before jump right in, why don&apos;t we get to know you a little more, {user.full_name}!
+      </Text>
       <View style={styles.sectionDiv}>
-      <Text style={styles.questionText}>How many people live in your household:</Text>
-      <View style={styles.textbox}>
-        <TextInput
-          style={styles.textInputBox}
-          keyboardType="numeric"
-          placeholder="Eg. 3"
-          onChangeText={(text) => {
-            setNumOfPpl(Number(text));
-          }}
-        />
-      </View>
-      <View style={styles.provincialContainer}>
+        <Text style={styles.questionText}>How many people live in your household:</Text>
+        <View style={styles.textbox}>
+          <TextInput
+            style={styles.textInputBox}
+            keyboardType="numeric"
+            placeholder="Eg. 3"
+            onChangeText={(text) => {
+              setNumOfPpl(Number(text));
+            }}
+          />
+        </View>
+        <View style={styles.provincialContainer}>
           <Text style={styles.questionText}>What province do you live in? </Text>
           <CustomDropdown
             options={provinces}
-            onSelect={(selectedProvince: React.SetStateAction<string>) => setProvince(selectedProvince)}
+            onSelect={(selectedProvince: React.SetStateAction<string>) =>
+              setProvince(selectedProvince)
+            }
           />
-          <Image source={{ uri: 'https://pngimg.com/d/frog_PNG3839.png' }} style={styles.frogie}  />
+          <Image source={{ uri: 'https://pngimg.com/d/frog_PNG3839.png' }} style={styles.frogie} />
         </View>
       </View>
-      
-
-
 
       <Text style={styles.questionText}>{data[0].question}</Text>
       {data[0].options.map((option, index) => (
@@ -180,14 +190,12 @@ export default function SignUpQuestions(): JSX.Element {
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
             <Text style={styles.infoText}>
-              If you don&apos;t know your vehicle&apos;s fuel efficiency, it&apos;s available
-              online{' '}
+              If you don&apos;t know your vehicle&apos;s fuel efficiency, it&apos;s available online{' '}
               <Text style={styles.linkText} onPress={handleLinkPress}>
                 here
               </Text>
-              . Select the &quot;combination&quot; value under Consumption in L/100km. The
-              average fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L
-              / 100 km.
+              . Select the &quot;combination&quot; value under Consumption in L/100km. The average
+              fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L / 100 km.
             </Text>
             <TouchableOpacity
               style={styles.closeIcon}
@@ -223,9 +231,9 @@ const styles = StyleSheet.create({
     marginBottom: 70,
     padding: 18,
   },
-  frogie:{ 
-    width: 192, 
-    height: 192 
+  frogie: {
+    width: 192,
+    height: 192,
   },
   buttoningText: {
     color: Colors.WHITE,
@@ -263,7 +271,7 @@ const styles = StyleSheet.create({
   closeIcon: {
     marginLeft: 'auto',
   },
-  pageHeader:{
+  pageHeader: {
     fontSize: 26,
     fontWeight: '600',
     paddingBottom: 30,
@@ -286,7 +294,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.DARKGREEN,
   },
-  sectionDiv:{
+  sectionDiv: {
     margin: 10,
   },
   textInputBox: {

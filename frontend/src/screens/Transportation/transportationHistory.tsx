@@ -77,44 +77,45 @@ export default function TransportationHistory(): JSX.Element {
     });
   }, [endDate, loaded, startDate, navigation]);
 
-  const checkRecommendations: any(() => {
-    if (recommendationForToday == null){
-      const data: Recommendation[] = [];
+  const checkRecommendations = (): Recommendation[] => {
+    if (recommendationForToday == null) {
+      return []; // Return an empty array if recommendationForToday is null
     }
 
-    else{
-      const data: Recommendation[] = [
-        {
-          id: 1,
-          name: 'Bus',
-          description: recommendationForToday.bus_recommendation,
-        },
-        {
-          id: 2,
-          name: 'Train',
-          description: recommendationForToday.train_recommendation,
-        },
-        {
-          id: 3,
-          name: 'Motorbike',
-          description: recommendationForToday.motorbike_recommendation,
-        },
-        {
-          id: 4,
-          name: 'Electric Car',
-          description: recommendationForToday.electric_car_recommendation,
-        },
-        {
-          id: 5,
-          name: 'Gasoline Car',
-          description: recommendationForToday.gasoline_car_recommendation,
-        },
-        // Add more items here
-      ];
-    }
+    // Populate data with recommendations if recommendationForToday is not null
+    const data: Recommendation[] = [
+      {
+        id: 1,
+        name: 'Bus',
+        description: recommendationForToday.bus_recommendation,
+      },
+      {
+        id: 2,
+        name: 'Train',
+        description: recommendationForToday.train_recommendation,
+      },
+      {
+        id: 3,
+        name: 'Motorbike',
+        description: recommendationForToday.motorbike_recommendation,
+      },
+      {
+        id: 4,
+        name: 'Electric Car',
+        description: recommendationForToday.electric_car_recommendation,
+      },
+      {
+        id: 5,
+        name: 'Gasoline Car',
+        description: recommendationForToday.gasoline_car_recommendation,
+      },
+      // Add more items here
+    ];
 
-  });
-  
+    return data;
+  };
+
+  const recommendations = checkRecommendations();
 
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const toggleExpand = (itemId: number): void => {
@@ -123,7 +124,7 @@ export default function TransportationHistory(): JSX.Element {
 
   const renderListItem = ({ item }: { item: Recommendation }): JSX.Element => {
     const isExpanded = expandedItem === item.id;
-    
+
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity onPress={() => toggleExpand(item.id)}>
@@ -244,7 +245,7 @@ export default function TransportationHistory(): JSX.Element {
             <Text style={styles.headerGreen}>Recommendations:</Text>
             <ScrollView style={styles.scrollChallengesContainer} horizontal>
               <FlatList
-                data={data}
+                data={recommendations}
                 renderItem={renderListItem}
                 keyExtractor={(item) => item.id.toString()}
                 nestedScrollEnabled

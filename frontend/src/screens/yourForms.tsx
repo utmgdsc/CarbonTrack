@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, StyleSheet, ScrollView, View, TouchableOpacity, Image } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../components/types';
 import { TransportationAPI } from '../APIs/TransportationAPI';
@@ -28,46 +28,55 @@ export default function YourForms(): JSX.Element {
   const [foodEntry, setFoodEntry] = useState<FoodEntry>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
 
-  useEffect(() => {
-    void TransportationAPI.getTransportationEntriesForUserUsingDataRange(startDate, endDate).then(
-      (res) => {
-        if (res != null) {
-          if (res.monthlyData != null) {
-            setMonthlyData(res.monthlyData);
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async (): Promise<void> => {
+        try {
+          const transportationEntries =
+            await TransportationAPI.getTransportationEntriesForUserUsingDataRange(
+              startDate,
+              endDate
+            );
+          if (transportationEntries?.monthlyData != null) {
+            setMonthlyData(transportationEntries.monthlyData);
           }
+
+          const transportationMetric = await TransportationAPI.getTransportationMetricForToday();
+          if (transportationMetric != null) {
+            setTransportationEntry(transportationMetric);
+          }
+
+          const foodEntries = await FoodAPI.getFoodEntriesForUserUsingDataRange(startDate, endDate);
+          if (foodEntries?.monthlyData != null) {
+            setMonthlyData(foodEntries.monthlyData);
+          }
+
+          const foodMetric = await FoodAPI.getFoodMetricForToday();
+          if (foodMetric != null) {
+            setFoodEntry(foodMetric);
+          }
+
+          const energyEntries = await EnergyAPI.getEnergyEntriesForUserUsingDataRange(
+            startDate,
+            endDate
+          );
+          if (energyEntries?.monthlyData != null) {
+            setMonthlyData(energyEntries.monthlyData);
+          }
+
+          const energyMetric = await EnergyAPI.getEnergyMetricForToday();
+          if (energyMetric != null) {
+            setEnergyEntry(energyMetric);
+          }
+        } catch (error) {
+          // Handle errors if needed
+          console.error(error);
         }
-      }
-    );
-    void TransportationAPI.getTransportationMetricForToday().then((res) => {
-      if (res != null) {
-        setTransportationEntry(res);
-      }
-    });
-    void FoodAPI.getFoodEntriesForUserUsingDataRange(startDate, endDate).then((res) => {
-      if (res != null) {
-        if (res.monthlyData != null) {
-          setMonthlyData(res.monthlyData);
-        }
-      }
-    });
-    void FoodAPI.getFoodMetricForToday().then((res) => {
-      if (res != null) {
-        setFoodEntry(res);
-      }
-    });
-    void EnergyAPI.getEnergyEntriesForUserUsingDataRange(startDate, endDate).then((res) => {
-      if (res != null) {
-        if (res.monthlyData != null) {
-          setMonthlyData(res.monthlyData);
-        }
-      }
-    });
-    void EnergyAPI.getEnergyMetricForToday().then((res) => {
-      if (res != null) {
-        setEnergyEntry(res);
-      }
-    });
-  }, [endDate, loaded, startDate, navigation]);
+      };
+
+      void fetchData();
+    }, [startDate, endDate]) // Include startDate and endDate in the dependency array
+  );
 
   if (
     !loaded ||
@@ -89,7 +98,6 @@ export default function YourForms(): JSX.Element {
           }}
         >
           <Text style={styles.tabText}>
-            {' '}
             This Week&apos;s Food Entry: {foodEntry.carbon_emissions.toString()}
           </Text>
         </TouchableOpacity>
@@ -110,7 +118,6 @@ export default function YourForms(): JSX.Element {
           }}
         >
           <Text style={styles.tabText}>
-            {' '}
             This Week&apos;s Energy Entry: {energyEntry.carbon_emissions.toString()}
           </Text>
         </TouchableOpacity>
