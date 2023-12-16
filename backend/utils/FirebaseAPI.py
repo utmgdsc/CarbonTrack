@@ -7,7 +7,7 @@ from firebase_admin import credentials, auth
 from models.user import User
 from mongodb_api.carbon_track_db import CarbonTrackDB
 
-cred = credentials.Certificate(dict(os.environ))
+cred = credentials.Certificate("secrets.json")
 APP = firebase_admin.initialize_app(cred)
 
 
