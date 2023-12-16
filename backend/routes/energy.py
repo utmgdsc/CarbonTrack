@@ -59,7 +59,7 @@ def get_energy_metric_for_today() -> Response:
         item = CarbonTrackDB.energy_coll.find_one(query)
         if item is None:
             create_energy(ObjectId(user.oid))
-            return get_energy_metric_for_today(user.oid)
+            return get_energy_metric_for_today()
         else:
             item = EnergyEntry.from_json(item).to_json()
             return jsonify({'energy': item})

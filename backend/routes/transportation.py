@@ -58,7 +58,7 @@ def get_transportation_metric_for_today() -> Response:
         item = CarbonTrackDB.transportation_coll.find_one(query)
         if item is None:
             create_transportation(ObjectId(user.oid))
-            return get_transportation_metric_for_today(user.oid)
+            return get_transportation_metric_for_today()
         else:
             item = TransportationEntry.from_json(item).to_json()
             return jsonify({'transportation': item})
