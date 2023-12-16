@@ -59,6 +59,8 @@ export default function SignUp(): JSX.Element {
         email,
         badges: [],
         friends: [],
+        monthly_score: 0,
+        yearly_score: 0,
         overall_score: 0,
         province: '',
         household: 0,
@@ -74,7 +76,6 @@ export default function SignUp(): JSX.Element {
       }
     } catch (err) {
       console.error('[signup.tsx - handleSignUp] User not created in Flask:', err);
-
     }
   };
 

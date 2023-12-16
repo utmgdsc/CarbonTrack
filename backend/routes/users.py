@@ -25,7 +25,7 @@ def get_user(user_id: str) -> Response:
 @users.route("/get_top_users", methods=['POST'])
 @carbon_auth.auth.login_required
 def get_top_users() -> Response:
-    try:
+    #try:
         count = request.get_json()["count"]
 
         # Monthly
@@ -78,8 +78,8 @@ def get_top_users() -> Response:
             'top_yearly_users': top_yearly_users,
             'top_overall_users': top_overall_users,
         })
-    except CarbonTrackError as e:
-        abort(code=400, description=f"{e}")
+    #except CarbonTrackError as e:
+     #   abort(code=400, description=f"{e}")
 
 
 @users.route("/user_email/<user_email>", methods=['GET'])
@@ -129,7 +129,7 @@ def get_current_user() -> Response:
 @users.route("/user", methods=["PUT"])
 @carbon_auth.auth.login_required
 def create_user() -> Response:
-    try:
+    #try:
         res: dict = request.get_json()["user"]
         user = User.from_json(res)
         user.email = user.email.lower()
@@ -147,8 +147,8 @@ def create_user() -> Response:
             return jsonify(
                 {"error": "User Already Exits With Same Email, Please Log In"}
             )
-    except CarbonTrackError as e:
-        abort(code=400, description=f"{e}")
+   # except CarbonTrackError as e:
+     #   abort(code=400, description=f"{e}")
 
 
 @users.route("/user/<user_id>", methods=["DELETE"])
