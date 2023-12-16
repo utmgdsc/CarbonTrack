@@ -52,7 +52,7 @@ def get_transportation_entries_for_user_using_date_range() -> Response:
 @transportation_service.route("/get_transportation_metric_for_today", methods=['GET'])
 @carbon_auth.auth.login_required
 def get_transportation_metric_for_today() -> Response:
-    #try:
+    try:
         user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
         query = {"user_id": ObjectId(user.oid), "date": weekly_metric_reset(datetime.now())}
         item = CarbonTrackDB.transportation_coll.find_one(query)
@@ -62,8 +62,8 @@ def get_transportation_metric_for_today() -> Response:
         else:
             item = TransportationEntry.from_json(item).to_json()
             return jsonify({'transportation': item})
-    #except CarbonTrackError as e:
-      #  abort(code=400, description=f"{e}")
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
 
 
 @carbon_auth.auth.login_required
