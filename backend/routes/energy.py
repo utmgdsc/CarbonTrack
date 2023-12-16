@@ -52,14 +52,14 @@ def get_energy_entries_for_user_using_date_range() -> Response:
 
 @energy_service.route("/get_energy_metric_for_today", methods=['GET'])
 @carbon_auth.auth.login_required
-def get_energy_metric_for_today(user_id: str) -> Response:
+def get_energy_metric_for_today() -> Response:
     try:
         user = FirebaseAPI.get_user(flask.request.headers.get('Authorization').split()[1])
         query = {"user_id": ObjectId(user.oid), "date": weekly_metric_reset(datetime.now())}
         item = CarbonTrackDB.energy_coll.find_one(query)
         if item is None:
             create_energy(ObjectId(user.oid))
-            return get_energy_metric_for_today(user_id)
+            return get_energy_metric_for_today(user.oid)
         else:
             item = EnergyEntry.from_json(item).to_json()
             return jsonify({'energy': item})
