@@ -36,7 +36,7 @@ export default function SignUpQuestions(): JSX.Element {
 
   const [responses, setResponses] = useState<string[]>(new Array(data.length).fill(''));
 
-  const [province, setProvince] = useState<string>('');
+  const [Province, setProvince] = useState<string>('');
   const [numOfPpl, setNumOfPpl] = useState(0);
   const [fuelType, setFuelType] = useState<string>('');
   const [fuelEfficiency, setFuelEfficiency] = useState(0);
@@ -61,22 +61,66 @@ export default function SignUpQuestions(): JSX.Element {
     'Northwest Territories'
   ];
 
-  const handleSurveySubmit = (): void => {
-    if ((province === "") || numOfPpl === null || isNaN(numOfPpl) ) {
+  const handleSurveySubmit = async (): Promise<void> => {
+    if ((Province === "") || numOfPpl === null || isNaN(numOfPpl) ) {
       setGeneralError('*Please fill in required field.');
       return;
     } else {
       setGeneralError(null);
     }
     console.log('Survey Responses:', {
-      province,
+      Province,
       numOfPpl,
       fuelEfficiency,
       fuelType,
     });
 
+    try {
+      console.log('Updating home info');
+  
+      if (user !== undefined) {
+        let updatedUser: User | undefined;
+  
+        if (Province !== '' && Province !== user.province) {
+          console.log('Updating province');
+          updatedUser = await UsersAPI.updateUser({
+            ...user,
+            province: Province,
+          });
+          console.log('Updated province:', updatedUser?.province);
+        }
+  
+        if (numOfPpl !== 0 && numOfPpl !== user.household) {
+          console.log('Updating occupancy');
+          updatedUser = await UsersAPI.updateUser({
+            ...user,
+            household: numOfPpl,
+          });
+          console.log('Updated occupancy:', updatedUser?.household);
+        }
+  
+        if (fuelEfficiency !== 0 && fuelEfficiency !== user.fuel_efficiency) {
+          console.log('Updating fuel efficiency');
+          updatedUser = await UsersAPI.updateUser({
+            ...user,
+            fuel_efficiency: fuelEfficiency,
+          });
+          console.log('Updated fuel efficiency:', updatedUser?.fuel_efficiency);
+        }
+  
+        if (updatedUser !== undefined) {
+          setUser(updatedUser);
+          console.log('User updated:', updatedUser);
+        }
+      }
+    } catch (e) {
+      console.error('Updating Home Info error occurred:', e);
+    }
     navigation.navigate('TransportationForum');
+    return await Promise.resolve()
+    
   };
+
 
   const openLink = async (url: string): Promise<void> => {
     const supported = await Linking.canOpenURL(url);
@@ -110,8 +154,8 @@ export default function SignUpQuestions(): JSX.Element {
   }, [loaded]);
 
   useEffect(() => {
-    console.log("Updated Province:", province);
-  }, [province]); // sanity check
+    console.log("Updated Province:", Province);
+  }, [Province]); // sanity check
 
   if (!loaded || user === undefined) {
     return <></>;
@@ -148,28 +192,6 @@ export default function SignUpQuestions(): JSX.Element {
           <Image source={{ uri: 'https://pngimg.com/d/frog_PNG3839.png' }} style={styles.frogie}  />
         </View>
       </View>
-      
-
-
-
-      <Text style={styles.questionText}>{data[0].question}</Text>
-      {data[0].options.map((option, index) => (
-        <CheckBox
-          checkedColor={Colors.DARKGREEN}
-          textStyle={styles.answer}
-          containerStyle={
-            responses[data[0].id] === option ? styles.selectedOption : styles.unSelectedOption
-          }
-          key={index}
-          title={option}
-          checked={responses[data[0].id] === option}
-          onPress={() => {
-            handleOptionSelect(data[0].id, index);
-            setFuelType(data[0].options[index]);
-          }}
-        />
-      ))}
-
       <View style={styles.questionContainer}>
         <View style={styles.questionWithIcon}>
           <Text style={styles.questionText}>Your vehicle&apos;s fuel efficiency:</Text>
@@ -191,6 +213,26 @@ export default function SignUpQuestions(): JSX.Element {
           />
         </View>
       </View>
+
+
+
+      <Text style={styles.questionText}>{data[0].question}</Text>
+      {data[0].options.map((option, index) => (
+        <CheckBox
+          checkedColor={Colors.DARKGREEN}
+          textStyle={styles.answer}
+          containerStyle={
+            responses[data[0].id] === option ? styles.selectedOption : styles.unSelectedOption
+          }
+          key={index}
+          title={option}
+          checked={responses[data[0].id] === option}
+          onPress={() => {
+            handleOptionSelect(data[0].id, index);
+            setFuelType(data[0].options[index]);
+          }}
+        />
+      ))}
 
       <Modal transparent={true} visible={modalVisible}>
         <View style={styles.modalBackground}>
@@ -214,7 +256,7 @@ export default function SignUpQuestions(): JSX.Element {
           </View>
         </View>
       </Modal>
-      <TouchableOpacity style={styles.buttoning} onPress={handleSurveySubmit}>
+      <TouchableOpacity style={styles.buttoning} onPress={()  => { void handleSurveySubmit()}}>
         <Text style={styles.buttoningText}>Complete Sign Up</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -231,17 +273,18 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   questionContainer: {
-    paddingBottom: 30,
+    paddingBottom: 10,
   },
   buttoning: {
     backgroundColor: Colors.DARKGREEN,
     borderRadius: 10,
     marginBottom: 70,
+    marginTop: 20,
     padding: 18,
   },
   frogie:{ 
-    width: 192, 
-    height: 192 
+    width: 175, 
+    height: 175 
   },
   buttoningText: {
     color: Colors.WHITE,
