@@ -59,28 +59,6 @@ export default function UpdateProfileScreen(): JSX.Element {
     void fetchUserData();
   }, []);
 
-
-  // useEffect(() => {
-  //   const checkAuthState = async (): Promise<void> => {
-  //     const currentUser = await firebaseService.getFirebaseUser();
-  //     if (currentUser === null) {
-  //       navigation.navigate('LogIn');
-  //     }
-  //   };
-
-  //   const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
-  //     if (currentUser === null) {
-  //       navigation.navigate('LogIn');
-  //     } else {
-  //       void checkAuthState();
-  //     }
-  //   });
-
-  //   return () => {
-  //     unsubscribe(); // Cleanup on component unmount
-  //   };
-  // }, [navigation]);
-
   const handleUpdateEmail = async (): Promise<void> => {
     try {
       const user = await firebaseService.getFirebaseUser();
@@ -201,10 +179,10 @@ export default function UpdateProfileScreen(): JSX.Element {
               style={[styles.textInput, newEmail.length > 0 && styles.activeTextInput]}
               onChangeText={(text) => setNewEmail(text)}
               placeholderTextColor={Colors.LIGHTBLACK}
+              keyboardType='email-address'
             />
           <TouchableOpacity 
           style={styles.saveButton} 
-          // onPress={() => {void handleUpdateEmail()}}
           onPress={() => {
             void (newEmail.length > 0 && handleUpdateEmail());
           }}
@@ -221,6 +199,7 @@ export default function UpdateProfileScreen(): JSX.Element {
             onChangeText={(text) => setNewPass(text)}
             placeholderTextColor={Colors.LIGHTBLACK}
             secureTextEntry={!isPasswordVisible}
+            keyboardType='visible-password'
             />
           <TouchableOpacity
             style={styles.passwordVisibilityButton}
@@ -243,34 +222,11 @@ export default function UpdateProfileScreen(): JSX.Element {
 
       </View>
 
-{/* 
-      <View style={styles.textInputFields}>
-        <View style={styles.textInputBox}>
-          <Text style={styles.label}>New Password:</Text>
-            <TextInput
-              placeholder='New Password'
-              style={[styles.textInput, newPass.length > 0 && styles.activeTextInput]}
-              onChangeText={(text) => setNewPass(text)}
-              placeholderTextColor={Colors.LIGHTBLACK}
-            />
-          <TouchableOpacity 
-          style={styles.saveButton} 
-          onPress={() => {
-            void (newPass.length > 0 && handleUpdatePassword());
-          }}
-          disabled={newPass.length === 0} 
->
-            <Text style={styles.saveButtonText}> Update Password </Text>
-          </TouchableOpacity>
-        </View>
-      </View> */}
-
       </View>
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
-  // Existing styles
   activeTextInput: {
     borderColor: Colors.LIGHTGREENBUTTON,
     borderWidth: 2,
@@ -314,11 +270,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
   },
-  // d passwordVisibilityButton: {
-  //   zIndex: 1, 
-  //   position: 'absolute',
-  //   right: 10,
-  // },
   profileContainer: {
     backgroundColor: Colors.DARKLIGHTDARKGREEN,
     borderRadius: 20,

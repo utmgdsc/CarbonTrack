@@ -63,59 +63,6 @@ export default function UpdateProfileScreen(): JSX.Element {
     void fetchUserData();
   }, [rerenderKey]);
 
-  // h const handleUpdateEmail = async (): Promise<void> => {
-  //   try {
-  //     const user = await firebaseService.getFirebaseUser();
-
-  //     if (user != null) {
-  //       const userCreds = await promptUserForCredentials();
-
-  //       if (userCreds != null && user.email != null) {
-  //         const entireCreds = EmailAuthProvider.credential(user.email, userCreds.password);
-  //         await reauthenticateWithCredential(user, entireCreds).then(async (result) => {
-  //           console.log('Email (should be) sent! Check inbox. ');
-
-  //    j       // email update
-  //     n      await verifyBeforeUpdateEmail(user, newEmail);
-
-  //   n        // TODO: when Error (auth/missing-new-email).] --make alert (email up to date)
-  //           Alert.alert(
-  //    m         'Check your Inbox!','A verification email has been sent to your NEW EMAIL! Click the link in email to verify. You will now be logged out.'
-  //           );
-
-  //        m   await firebaseService.signOutUser();
-
-  //           navigation.navigate('Home');
-  //         });
-  //       }
-  //     }
-  //   } catch (error: any) {
-  //     // Log any errors
-  //     console.error('Error updating email in UpdateProfile: ', error);
-  //   }
-  // };
-
-  // const promptUserForCredentials = async (): Promise<{ password: string } | null> => {
-  //   return await new Promise((resolve) => {
-  //     Alert.prompt(
-  // m       'Reauthentication',
-  //       'Please enter your current password:',
-  //       [
-  //         {
-  //           text: 'Cancel',
-  //           onPress: () => resolve(null),
-  //           style: 'cancel',
-  //         },
-  //         {
-  //           text: 'Submit',
-  //           onPress: (password) => resolve({ password: password ?? '' }),
-  //         },
-  //       ],
-  //       'secure-text'
-  //     );
-  //   });
-  // };
-
   const handleNewName = async (): Promise<void> => {
     if (newName != null && loggedUser != null) {
       const updatedUser = await UsersAPI.updateUserName(loggedUser, newName);

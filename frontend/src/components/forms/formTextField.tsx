@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, type TextStyle } from 'react-native';
 import Colors from '../../../assets/colorConstants';
 
 interface IFormTextFieldProps {
@@ -23,6 +23,8 @@ interface IFormTextFieldProps {
 
   /* secureTextEntry value - should always be true for passwords */
   secureTextEntry: boolean;
+
+  styling: TextStyle;
 }
 
 /**
@@ -41,18 +43,20 @@ export default function FormTextField(props: IFormTextFieldProps): JSX.Element {
     touchedValue,
     errorValue,
     secureTextEntry,
+    styling,
   } = props;
 
   return (
     <View style={styles.fieldInputContainer}>
       <View style={styles.textbox}>
         <TextInput
-          style={styles.textInputBox}
+          style={[styles.textInputBox, styling]}
           placeholder={placeholder}
           onChangeText={handleChange}
           onBlur={handleBlur}
           value={value}
           secureTextEntry={secureTextEntry}
+          keyboardType='email-address'
         />
       </View>
 
@@ -69,14 +73,19 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
   },
   textbox: {
-    borderBottomColor: Colors.GREY,
-    borderBottomWidth: 1,
+    borderBottomColor: Colors.DARKDARKGREEN,
+    backgroundColor:Colors.TRANSLIGHTGREEN,
+    borderBottomWidth: 2,
+    borderRadius: 5,
     flexDirection: 'row',
-    paddingBottom: 8,
     marginBottom: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    textAlignVertical: 'middle'
   },
   fieldInputContainer: {
-    marginBottom: 25,
+    marginBottom: 10,
+    
   },
   fieldErrorMessage: {
     color: Colors.ERROR,

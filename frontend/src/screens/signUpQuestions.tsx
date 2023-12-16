@@ -41,8 +41,9 @@ export default function SignUpQuestions(): JSX.Element {
   const [fuelType, setFuelType] = useState<string>('');
   const [fuelEfficiency, setFuelEfficiency] = useState(0);
   const [user, setUser] = useState<User | undefined>(undefined);
-
   const [modalVisible, setModalVisible] = useState(false);
+  const [generalError, setGeneralError] = useState<string | null>(null);
+
 
   const provinces = [
     'British Columbia',
@@ -55,9 +56,18 @@ export default function SignUpQuestions(): JSX.Element {
     'Prince Edward Island',
     'New Brunswick',
     'Nova Scotia',
+    'Nunavut',
+    'Yukon',
+    'Northwest Territories'
   ];
 
   const handleSurveySubmit = (): void => {
+    if ((province === "") || numOfPpl === null || isNaN(numOfPpl) ) {
+      setGeneralError('*Please fill in required field.');
+      return;
+    } else {
+      setGeneralError(null);
+    }
     console.log('Survey Responses:', {
       province,
       numOfPpl,
@@ -113,6 +123,9 @@ export default function SignUpQuestions(): JSX.Element {
       <Text style={styles.pageHeader}>Before jump right in, why don&apos;t we get to know you a little more, {user.full_name}!</Text>
       <View style={styles.sectionDiv}>
       <Text style={styles.questionText}>How many people live in your household:</Text>
+        {((generalError ?? "") !== "") && (
+          <Text style={styles.errorText}>{generalError}</Text>
+        )}
       <View style={styles.textbox}>
         <TextInput
           style={styles.textInputBox}
@@ -125,6 +138,9 @@ export default function SignUpQuestions(): JSX.Element {
       </View>
       <View style={styles.provincialContainer}>
           <Text style={styles.questionText}>What province do you live in? </Text>
+            {((generalError ?? "") !== "") && (
+              <Text style={styles.errorText}>{generalError}</Text>
+            )}
           <CustomDropdown
             options={provinces}
             onSelect={(selectedProvince: React.SetStateAction<string>) => setProvince(selectedProvince)}
@@ -300,5 +316,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 25,
     paddingBottom: 8,
+  },
+  errorText: {
+    color: Colors.ERROR,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

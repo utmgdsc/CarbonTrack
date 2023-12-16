@@ -16,6 +16,7 @@ import { useFonts } from 'expo-font';
 import {type User} from '../../models/User'
 import { UsersAPI } from '../../APIs/UsersAPI';
 import firebaseService from '../../utilities/firebase';
+import CustomDropdown from '../../components/dropDown';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function UpdateHomeScreen(): JSX.Element {
@@ -26,7 +27,6 @@ export default function UpdateHomeScreen(): JSX.Element {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [userid, setUserid] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [isFocused2, setIsFocused2] = useState<boolean>(false);
   const [isFocused3, setIsFocused3] = useState<boolean>(false);
 
 
@@ -36,6 +36,21 @@ export default function UpdateHomeScreen(): JSX.Element {
     Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
+  const provinces = [
+    'British Columbia',
+    'Alberta',
+    'Manitoba',
+    'Saskatchewan',
+    'Ontario',
+    'Quebec',
+    'Newfoundland and Labrador',
+    'Prince Edward Island',
+    'New Brunswick',
+    'Nova Scotia',
+    'Nunavut',
+    'Yukon',
+    'Northwest Territories'
+  ];
 
   useEffect(() => {
     const fetchUserData = async (): Promise<void> => {
@@ -57,13 +72,6 @@ export default function UpdateHomeScreen(): JSX.Element {
 
   const handleBlur = ():void => {
     setIsFocused(false);
-  };
-  const handleFocus2 = ():void  => {
-    setIsFocused2(true);
-  };
-
-  const handleBlur2 = ():void => {
-    setIsFocused2(false);
   };
 
   const handleFocus3 = ():void  => {
@@ -148,34 +156,33 @@ export default function UpdateHomeScreen(): JSX.Element {
             />
           </View>
           <View style={styles.textInputBox}>
-            <Text style={styles.label}>Your Province:</Text>
-            <TextInput
-              placeholder={'Currently: '+ String(user?.province)}
-              placeholderTextColor={Colors.LIGHTBLACK}
-              onChangeText={(text) => setNewProvince(text)}
-              onFocus={handleFocus2}
-              onBlur={handleBlur2}
-              style={[styles.textInput, isFocused2 && styles.activeTextInput]}
-            />
-          </View>
-          <View style={styles.textInputBox}>
             <Text style={styles.label}>Your New Fuel Efficiency:</Text>
             <TextInput
               placeholder={'Currently: '+ String(user?.fuel_efficiency)}
               placeholderTextColor={Colors.LIGHTBLACK}
-              onChangeText={(number) => setnewFuelEfficeincy(parseInt(number))}
+              onChangeText={(number) => setnewFuelEfficeincy(parseFloat(number))}
               onFocus={handleFocus3}
               onBlur={handleBlur3}
               style={[styles.textInput, isFocused3 && styles.activeTextInput]}
             />
           </View>
+          <View style={styles.textInputBox}>
+            <Text style={styles.label}>Your Province/Territory:</Text>
+            <Text style={styles.sublable}>Currently: {user?.province}</Text>
+            
+          </View>
         </View>
-
-
         <TouchableOpacity style={styles.saveButton} onPress={()  => { void handleUpdateHome()}}>
-          <Text style={styles.saveButtonText}> Confirm Update </Text>
+          <Text style={styles.saveButtonText}> Confirm Changes </Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.dropDown}>
+        <CustomDropdown
+          options={provinces}
+          onSelect={(selectedProvince: React.SetStateAction<string>) => setNewProvince(selectedProvince)}
+        />
+      </View>
+
     </ScrollView>
   );
 }
@@ -226,23 +233,23 @@ const styles = StyleSheet.create({
     margin: 40,
     alignSelf: 'center',
     width: '85%',
+    zIndex:1
   },
   saveButton: {
     backgroundColor: Colors.TRANSGREENLOGOUT,
     borderRadius: 8,
     width: 140,
     height: 40,
-    left: '50%',
     justifyContent: 'center',
-    marginHorizontal: 10,
-    marginVertical: 25,
+    position: 'absolute',
+    right: '10%',
+    bottom: '20%'
   },
   saveButtonText: {
     color: Colors.WHITE,
     fontSize: 15,
     fontWeight: '500',
-    textAlign: 'center'
-    
+    textAlign: 'center',
   },
   textInput: {
     backgroundColor: Colors.DARKDARKGREEN,
@@ -257,12 +264,26 @@ const styles = StyleSheet.create({
   },
   textInputBox: {
     alignSelf: 'center',
-    marginBottom: 50,
+    marginBottom: 40,
     width: '80%',
   },
   textInputFields:{
     top: '9%'
   },
+  sublable:{
+    fontSize: 12,
+    left: 10,
+    color: Colors.WHITE,
+    opacity: 0.8,
+    fontWeight: '500'
+  }, 
+  dropDown:{
+    position: 'absolute',
+    top: '65%',
+    zIndex:1,
+    width: '70%',
+    alignSelf: 'center',
+  }
     
 
 });
