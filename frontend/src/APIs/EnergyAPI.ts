@@ -1,11 +1,10 @@
 import FLASK_HTTPS from './FLASK_API';
-import type { EnergyEntry, EnergyRes } from '../models/Energy';
+import type { EnergyEntry, EnergyRes, EnergyEntryRecommendation } from '../models/Energy';
 import { type ObjectId } from 'mongodb';
 
 const routeName = '/energy';
 
 export const EnergyAPI = {
-
   getEnergy: async (energyID: ObjectId) => {
     try {
       const res = await FLASK_HTTPS.get(routeName + '/energy/' + energyID.toHexString());
@@ -16,13 +15,16 @@ export const EnergyAPI = {
       return undefined;
     }
   },
-  
+
   getEnergyEntriesForUserUsingDataRange: async (start: Date, end: Date) => {
     try {
-      const res = await FLASK_HTTPS.post(routeName + '/get_energy_entries_for_user_using_data_range', {
-        start,
-        end
-      });
+      const res = await FLASK_HTTPS.post(
+        routeName + '/get_energy_entries_for_user_using_data_range',
+        {
+          start,
+          end,
+        }
+      );
       return res.data as EnergyRes;
     } catch (error) {
       console.error('Error fetching energy from Flask BE: ', error);
@@ -30,7 +32,7 @@ export const EnergyAPI = {
       return undefined;
     }
   },
-  
+
   getEnergyMetricForToday: async (): Promise<undefined | EnergyEntry> => {
     try {
       const res = await FLASK_HTTPS.get(routeName + '/get_energy_metric_for_today');
@@ -41,7 +43,7 @@ export const EnergyAPI = {
       return undefined;
     }
   },
-  
+
   updateEnergy: async (energy: EnergyEntry): Promise<undefined | EnergyEntry> => {
     try {
       const res = await FLASK_HTTPS.patch(routeName + '/energy/' + energy._id.toString(), {
@@ -53,5 +55,16 @@ export const EnergyAPI = {
       console.error('Temp tip: have you started the backend?: ');
       return undefined;
     }
-  }
-}
+  },
+
+  getEnergyRecommendationForToday: async (): Promise<undefined | EnergyEntryRecommendation> => {
+    try {
+      const res = await FLASK_HTTPS.get(routeName + '/get_energy_recommendation_for_today');
+      return res.data.energy_recommendation as EnergyEntryRecommendation;
+    } catch (error) {
+      console.error('Error fetching energy recommendationfrom Flask BE: ', error);
+      console.error('Temp tip: have you started the backend?: ');
+      return undefined;
+    }
+  },
+};
