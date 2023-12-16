@@ -13,7 +13,11 @@ import Colors from '../../../assets/colorConstants';
 import { useFonts } from 'expo-font';
 import { BarChart } from 'react-native-chart-kit';
 import { TransportationAPI } from '../../APIs/TransportationAPI';
-import { type TransportationEntry, type MonthlyEntry } from '../../models/Transportation';
+import {
+  type TransportationEntry,
+  type MonthlyEntry,
+  type TransportationRecommendation,
+} from '../../models/Transportation';
 import { useNavigation } from '@react-navigation/native';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
@@ -32,6 +36,8 @@ export default function TransportationHistory(): JSX.Element {
   const [endDate] = useState<Date>(new Date(2023, 11, 1));
   const navigation = useNavigation<StackNavigation>();
   const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
+  const [recommendationForToday, setRecommendationForToday] =
+    useState<TransportationRecommendation>();
 
   const toggleExpanded = (index: number): void => {
     const updatedStates = [...expandedStates];
@@ -63,27 +69,52 @@ export default function TransportationHistory(): JSX.Element {
         setTransportationEntry(res);
       }
     });
+
+    void TransportationAPI.getTransportationRecommendationForToday().then((res) => {
+      if (res != null) {
+        setRecommendationForToday(res);
+      }
+    });
   }, [endDate, loaded, startDate, navigation]);
 
-  const data: Recommendation[] = [
-    {
-      id: 1,
-      name: 'Vehicle',
-      description:
-        'The emissions from your vehicle is above the threshold, consider switching to an electrical vehicle.',
-    },
-    {
-      id: 2,
-      name: 'Car travel',
-      description: 'Your car travel is above the treshold, try taking public transit instead.',
-    },
-    {
-      id: 3,
-      name: 'Motorbike',
-      description: 'Your motorike travel is above the threshold, consider biking instead.',
-    },
-    // Add more items here
-  ];
+  const checkRecommendations: any(() => {
+    if (recommendationForToday == null){
+      const data: Recommendation[] = [];
+    }
+
+    else{
+      const data: Recommendation[] = [
+        {
+          id: 1,
+          name: 'Bus',
+          description: recommendationForToday.bus_recommendation,
+        },
+        {
+          id: 2,
+          name: 'Train',
+          description: recommendationForToday.train_recommendation,
+        },
+        {
+          id: 3,
+          name: 'Motorbike',
+          description: recommendationForToday.motorbike_recommendation,
+        },
+        {
+          id: 4,
+          name: 'Electric Car',
+          description: recommendationForToday.electric_car_recommendation,
+        },
+        {
+          id: 5,
+          name: 'Gasoline Car',
+          description: recommendationForToday.gasoline_car_recommendation,
+        },
+        // Add more items here
+      ];
+    }
+
+  });
+  
 
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const toggleExpand = (itemId: number): void => {
@@ -92,7 +123,7 @@ export default function TransportationHistory(): JSX.Element {
 
   const renderListItem = ({ item }: { item: Recommendation }): JSX.Element => {
     const isExpanded = expandedItem === item.id;
-
+    
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity onPress={() => toggleExpand(item.id)}>
@@ -107,7 +138,12 @@ export default function TransportationHistory(): JSX.Element {
     );
   };
 
-  if (!loaded || monthlyData === undefined || transportationEntry === undefined) {
+  if (
+    !loaded ||
+    monthlyData === undefined ||
+    transportationEntry === undefined ||
+    recommendationForToday === undefined
+  ) {
     return <></>;
   }
 
