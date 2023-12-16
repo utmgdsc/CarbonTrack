@@ -83,7 +83,10 @@ export default function UpdateHomeScreen(): JSX.Element {
   
         if (newProvince !== '' && newProvince !== user.province) {
           console.log('Updating province');
-          updatedUser = await UsersAPI.updateUserProvince(user, newProvince);
+          updatedUser = await UsersAPI.updateUser({
+            ...user,
+            province: newProvince,
+          });
           console.log('Updated province:', updatedUser?.province);
         }
   
@@ -115,9 +118,6 @@ export default function UpdateHomeScreen(): JSX.Element {
     }
     return await Promise.resolve();
   };
-  
-  
-  
 
   if (!loaded) {
     return <></>;
@@ -266,75 +266,3 @@ const styles = StyleSheet.create({
     
 
 });
-// const styles = StyleSheet.create({
-//   container: {
-// d   flexGrow: 1,
-//     backgroundColor: Colors.DARKDARKGREEN,
-//   },
-//   profileContainer: {
-//     height: 645,
-//     width: '85%',
-//     backgroundColor: Colors.DARKGREEN,
-//     borderRadius: 20,
-//     alignSelf: 'center',
-//     margin: 40,
-//   },
-//   backButton: {
-//     position: 'absolute',
-//     top: 60,
-//     left: 20,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     padding: 10,
-//   },
-//   buttonText: {
-//     fontSize: 16,
-//     color: Colors.WHITE,
-//     fontWeight: '500',
-//   },
-//   header: {
-//     fontSize: 40,
-//     color: Colors.WHITE,
-//     position: 'absolute',
-//     top: 105,
-//     textAlign: 'center',
-//     fontWeight: '700',
-//   },
-//   headerBox: {
-//     alignItems: 'center',
-//     paddingBottom: 130,
-//   },
-//   textInputBox: {
-//     alignSelf: 'center',
-//     top: '10%',
-//     padding: 10,
-//   },
-//   label: {
-//     fontSize: 16,
-//     opacity: 0.5,
-//     color: Colors.WHITE,
-//   },
-//   saveButton: {
-//     borderRadius: 5,
-//     alignSelf: 'center',
-//     top: '20%',
-//   },
-//   textInput: {
-//     paddingHorizontal: 5,
-//     marginBottom: 30,
-//     marginTop: 10,
-//     borderRadius: 10,
-//     fontSize: 16,
-//     borderBottomWidth: 1,
-//     borderColor: Colors.WHITE,
-//     width: 270,
-//     color: Colors.WHITE,
-//   },
-//   saveButtonText: {
-//     color: Colors.LIGHTFGREEN,
-//     fontSize: 16,
-//     textDecorationLine: 'underline',
-//     fontWeight: '400',
-//     shadowColor: Colors.LIGHTFGREEN,
-//   },
-// });
