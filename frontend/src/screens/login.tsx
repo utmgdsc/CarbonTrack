@@ -11,10 +11,9 @@ import { UsersAPI } from '../APIs/UsersAPI';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
-
 export interface LoginScreenProps {
   navigation: StackNavigationProp<RootStackParamList, 'LogIn'>; // Specify the type for the navigation prop
-};
+}
 
 interface ILogInFields {
   email: string;
@@ -30,17 +29,18 @@ export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Eleme
     const { email, password } = fields;
     try {
       await firebaseService.signInUser(email, password).then(async () => {
-        await UsersAPI.GetLoggedInUser().then((res) => {
-          if (res != null) {
-            navigation.navigate('MainApp', { screen: 'DashBoard' });
-          } else {
-            console.warn('User was not logged in: ' + res);
-          }
-        }).catch((err) => {
-          console.warn('User was not logged in: ' + err);
-        });
+        await UsersAPI.GetCurrUserByUID()
+          .then((res) => {
+            if (res != null) {
+              navigation.navigate('MainApp', { screen: 'DashBoard' });
+            } else {
+              console.warn('User was not logged in: ' + res);
+            }
+          })
+          .catch((err) => {
+            console.warn('User was not logged in: ' + err);
+          });
       });
-      
     } catch (error) {
       alert('Incorrect Email or password');
     }

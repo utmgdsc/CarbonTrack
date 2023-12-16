@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,8 @@ import { useFonts } from 'expo-font';
 import Colors from '../../../assets/colorConstants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
+import { TransportationAPI } from '../../APIs/TransportationAPI';
+import { type TransportationEntry } from '../../models/Transportation';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -21,10 +23,11 @@ export default function TransportationForum(): JSX.Element {
   }
 
   const slidersData: SliderData[] = [
-    { id: 1, label: 'Car', minValue: 0, maxValue: 800, initialValue: 0 },
-    { id: 2, label: 'Bus', minValue: 0, maxValue: 800, initialValue: 0 },
-    { id: 3, label: 'Train', minValue: 0, maxValue: 800, initialValue: 0 },
-    { id: 4, label: 'Motobike', minValue: 0, maxValue: 800, initialValue: 0 },
+    { id: 1, label: 'Electric Car', minValue: 0, maxValue: 800, initialValue: 0 },
+    { id: 2, label: 'Gasoline Car', minValue: 0, maxValue: 800, initialValue: 0 },
+    { id: 3, label: 'Bus', minValue: 0, maxValue: 800, initialValue: 0 },
+    { id: 4, label: 'Train', minValue: 0, maxValue: 800, initialValue: 0 },
+    { id: 5, label: 'Motobike', minValue: 0, maxValue: 800, initialValue: 0 },
     // Add more slider data as needed
   ];
 
@@ -38,15 +41,18 @@ export default function TransportationForum(): JSX.Element {
     setSliderValues(updatedValues);
     switch (index) {
       case 0:
-        setCarTravel(value);
+        setElectricCarTravel(value);
         break;
       case 1:
-        setBusTravel(value);
+        setGasolineCarTravel(value);
         break;
       case 2:
         setTrainTravel(value);
         break;
       case 3:
+        setBusTravel(value);
+        break;
+      case 4:
         setBikeTravel(value);
         break;
       default:
@@ -60,23 +66,51 @@ export default function TransportationForum(): JSX.Element {
   });
 
   const navigation = useNavigation<StackNavigation>();
+  const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
 
-  const [carTravel, setCarTravel] = useState(0);
+  const [electricCarTravel, setElectricCarTravel] = useState(0);
+  const [gasolineCarTravel, setGasolineCarTravel] = useState(0);
   const [busTravel, setBusTravel] = useState(0);
   const [trainTravel, setTrainTravel] = useState(0);
   const [bikeTravel, setBikeTravel] = useState(0);
 
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
-    console.log('Survey Responses:', {
-      carTravel,
-      busTravel,
-      trainTravel,
-      bikeTravel,
-    });
-
-    navigation.navigate('FoodForum');
+    if (transportationEntry != null) {
+      const newEntry: TransportationEntry = {
+        _id: transportationEntry._id,
+        user_id: transportationEntry.user_id,
+        bus: busTravel,
+        train: trainTravel,
+        motorbike: bikeTravel,
+        electric_car: electricCarTravel,
+        gasoline_car: gasolineCarTravel,
+        carbon_emissions: transportationEntry.carbon_emissions,
+        date: transportationEntry.date,
+      };
+      void TransportationAPI.updateTransportation(newEntry).then(() => {
+        navigation.navigate('FoodForum');
+      });
+    }
   };
+
+  useEffect(() => {
+    if (transportationEntry != null) {
+      setElectricCarTravel(transportationEntry.electric_car);
+      setGasolineCarTravel(transportationEntry.gasoline_car);
+      setBusTravel(transportationEntry.bus);
+      setTrainTravel(transportationEntry.train);
+      setBikeTravel(transportationEntry.motorbike);
+    }
+  }, [transportationEntry]);
+
+  useEffect(() => {
+    void TransportationAPI.getTransportationMetricForToday().then((res) => {
+      if (res != null) {
+        setTransportationEntry(res);
+      }
+    });
+  }, [loaded]);
 
   if (!loaded) {
     return <></>;
