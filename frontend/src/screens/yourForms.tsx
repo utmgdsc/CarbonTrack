@@ -98,7 +98,7 @@ export default function YourForms(): JSX.Element {
           }}
         >
           <Text style={styles.tabText}>
-            This Week&apos;s Food Entry: {foodEntry.carbon_emissions.toString()}
+            This Week&apos;s Food Entry: {Math.round(foodEntry.carbon_emissions).toString()}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -108,7 +108,8 @@ export default function YourForms(): JSX.Element {
           }}
         >
           <Text style={styles.tabText}>
-            This Week&apos;s Transportation Entry: {transportationEntry.carbon_emissions.toString()}
+            This Week&apos;s Transportation Entry:{' '}
+            {Math.round(transportationEntry.carbon_emissions).toString()}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -118,7 +119,7 @@ export default function YourForms(): JSX.Element {
           }}
         >
           <Text style={styles.tabText}>
-            This Week&apos;s Energy Entry: {energyEntry.carbon_emissions.toString()}
+            This Week&apos;s Energy Entry: {Math.round(energyEntry.carbon_emissions).toString()}
           </Text>
         </TouchableOpacity>
       </View>

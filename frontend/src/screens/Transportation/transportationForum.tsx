@@ -10,6 +10,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 import { TransportationAPI } from '../../APIs/TransportationAPI';
 import { type TransportationEntry } from '../../models/Transportation';
+import { UsersAPI } from '../../APIs/UsersAPI';
+import { type User } from '../../models/User';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -74,9 +76,11 @@ export default function TransportationForum(): JSX.Element {
   const [trainTravel, setTrainTravel] = useState(0);
   const [bikeTravel, setBikeTravel] = useState(0);
 
+  const [user, setUser] = useState<User | undefined>(undefined);
+
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
-    if (transportationEntry != null) {
+    if (transportationEntry != null && user != null) {
       const newEntry: TransportationEntry = {
         _id: transportationEntry._id,
         user_id: transportationEntry.user_id,
@@ -87,7 +91,7 @@ export default function TransportationForum(): JSX.Element {
         gasoline_car: gasolineCarTravel,
         carbon_emissions: transportationEntry.carbon_emissions,
         date: transportationEntry.date,
-        fuel_efficiency: 1,
+        fuel_efficiency: user.fuel_efficiency,
       };
       void TransportationAPI.updateTransportation(newEntry).then(() => {
         navigation.navigate('FoodForum');
@@ -106,6 +110,11 @@ export default function TransportationForum(): JSX.Element {
   }, [transportationEntry]);
 
   useEffect(() => {
+    void UsersAPI.GetLoggedInUser().then((res) => {
+      if (res != null) {
+        setUser(res);
+      }
+    });
     void TransportationAPI.getTransportationMetricForToday().then((res) => {
       if (res != null) {
         setTransportationEntry(res);
@@ -113,7 +122,7 @@ export default function TransportationForum(): JSX.Element {
     });
   }, [loaded]);
 
-  if (!loaded) {
+  if (!loaded || user === undefined) {
     return <></>;
   }
 

@@ -68,6 +68,7 @@ export default function SignUpQuestions(): JSX.Element {
       try {
         void UsersAPI.updateUserProvince(user, province);
         void UsersAPI.updateUserOccupancy(user, numOfPpl);
+        void UsersAPI.updateUserFuelEfficiency(user, fuelEfficiency);
       } catch (error) {
         // Handle errors if any of the updates fail
         console.error(error);

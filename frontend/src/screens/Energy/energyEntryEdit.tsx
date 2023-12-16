@@ -9,26 +9,19 @@ import Colors from '../../../assets/colorConstants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EnergyAPI } from '../../APIs/EnergyAPI';
 import { type EnergyEntry } from '../../models/Energy';
+import { UsersAPI } from '../../APIs/UsersAPI';
+import { type User } from '../../models/User';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function EnergyEntryEdit(): JSX.Element {
-  interface SliderData {
-    id: number;
-    label: string;
-    minValue: number;
-    maxValue: number;
-    initialValue: number;
-  }
-
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
-
-  const [slidersData, setSliderData] = useState<SliderData[]>([]);
 
   const [heatingOilUsage, setHeatingOilUsage] = useState(0);
   const [naturalGasUsage, setNaturalGasUsage] = useState(0);
   const [electricityUsage, setElectricityUsage] = useState(0);
-  const [householdUsage, setHouseholdUsage] = useState(0);
+
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   const [loaded] = useFonts({
     Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
@@ -39,7 +32,7 @@ export default function EnergyEntryEdit(): JSX.Element {
 
   const handleSurveySubmit = (): void => {
     // Process survey responses, e.g., send them to a server
-    if (energyEntry != null) {
+    if (energyEntry != null && user != null) {
       const newEntry: EnergyEntry = {
         _id: energyEntry._id,
         user_id: energyEntry.user_id,
@@ -48,8 +41,8 @@ export default function EnergyEntryEdit(): JSX.Element {
         heating_oil: heatingOilUsage,
         natural_gas: naturalGasUsage,
         electricity: electricityUsage,
-        province: energyEntry.province,
-        household: householdUsage,
+        province: user.province,
+        household: user.household,
       };
       void EnergyAPI.updateEnergy(newEntry).then(() => {
         navigation.navigate('DashBoard');
@@ -58,45 +51,11 @@ export default function EnergyEntryEdit(): JSX.Element {
   };
 
   useEffect(() => {
-    if (energyEntry != null) {
-      setSliderData([
-        {
-          id: 1,
-          label: 'Heating Oil',
-          minValue: 0,
-          maxValue: 800,
-          initialValue: energyEntry.heating_oil,
-        },
-        {
-          id: 2,
-          label: 'Natural Gas',
-          minValue: 0,
-          maxValue: 800,
-          initialValue: energyEntry.natural_gas,
-        },
-        {
-          id: 3,
-          label: 'Electricity',
-          minValue: 0,
-          maxValue: 800,
-          initialValue: energyEntry.electricity,
-        },
-        {
-          id: 4,
-          label: 'House Hold Members',
-          minValue: 1,
-          maxValue: 10,
-          initialValue: energyEntry.household,
-        },
-      ]);
-      setHeatingOilUsage(energyEntry.heating_oil);
-      setNaturalGasUsage(energyEntry.natural_gas);
-      setElectricityUsage(energyEntry.electricity);
-      setHouseholdUsage(energyEntry.household);
-    }
-  }, [energyEntry]);
-
-  useEffect(() => {
+    void UsersAPI.GetLoggedInUser().then((res) => {
+      if (res != null) {
+        setUser(res);
+      }
+    });
     void EnergyAPI.getEnergyMetricForToday().then((res) => {
       if (res != null) {
         setEnergyEntry(res);
@@ -104,7 +63,7 @@ export default function EnergyEntryEdit(): JSX.Element {
     });
   }, [loaded]);
 
-  if (!loaded || slidersData.length === 0) {
+  if (!loaded || user === undefined) {
     return <></>;
   }
 

@@ -22,7 +22,6 @@ export default function FootprintDecomp(): JSX.Element {
   const [foodEntry, setFoodEntry] = useState<FoodEntry>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
 
-
   const navigation = useNavigation<StackNavigation>();
 
   const [loaded] = useFonts({
@@ -38,22 +37,28 @@ export default function FootprintDecomp(): JSX.Element {
     });
     void TransportationAPI.getTransportationMetricForToday().then((res) => {
       if (res != null) {
-        setTransportationEntry(res)
+        setTransportationEntry(res);
       }
     });
     void FoodAPI.getFoodMetricForToday().then((res) => {
       if (res != null) {
-        setFoodEntry(res)
+        setFoodEntry(res);
       }
     });
     void EnergyAPI.getEnergyMetricForToday().then((res) => {
       if (res != null) {
-        setEnergyEntry(res)
+        setEnergyEntry(res);
       }
     });
   }, [loaded]);
 
-  if (!loaded || user === undefined || transportationEntry === undefined || foodEntry === undefined || energyEntry === undefined) {
+  if (
+    !loaded ||
+    user === undefined ||
+    transportationEntry === undefined ||
+    foodEntry === undefined ||
+    energyEntry === undefined
+  ) {
     return <></>;
   }
 
@@ -66,7 +71,10 @@ export default function FootprintDecomp(): JSX.Element {
               navigation.navigate('TransportationHistory');
             }}
           >
-            <WidgetBox title="Transportatin" content={transportationEntry.carbon_emissions.toString()} />
+            <WidgetBox
+              title="Transportatin"
+              content={Math.round(transportationEntry.carbon_emissions).toString()}
+            />
           </TouchableOpacity>
         </View>
 
@@ -76,7 +84,7 @@ export default function FootprintDecomp(): JSX.Element {
               navigation.navigate('FoodHistory');
             }}
           >
-            <WidgetBox title="Food" content={foodEntry.carbon_emissions.toString()} />
+            <WidgetBox title="Food" content={Math.round(foodEntry.carbon_emissions).toString()} />
           </TouchableOpacity>
         </View>
       </View>
@@ -88,11 +96,13 @@ export default function FootprintDecomp(): JSX.Element {
               navigation.navigate('EnergyHistory');
             }}
           >
-            <WidgetBox title="Energy" content={energyEntry.carbon_emissions.toString()} />
+            <WidgetBox
+              title="Energy"
+              content={Math.round(energyEntry.carbon_emissions).toString()}
+            />
           </TouchableOpacity>
         </View>
       </View>
-
     </ScrollView>
   );
 }
@@ -105,7 +115,7 @@ const styles = StyleSheet.create({
   widgetContainer: {
     flexDirection: 'row',
     alignContent: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   widgetBoarder: {
     padding: 10,
