@@ -10,6 +10,7 @@ from flask import g
 
 users = Blueprint("/users", __name__)
 
+
 @users.route("/user/<user_id>", methods=["GET"])
 @carbon_auth.auth.login_required
 def get_user(user_id: str) -> Response:
@@ -21,67 +22,78 @@ def get_user(user_id: str) -> Response:
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
 
-@users.route("/get_top_users", methods=['POST'])
+
+@users.route("/get_top_users", methods=["POST"])
 @carbon_auth.auth.login_required
 def get_top_users() -> Response:
-    #try:
+    try:
         count = request.get_json()["count"]
 
         # Monthly
-        _top_monthly_users = CarbonTrackDB.users_coll.find().sort("monthly_score", -1).limit(count)
+        _top_monthly_users = (
+            CarbonTrackDB.users_coll.find().sort("monthly_score", -1).limit(count)
+        )
         top_monthly_users = []
         rank = 1
         for user in _top_monthly_users:
             obj = User.from_json(user)
             user = {
-                'rank': rank,
-                'name': obj.full_name,
-                'footprint': 0,
-                'score': obj.overall_score,
+                "rank": rank,
+                "name": obj.full_name,
+                "footprint": 0,
+                "score": obj.overall_score,
             }
             rank += 1
             top_monthly_users.append(user)
 
         # Yearly
-        _top_yearly_users = CarbonTrackDB.users_coll.find().sort("yearly_score", -1).limit(count)
+        _top_yearly_users = (
+            CarbonTrackDB.users_coll.find().sort("yearly_score", -1).limit(count)
+        )
         top_yearly_users = []
         rank = 1
         for user in _top_yearly_users:
             obj = User.from_json(user)
             user = {
-                'rank': rank,
-                'name': obj.full_name,
-                'footprint': 0,
-                'score': obj.overall_score,
+                "rank": rank,
+                "name": obj.full_name,
+                "footprint": 0,
+                "score": obj.overall_score,
             }
             rank += 1
             top_yearly_users.append(user)
 
         # Overall
-        _top_overall_users = CarbonTrackDB.users_coll.find().sort("overall_score", -1).limit(count)
+        _top_overall_users = (
+            CarbonTrackDB.users_coll.find().sort("overall_score", -1).limit(count)
+        )
         top_overall_users = []
         rank = 1
         for user in _top_overall_users:
             obj = User.from_json(user)
             user = {
-                'rank': rank,
-                'name': obj.full_name,
-                'footprint': 0,
-                'score': obj.overall_score,
+                "rank": rank,
+                "name": obj.full_name,
+                "footprint": 0,
+                "score": obj.overall_score,
             }
             rank += 1
             top_overall_users.append(user)
 
-        return jsonify({
-            'top_monthly_users': top_monthly_users,
-            'top_yearly_users': top_yearly_users,
-            'top_overall_users': top_overall_users,
-        })
-    #except CarbonTrackError as e:
-     #   abort(code=400, description=f"{e}")
+        return jsonify(
+            {
+                "top_monthly_users": top_monthly_users,
+                "top_yearly_users": top_yearly_users,
+                "top_overall_users": top_overall_users,
+            }
+        )
 
 
-@users.route("/user_email/<user_email>", methods=['GET'])
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
+
+
+@users.route("/user_email/<user_email>", methods=["GET"])
 @carbon_auth.auth.login_required
 def get_user_by_email(user_email: str) -> Response:
     try:
@@ -128,7 +140,7 @@ def get_current_user() -> Response:
 @users.route("/user", methods=["PUT"])
 @carbon_auth.auth.login_required
 def create_user() -> Response:
-    #try:
+    try:
         res: dict = request.get_json()["user"]
         user = User.from_json(res)
         user.email = user.email.lower()
@@ -143,11 +155,11 @@ def create_user() -> Response:
             ).to_json()
             return jsonify({"user": user})
         else:
-            return jsonify(
-                {"error": "User Already Exits With Same Email, Please Log In"}
-            )
-   # except CarbonTrackError as e:
-     #   abort(code=400, description=f"{e}")
+            return jsonify({"error": "User Already Exits With Same Email, Please Log In"})
+
+
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
 
 
 @users.route("/user/<user_id>", methods=["DELETE"])
@@ -199,14 +211,15 @@ def update_user_email(uid: str) -> Response:
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
 
+
 @users.route("/user/update_name/<user_id>", methods=["PATCH"])
 @carbon_auth.auth.login_required
 def update_user_name(user_id: str) -> Response:
     try:
         new_name = request.get_json().get("newName", "")
-        
+
         query = {"uid": user_id}
-        
+
         current_user = carbon_auth.auth.current_user()
         print(current_user)
 
@@ -219,7 +232,7 @@ def update_user_name(user_id: str) -> Response:
         return jsonify({"user": item}), 200
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
-        
+
 
 @users.route("/user/update_province/<user_id>", methods=["PATCH"])
 def update_user_province(user_id: str) -> Response:
@@ -228,11 +241,11 @@ def update_user_province(user_id: str) -> Response:
         new_province = request.get_json().get("newProvince", "")
         print("Updating province...")
         query = {"uid": user_id}
-        
+
         updated_user = CarbonTrackDB.users_coll.find_one_and_update(
             query,
             {"$set": {"province": new_province}},
-            return_document=ReturnDocument.AFTER
+            return_document=ReturnDocument.AFTER,
         )
 
         updated_user = User.from_json(updated_user).to_json()
@@ -241,6 +254,28 @@ def update_user_province(user_id: str) -> Response:
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
 
+
+@users.route("/user/update_fuel_efficiency/<user_id>", methods=["PATCH"])
+def update_user_fuel_efficiency(user_id: str) -> Response:
+    try:
+        print("Updating fuel efficiency...")
+        new_fuel_efficiency = request.get_json().get("newFuelEfficiency", "")
+        print("Updating province...")
+        query = {"uid": user_id}
+
+        updated_user = CarbonTrackDB.users_coll.find_one_and_update(
+            query,
+            {"$set": {"fuel_efficiency": new_fuel_efficiency}},
+            return_document=ReturnDocument.AFTER,
+        )
+
+        updated_user = User.from_json(updated_user).to_json()
+
+        return jsonify({"user": updated_user}), 200
+    except CarbonTrackError as e:
+        abort(code=400, description=f"{e}")
+
+
 @users.route("/user/update_occupancy/<user_id>", methods=["PATCH"])
 def update_user_occupancy(user_id: str) -> Response:
     try:
@@ -248,13 +283,15 @@ def update_user_occupancy(user_id: str) -> Response:
         print(request.get_json())
         new_occupancy = request.get_json().get("newOccupancy", 0)
         query = {"uid": user_id}
-        
+
         current_user = carbon_auth.auth.current_user()
         print(current_user)
 
         print(f"Updating occupancy for user {user_id} to {new_occupancy}")
 
-        CarbonTrackDB.users_coll.update_one(query, {"$set": {"household": new_occupancy}})
+        CarbonTrackDB.users_coll.update_one(
+            query, {"$set": {"household": new_occupancy}}
+        )
 
         item = CarbonTrackDB.users_coll.find_one(query)
 

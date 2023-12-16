@@ -1,30 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import {
-  ScrollView,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import Colors from '../../../assets/colorConstants';
 import { type RootStackParamList } from '../../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
-import {type User} from '../../models/User'
+import { type User } from '../../models/User';
 import { UsersAPI } from '../../APIs/UsersAPI';
 import firebaseService from '../../utilities/firebase';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function UpdateHomeScreen(): JSX.Element {
-
   const [newProvince, setNewProvince] = useState<string>('');
   const [newOccupancy, setNewOccupancy] = useState<number>(0);
+  const [newFuelEfficiency, setNewFuelEfficiency] = useState<number>(0);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [userid, setUserid] = useState<string>('');
-
 
   const navigation = useNavigation<StackNavigation>();
   const [loaded] = useFonts({
@@ -44,39 +36,56 @@ export default function UpdateHomeScreen(): JSX.Element {
     };
     void fetchUserData();
   }, []);
-  console.log(userid)
-
+  console.log(userid);
 
   const handleUpdateHome = async (): Promise<void> => {
     try {
       console.log('Updating home info');
-      console.log(newProvince)
-      console.log(newOccupancy)
-  
+      console.log(newProvince);
+      console.log(newOccupancy);
+      console.log(newFuelEfficiency);
+
       if (newProvince !== '' && user !== undefined) {
         console.log('Updating province');
         const updatedProvincialUser = await UsersAPI.updateUserProvince(user, newProvince);
-  
+
         console.log('Updated user:', updatedProvincialUser);
-  
+
         if (updatedProvincialUser != null) {
           setUser(updatedProvincialUser);
           console.log('Updated province');
         }
       }
-  
+
       if (newOccupancy !== undefined && user !== undefined) {
         console.log('Updating occupancy');
         const updatedOccupancyUser = await UsersAPI.updateUserOccupancy(user, newOccupancy);
-  
+
         console.log('Updated user:', updatedOccupancyUser);
-  
+
         if (updatedOccupancyUser != null) {
           setUser(updatedOccupancyUser);
           console.log('Updated occupancy');
         }
-  
+
         console.log('User household:', updatedOccupancyUser?.household);
+      }
+
+      if (newFuelEfficiency !== undefined && user !== undefined) {
+        console.log('Updating fuel efficiency');
+        const updatedFuelEfficiencyUser = await UsersAPI.updateUserFuelEfficiency(
+          user,
+          newFuelEfficiency
+        );
+
+        console.log('Updated user:', updatedFuelEfficiencyUser);
+
+        if (updatedFuelEfficiencyUser != null) {
+          setUser(updatedFuelEfficiencyUser);
+          console.log('Updated occupancy');
+        }
+
+        console.log('User household:', updatedFuelEfficiencyUser?.fuel_efficiency);
       }
     } catch (e) {
       console.error('Updating Home Info error occurred:', e);
@@ -102,21 +111,32 @@ export default function UpdateHomeScreen(): JSX.Element {
           <Text style={styles.label}>How many people live in your home?:</Text>
           <TextInput
             keyboardType="numeric"
-            placeholder= {'Currently: '+String(user?.household)}
+            placeholder={'Currently: ' + String(user?.household)}
             placeholderTextColor={Colors.WHITE}
             style={styles.textInput}
             onChangeText={(number) => setNewOccupancy(parseInt(number))}
           />
           <Text style={styles.label}>Your Province:</Text>
           <TextInput
-            
-            placeholder={'Currently: '+ String(user?.province)}
+            placeholder={'Currently: ' + String(user?.province)}
             placeholderTextColor={Colors.WHITE}
             style={styles.textInput}
             onChangeText={(text) => setNewProvince(text)}
           />
+          <Text style={styles.label}>Your fuel efficiency:</Text>
+          <TextInput
+            placeholder={'Currently: ' + String(user?.fuel_efficiency)}
+            placeholderTextColor={Colors.WHITE}
+            style={styles.textInput}
+            onChangeText={(float) => setNewFuelEfficiency(parseFloat(float))}
+          />
         </View>
-        <TouchableOpacity style={styles.saveButton} onPress={()  => { void handleUpdateHome()}}>
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={() => {
+            void handleUpdateHome();
+          }}
+        >
           <Text style={styles.saveButtonText}> Confirm Update </Text>
         </TouchableOpacity>
       </View>

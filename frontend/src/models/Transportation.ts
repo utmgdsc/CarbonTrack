@@ -10,6 +10,7 @@ export interface TransportationEntry {
   motorbike: number;
   electric_car: number;
   gasoline_car: number;
+  fuel_efficiency: number;
 }
 
 export interface MonthlyEntry {

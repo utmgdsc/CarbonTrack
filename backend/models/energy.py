@@ -124,9 +124,9 @@ class EnergyEntryRecommendation(CARBON_MODEL):
 
     def from_energy_entry(energy_entry: EnergyEntry) -> EnergyEntryRecommendation:
         submetric_threshold = EnergyEntry.metric_threshold/3
-        heating_oil_recommendation = ""
-        natural_gas_recommendation = "" 
-        electricity_recommendation = ""
+        heating_oil_recommendation = "Heating oil emissions look good!"
+        natural_gas_recommendation = "Natural gas emissions look good!" 
+        electricity_recommendation = "Electricity emissions look good!"
 
         heating_oil_carbon_emissions = energy_entry.heating_oil * 2.753
         natural_gas_carbon_emissions = energy_entry.natural_gas * 1.96

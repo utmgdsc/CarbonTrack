@@ -13,7 +13,7 @@ import Colors from '../../../assets/colorConstants';
 import { useFonts } from 'expo-font';
 import { BarChart } from 'react-native-chart-kit';
 import { FoodAPI } from '../../APIs/FoodAPI';
-import { type FoodEntry, type MonthlyEntry } from '../../models/Food';
+import { type FoodEntry, type MonthlyEntry, type FoodEntryRecommendation } from '../../models/Food';
 import { useNavigation } from '@react-navigation/native';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
@@ -32,6 +32,7 @@ export default function FoodHistory(): JSX.Element {
   const [endDate] = useState<Date>(new Date(2023, 11, 1));
   const navigation = useNavigation<StackNavigation>();
   const [foodEntry, setFoodEntry] = useState<FoodEntry>();
+  const [recommendationForToday, setRecommendationForToday] = useState<FoodEntryRecommendation>();
 
   const toggleExpanded = (index: number): void => {
     const updatedStates = [...expandedStates];
@@ -61,25 +62,69 @@ export default function FoodHistory(): JSX.Element {
         setFoodEntry(res);
       }
     });
+    void FoodAPI.getFoodRecommendationForToday().then((res) => {
+      if (res != null) {
+        setRecommendationForToday(res);
+      }
+    });
   }, [endDate, loaded, startDate, navigation]);
 
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
 
-  const data: Recommendation[] = [
-    {
-      id: 1,
-      name: 'Beef',
-      description:
-        'Your beef intake is above the threshold, consider switching to a more carbon efficient type of meat.',
-    },
-    {
-      id: 2,
-      name: 'Food waste',
-      description:
-        'Your food waste is above the threshold, consider buying less at the grocery store and checking your fridge for expired food.',
-    },
-    // Add more items here
-  ];
+  const checkRecommendations = (): Recommendation[] => {
+    if (recommendationForToday == null) {
+      return []; // Return an empty array if recommendationForToday is null
+    }
+
+    // Populate data with recommendations if recommendationForToday is not null
+    const data: Recommendation[] = [
+      {
+        id: 1,
+        name: 'Beef',
+        description: recommendationForToday.beef_recommendation,
+      },
+      {
+        id: 2,
+        name: 'Lamb',
+        description: recommendationForToday.lamb_recommendation,
+      },
+      {
+        id: 3,
+        name: 'Pork',
+        description: recommendationForToday.pork_recommendation,
+      },
+      {
+        id: 4,
+        name: 'Chicken',
+        description: recommendationForToday.chicken_recommendation,
+      },
+      {
+        id: 5,
+        name: 'Fish',
+        description: recommendationForToday.fish_recommendation,
+      },
+      {
+        id: 6,
+        name: 'Cheese',
+        description: recommendationForToday.cheese_recommendation,
+      },
+      {
+        id: 7,
+        name: 'Milk',
+        description: recommendationForToday.milk_recommendation,
+      },
+      {
+        id: 8,
+        name: 'Food Waste',
+        description: recommendationForToday.food_waste_recommendation,
+      },
+      // Add more items here
+    ];
+
+    return data;
+  };
+
+  const recommendations = checkRecommendations();
 
   const toggleExpand = (itemId: number): void => {
     setExpandedItem(expandedItem === itemId ? null : itemId);
@@ -102,7 +147,12 @@ export default function FoodHistory(): JSX.Element {
     );
   };
 
-  if (!loaded || monthlyData === undefined || foodEntry === undefined) {
+  if (
+    !loaded ||
+    monthlyData === undefined ||
+    foodEntry === undefined ||
+    recommendationForToday === undefined
+  ) {
     return <></>;
   }
 
@@ -200,7 +250,7 @@ export default function FoodHistory(): JSX.Element {
             <Text style={styles.headerGreen}>Recommendations:</Text>
             <ScrollView style={styles.scrollChallengesContainer} horizontal>
               <FlatList
-                data={data}
+                data={recommendations}
                 renderItem={renderListItem}
                 keyExtractor={(item) => item.id.toString()}
                 nestedScrollEnabled
