@@ -74,17 +74,6 @@ export default function SignUpQuestions(): JSX.Element {
       fuelEfficiency,
       fuelType,
     });
-    if (user != null) {
-      try {
-        void UsersAPI.updateUserProvince(user, province);
-        void UsersAPI.updateUserOccupancy(user, numOfPpl);
-        void UsersAPI.updateUserFuelEfficiency(user, fuelEfficiency);
-      } catch (error) {
-        // Handle errors if any of the updates fail
-        console.error(error);
-        // You might want to handle the error or show a message to the user
-      }
-    }
 
     try {
       console.log('Updating home info');
@@ -169,7 +158,6 @@ export default function SignUpQuestions(): JSX.Element {
       <View style={styles.sectionDiv}>
         <Text style={styles.questionText}>How many people live in your household:</Text>
         {(generalError ?? '') !== '' && <Text style={styles.errorText}>{generalError}</Text>}
-
         <View style={styles.textbox}>
           <TextInput
             style={styles.textInputBox}

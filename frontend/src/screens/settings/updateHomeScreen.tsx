@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import Colors from '../../../assets/colorConstants';
 import { type RootStackParamList } from '../../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
-import { type User } from '../../models/User';
+import {type User} from '../../models/User'
 import { UsersAPI } from '../../APIs/UsersAPI';
 import firebaseService from '../../utilities/firebase';
 import CustomDropdown from '../../components/dropDown';
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 export default function UpdateHomeScreen(): JSX.Element {
+
   const [newProvince, setNewProvince] = useState<string>('');
   const [newOccupancy, setNewOccupancy] = useState<number>(0);
   const [newFuelEfficeincy, setnewFuelEfficeincy] = useState<number>(0);
@@ -20,6 +28,7 @@ export default function UpdateHomeScreen(): JSX.Element {
   const [userid, setUserid] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isFocused3, setIsFocused3] = useState<boolean>(false);
+
 
 
   const navigation = useNavigation<StackNavigation>();
@@ -102,23 +111,6 @@ export default function UpdateHomeScreen(): JSX.Element {
           setUser(updatedUser);
           console.log('User updated:', updatedUser);
         }
-      }
-
-      if (newFuelEfficiency !== undefined && user !== undefined) {
-        console.log('Updating fuel efficiency');
-        const updatedFuelEfficiencyUser = await UsersAPI.updateUserFuelEfficiency(
-          user,
-          newFuelEfficiency
-        );
-
-        console.log('Updated user:', updatedFuelEfficiencyUser);
-
-        if (updatedFuelEfficiencyUser != null) {
-          setUser(updatedFuelEfficiencyUser);
-          console.log('Updated occupancy');
-        }
-
-        console.log('User household:', updatedFuelEfficiencyUser?.fuel_efficiency);
       }
     } catch (e) {
       console.error('Updating Home Info error occurred:', e);
