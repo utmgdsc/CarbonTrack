@@ -92,7 +92,7 @@ export default function FoodEntryEdit(): JSX.Element {
         food_waste: foodWaste,
       };
       void FoodAPI.updateFood(newEntry).then(() => {
-        navigation.navigate('DashBoard');
+        navigation.navigate('YourForms');
       });
     }
   };

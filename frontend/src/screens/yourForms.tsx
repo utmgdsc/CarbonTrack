@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, ScrollView, View, TouchableOpacity, Image } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  ScrollView,
+  View,
+  TouchableOpacity,
+  Image,
+  RefreshControl,
+} from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -27,6 +35,7 @@ export default function YourForms(): JSX.Element {
   const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
   const [foodEntry, setFoodEntry] = useState<FoodEntry>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
+  const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -78,6 +87,31 @@ export default function YourForms(): JSX.Element {
     }, [startDate, endDate]) // Include startDate and endDate in the dependency array
   );
 
+  const onRefresh = (): void => {
+    // Simulate a refresh action (e.g., fetch new data)
+    setRefreshing(true);
+
+    void TransportationAPI.getTransportationMetricForToday().then((res) => {
+      if (res != null) {
+        setTransportationEntry(res);
+      }
+    });
+    void FoodAPI.getFoodMetricForToday().then((res) => {
+      if (res != null) {
+        setFoodEntry(res);
+      }
+    });
+    void EnergyAPI.getEnergyMetricForToday().then((res) => {
+      if (res != null) {
+        setEnergyEntry(res);
+      }
+    });
+
+    setTimeout(() => {
+      setRefreshing(false); // Set refreshing to false after data is fetched
+    }, 2000); // Simulating a 2-second delay
+  };
+
   if (
     !loaded ||
     monthlyData === undefined ||
@@ -89,7 +123,12 @@ export default function YourForms(): JSX.Element {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0000ff" />
+      }
+      contentContainerStyle={styles.container}
+    >
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={styles.tab}
