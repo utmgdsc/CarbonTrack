@@ -48,8 +48,8 @@ const CustomDropdown = ({ options, onSelect }: CustomDropdownProps): React.JSX.E
 
 const styles = StyleSheet.create({
   dropdownContainer: {
-    position: 'relative',
     zIndex: 1,
+    flex:1,
   },
   dropdownButton: {
     backgroundColor: Colors.DARKGREEN,
@@ -65,14 +65,17 @@ const styles = StyleSheet.create({
   },
   dropdownList: {
     position: 'absolute',
-    top: 51,
     left: 0,
-    maxHeight: 200,
+    maxHeight: 175,
     width: '100%',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: Colors.DARKGREEN,
     backgroundColor: Colors.WHITE,
+    opacity:0.8,
+    top: '100%'
+    
+    
   },
   dropdownItem: {
     padding: 10,

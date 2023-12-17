@@ -36,13 +36,13 @@ export default function SignUpQuestions(): JSX.Element {
 
   const [responses, setResponses] = useState<string[]>(new Array(data.length).fill(''));
 
-  const [province, setProvince] = useState<string>('');
+  const [Province, setProvince] = useState<string>('');
   const [numOfPpl, setNumOfPpl] = useState(0);
   const [fuelType, setFuelType] = useState<string>('');
   const [fuelEfficiency, setFuelEfficiency] = useState(0);
   const [user, setUser] = useState<User | undefined>(undefined);
-
   const [modalVisible, setModalVisible] = useState(false);
+  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const provinces = [
     'British Columbia',
@@ -55,11 +55,21 @@ export default function SignUpQuestions(): JSX.Element {
     'Prince Edward Island',
     'New Brunswick',
     'Nova Scotia',
+    'Nunavut',
+    'Yukon',
+    'Northwest Territories',
   ];
 
-  const handleSurveySubmit = (): void => {
+  const handleSurveySubmit = async (): Promise<void> => {
+    if (Province === '' || numOfPpl === null || isNaN(numOfPpl)) {
+      setGeneralError('*Please fill in required fields.');
+      return;
+    } else {
+      setGeneralError(null);
+    }
+
     console.log('Survey Responses:', {
-      province,
+      Province,
       numOfPpl,
       fuelEfficiency,
       fuelType,
@@ -74,6 +84,39 @@ export default function SignUpQuestions(): JSX.Element {
         console.error(error);
         // You might want to handle the error or show a message to the user
       }
+    }
+
+    try {
+      console.log('Updating home info');
+
+      if (user !== undefined) {
+        let updatedUser: User | undefined = { ...user };
+
+        if (Province !== '' && Province !== user.province) {
+          console.log('Updating province');
+          updatedUser.province = Province;
+        }
+
+        if (numOfPpl !== 0 && numOfPpl !== user.household) {
+          console.log('Updating occupancy');
+          updatedUser.household = numOfPpl;
+        }
+
+        if (fuelEfficiency !== 0 && fuelEfficiency !== user.fuel_efficiency) {
+          console.log('Updating fuel efficiency');
+          updatedUser.fuel_efficiency = fuelEfficiency;
+        }
+
+        // Now update the user with all the changed fields
+        updatedUser = await UsersAPI.updateUser(updatedUser);
+
+        if (updatedUser !== undefined) {
+          setUser(updatedUser);
+          console.log('User updated:', updatedUser);
+        }
+      }
+    } catch (e) {
+      console.error('Updating Home Info error occurred:', e);
     }
 
     navigation.navigate('TransportationForum');
@@ -111,8 +154,8 @@ export default function SignUpQuestions(): JSX.Element {
   }, [loaded]);
 
   useEffect(() => {
-    console.log('Updated Province:', province);
-  }, [province]); // sanity check
+    console.log('Updated Province:', Province);
+  }, [Province]); // sanity check
 
   if (!loaded || user === undefined) {
     return <></>;
@@ -125,6 +168,8 @@ export default function SignUpQuestions(): JSX.Element {
       </Text>
       <View style={styles.sectionDiv}>
         <Text style={styles.questionText}>How many people live in your household:</Text>
+        {(generalError ?? '') !== '' && <Text style={styles.errorText}>{generalError}</Text>}
+
         <View style={styles.textbox}>
           <TextInput
             style={styles.textInputBox}
@@ -137,6 +182,7 @@ export default function SignUpQuestions(): JSX.Element {
         </View>
         <View style={styles.provincialContainer}>
           <Text style={styles.questionText}>What province do you live in? </Text>
+          {(generalError ?? '') !== '' && <Text style={styles.errorText}>{generalError}</Text>}
           <CustomDropdown
             options={provinces}
             onSelect={(selectedProvince: React.SetStateAction<string>) =>
@@ -146,25 +192,6 @@ export default function SignUpQuestions(): JSX.Element {
           <Image source={{ uri: 'https://pngimg.com/d/frog_PNG3839.png' }} style={styles.frogie} />
         </View>
       </View>
-
-      <Text style={styles.questionText}>{data[0].question}</Text>
-      {data[0].options.map((option, index) => (
-        <CheckBox
-          checkedColor={Colors.DARKGREEN}
-          textStyle={styles.answer}
-          containerStyle={
-            responses[data[0].id] === option ? styles.selectedOption : styles.unSelectedOption
-          }
-          key={index}
-          title={option}
-          checked={responses[data[0].id] === option}
-          onPress={() => {
-            handleOptionSelect(data[0].id, index);
-            setFuelType(data[0].options[index]);
-          }}
-        />
-      ))}
-
       <View style={styles.questionContainer}>
         <View style={styles.questionWithIcon}>
           <Text style={styles.questionText}>Your vehicle&apos;s fuel efficiency:</Text>
@@ -187,6 +214,24 @@ export default function SignUpQuestions(): JSX.Element {
         </View>
       </View>
 
+      <Text style={styles.questionText}>{data[0].question}</Text>
+      {data[0].options.map((option, index) => (
+        <CheckBox
+          checkedColor={Colors.DARKGREEN}
+          textStyle={styles.answer}
+          containerStyle={
+            responses[data[0].id] === option ? styles.selectedOption : styles.unSelectedOption
+          }
+          key={index}
+          title={option}
+          checked={responses[data[0].id] === option}
+          onPress={() => {
+            handleOptionSelect(data[0].id, index);
+            setFuelType(data[0].options[index]);
+          }}
+        />
+      ))}
+
       <Modal transparent={true} visible={modalVisible}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
@@ -207,7 +252,12 @@ export default function SignUpQuestions(): JSX.Element {
           </View>
         </View>
       </Modal>
-      <TouchableOpacity style={styles.buttoning} onPress={handleSurveySubmit}>
+      <TouchableOpacity
+        style={styles.buttoning}
+        onPress={() => {
+          void handleSurveySubmit();
+        }}
+      >
         <Text style={styles.buttoningText}>Complete Sign Up</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -224,17 +274,18 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   questionContainer: {
-    paddingBottom: 30,
+    paddingBottom: 10,
   },
   buttoning: {
     backgroundColor: Colors.DARKGREEN,
     borderRadius: 10,
     marginBottom: 70,
+    marginTop: 20,
     padding: 18,
   },
   frogie: {
-    width: 192,
-    height: 192,
+    width: 175,
+    height: 175,
   },
   buttoningText: {
     color: Colors.WHITE,
@@ -309,5 +360,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 25,
     paddingBottom: 8,
+  },
+  errorText: {
+    color: Colors.ERROR,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

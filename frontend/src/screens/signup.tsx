@@ -84,10 +84,11 @@ export default function SignUp(): JSX.Element {
       <Formik
         initialValues={{ fullName: '', email: '', password: '', repeatPassword: '' }}
         validationSchema={SignUpSchema}
+        
         onSubmit={async (values) => await handleSignUp(values)}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-          <View style={styles.headerContainer}>
+          <View style={[styles.headerContainer, styles.container]}>
             <View style={styles.headerBox}>
               <Text style={styles.header}>Sign Up</Text>
 
@@ -99,6 +100,7 @@ export default function SignUp(): JSX.Element {
                 touchedValue={touched.fullName}
                 errorValue={errors.fullName}
                 secureTextEntry={false}
+                styling={styles.texts}
               />
 
               <FormTextField
@@ -109,6 +111,7 @@ export default function SignUp(): JSX.Element {
                 touchedValue={touched.email}
                 errorValue={errors.email}
                 secureTextEntry={false}
+                styling={styles.texts}               
               />
 
               <FormTextField
@@ -119,6 +122,7 @@ export default function SignUp(): JSX.Element {
                 touchedValue={touched.password}
                 errorValue={errors.password}
                 secureTextEntry={true}
+                styling={styles.texts}
               />
 
               <FormTextField
@@ -129,12 +133,16 @@ export default function SignUp(): JSX.Element {
                 touchedValue={touched.repeatPassword}
                 errorValue={errors.repeatPassword}
                 secureTextEntry={true}
+                styling={styles.texts}
               />
 
               <TouchableOpacity style={styles.buttoning} onPress={() => handleSubmit()}>
                 <Text style={styles.altContainerText}>Next</Text>
               </TouchableOpacity>
             </View>
+            <Text style={styles.signupLink} onPress={() => navigation.navigate('LogIn')}>
+              Already have an account? Log in!
+            </Text>
           </View>
         )}
       </Formik>
@@ -145,7 +153,6 @@ export default function SignUp(): JSX.Element {
 const styles = StyleSheet.create({
   altContainerText: {
     color: Colors.WHITE,
-    fontFamily: 'Montserrat',
     fontSize: 18,
     marginHorizontal: 5,
     textAlign: 'center',
@@ -157,10 +164,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 18,
   },
+  texts:{
+    fontSize: 14,
+    fontWeight: '600',
+    justifyContent: 'center',
+  },
+  container:{
+    backgroundColor: Colors.LIGHTFGREEN
+  },
   header: {
     color: Colors.DARKGREEN,
-    fontFamily: 'Montserrat',
-    fontSize: 30,
+    fontSize: 36,
     fontWeight: '700',
     marginBottom: 30,
   },
@@ -170,5 +184,12 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     justifyContent: 'center',
+  },
+  signupLink: {
+    color: Colors.DARKGREEN,
+    fontSize: 16,
+    marginTop: 10,
+    textAlign: 'center',
+    textDecorationLine:'underline',
   },
 });

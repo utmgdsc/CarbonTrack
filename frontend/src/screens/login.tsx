@@ -64,7 +64,7 @@ export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Eleme
         onSubmit={async (values) => await handleLogIn(values)}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-          <View style={styles.headerContainer}>
+          <View style={[styles.headerContainer, styles.container]}>
             <View style={styles.headerBox}>
               <Text style={styles.header}>Log In</Text>
 
@@ -76,6 +76,7 @@ export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Eleme
                 touchedValue={touched.email}
                 errorValue={errors.email}
                 secureTextEntry={false}
+                styling={styles.texts}
               />
 
               <FormTextField
@@ -86,6 +87,7 @@ export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Eleme
                 touchedValue={touched.password}
                 errorValue={errors.password}
                 secureTextEntry={true}
+                styling={styles.texts}
               />
 
               <TouchableOpacity style={styles.buttoning} onPress={() => handleSubmit()}>
@@ -99,7 +101,7 @@ export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Eleme
                     navigation.navigate('SignUp');
                   }}
                 >
-                  <Text style={styles.footerBold}> Sign Up</Text>
+                  <Text style={styles.footerBold}>Sign Up!</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -123,18 +125,21 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
+  container:{
+    backgroundColor: Colors.LIGHTFGREEN
+  },
   footer: {
     color: Colors.DARKLIMEGREEN,
-    fontFamily: 'Montserrat',
     fontSize: 18,
     marginBottom: 30,
     textAlign: 'center',
+    fontWeight: '500'
   },
   footerBold: {
-    color: Colors.DARKGREEN,
-    fontFamily: 'Montserrat',
+    color: Colors.DARKLIMEGREEN,
+    textDecorationLine:'underline',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '500',
     marginBottom: 30,
     textAlign: 'center',
   },
@@ -144,8 +149,7 @@ const styles = StyleSheet.create({
   },
   header: {
     color: Colors.DARKGREEN,
-    fontFamily: 'Montserrat',
-    fontSize: 30,
+    fontSize: 36,
     fontWeight: '700',
     marginBottom: 30,
   },
@@ -154,6 +158,11 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
+    justifyContent: 'center',
+  },
+  texts:{
+    fontSize: 14,
+    fontWeight: '600',
     justifyContent: 'center',
   },
 });

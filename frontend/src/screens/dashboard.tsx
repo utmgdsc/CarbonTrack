@@ -84,9 +84,7 @@ export default function DashBoardScreen(): JSX.Element {
               <ChallengesWidget challenges={sampleChallenges}/>
           </View>
       </View>
-    
- 
-
+  
     </ScrollView>
   );
 }

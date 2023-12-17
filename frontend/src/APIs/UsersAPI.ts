@@ -153,43 +153,4 @@ export const UsersAPI = {
       return undefined;
     }
   },
-  updateUserProvince: async (user: User, newProvince: string) => {
-    try {
-      const res = await FLASK_HTTPS.patch(
-        routeName + `/user/update_province/${user.uid.toString()}`,
-        { newProvince }
-      );
-
-      return res.data.user as User;
-    } catch (error) {
-      console.error('UsersAPI(frontend): updateUserProvinceError:', error);
-      return undefined;
-    }
-  },
-  updateUserOccupancy: async (user: User, newOccupancy: number) => {
-    try {
-      const res = await FLASK_HTTPS.patch(
-        routeName + `/user/update_occupancy/${user.uid.toString()}`,
-        { newOccupancy }
-      );
-
-      return res.data.user as User;
-    } catch (error) {
-      console.error('UsersAPI(frontend): updateUserOccupancyError:', error);
-      return undefined;
-    }
-  },
-  updateUserFuelEfficiency: async (user: User, newFuelEfficiency: GLfloat) => {
-    try {
-      const res = await FLASK_HTTPS.patch(
-        routeName + `/user/update_fuel_efficiency/${user.uid.toString()}`,
-        { newFuelEfficiency }
-      );
-
-      return res.data.user as User;
-    } catch (error) {
-      console.error('UsersAPI(frontend): updateUserFuelEfficiencyError:', error);
-      return undefined;
-    }
-  },
 };

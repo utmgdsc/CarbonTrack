@@ -43,11 +43,11 @@ const AppNavigation = (): JSX.Element => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="LogIn" component={LogInScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="LogIn" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }}/>
         <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="MainApp" component={MainAppTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="MainApp" component={MainAppTabs} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Forum" component={Forum}  />
         
         <Stack.Screen name='FootprintDecomp'
@@ -118,7 +118,7 @@ const AppNavigation = (): JSX.Element => {
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -218,6 +218,7 @@ const DashboardStack = (): React.JSX.Element => (
         headerStyle: { backgroundColor: Colors.DARKGREEN },
         headerTintColor: '#fff',
         headerTitleStyle: { fontWeight: 'bold' },
+        gestureEnabled: false,
       }}
     />
   </Stack.Navigator>
