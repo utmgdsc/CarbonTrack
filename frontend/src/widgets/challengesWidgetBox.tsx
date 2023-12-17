@@ -54,10 +54,11 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
             </TouchableOpacity>
             </View>
         ))}
-        </View>
         <TouchableOpacity onPress={()=> navigation.navigate('CommunityHub')}>
             <Text style={styles.viewMore}> View More {`>>>`} </Text>
         </TouchableOpacity>
+        </View>
+
     </Animated.View>
     );
     };
@@ -92,6 +93,7 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
         borderRadius: 10,
         marginHorizontal: 10,
         marginVertical: 5,
+
     },
     challengeTitle: {
         fontSize: 16,
