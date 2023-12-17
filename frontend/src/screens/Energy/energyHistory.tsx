@@ -35,7 +35,7 @@ export default function EnergyHistory(): JSX.Element {
   const [expandedStates, setExpandedStates] = useState(Array(100).fill(false));
   const [monthlyData, setMonthlyData] = useState<MonthlyEntry[]>();
   const [startDate] = useState<Date>(new Date(2023, 8, 1));
-  const [endDate] = useState<Date>(new Date(2023, 11, 1));
+  const [endDate] = useState<Date>(new Date(2023, 11, 31));
   const navigation = useNavigation<StackNavigation>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
   const [recommendationForToday, setRecommendationForToday] = useState<EnergyEntryRecommendation>();
