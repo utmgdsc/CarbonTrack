@@ -34,7 +34,8 @@ const ExpProgressBar: React.FC<ExpProgressBarProps> = ({ thisUser }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: 250,
+        top: 10,
+        width: 300,
         marginVertical: 4,
     },
     progressBar: {

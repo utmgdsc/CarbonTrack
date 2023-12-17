@@ -67,7 +67,7 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
         backgroundColor: Colors.DARKGREEN,
         borderRadius: 15,
         justifyContent: 'center',
-        width: 325,
+        width: 350,
         flexDirection: 'column',
         // ios shadow
         shadowColor: Colors.BLACK,
@@ -80,10 +80,11 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
     },
     challengeContainer: {
         justifyContent: 'center',
-        marginTop: 30,
         paddingVertical: 10,
         marginHorizontal: 5,
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop: 60,
+
     },
     challengeListContainer: {
         padding: 15,
@@ -105,23 +106,21 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
     header: {
         color: Colors.WHITE,
         textAlign: 'left',
-        fontSize: 18,
-        paddingLeft: 20,
+        fontSize: 24,
+        marginBottom: 20,
+        top: 20,
+        left: 20,
         fontWeight: '700',
         paddingBottom: 10,
         position: 'absolute',
-        top: 20,
-        left: 0,
         right: 0,
         zIndex: 1,
-        marginBottom: 10
     },
     viewMore:{
         color: Colors.WHITE,
         textAlign: 'right',
         marginHorizontal: 20,
         marginBottom: 5,
-
     }
     });
 

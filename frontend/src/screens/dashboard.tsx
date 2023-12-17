@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
 
@@ -9,7 +9,6 @@ import ChallengesWidget from '../widgets/challengesWidgetBox';
 
 import type { RootStackParamList } from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 
 import { type User } from '../models/User';
 import { UsersAPI } from '../APIs/UsersAPI';
@@ -27,9 +26,6 @@ export default function DashBoardScreen(): JSX.Element {
   const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
   const [foodEntry, setFoodEntry] = useState<FoodEntry>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
-
-
-  const navigation = useNavigation<StackNavigation>();
 
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
@@ -72,13 +68,7 @@ export default function DashBoardScreen(): JSX.Element {
             />
           </View>
           <View style={styles.widgetBoarder}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('FootprintDecomp');
-              }}
-            >
               <CarbonWidgetBox carbonUser={user} />
-            </TouchableOpacity>
           </View>
           <View style={styles.profileWidgetContainer}>
               <ChallengesWidget challenges={sampleChallenges}/>

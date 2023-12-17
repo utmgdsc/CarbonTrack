@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.DARKGREEN,
     borderRadius: 15,
     justifyContent: 'center',
-    height: 350,
-    width: 325,
+    height: 400,
+    width: 350,
     flexDirection: 'column',
     // ios shadow
     shadowColor: Colors.BLACK,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   button:{
     backgroundColor: Colors.DARKLIGHTDARKGREEN,
-    marginHorizontal: 10,
+    marginHorizontal: 20,
     padding: 15,
     borderRadius: 10,
     top: '5%'
@@ -104,9 +104,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   profilePicture: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 160,
+    height: 160,
+    borderRadius: 80,
     alignItems: 'flex-start',
     top: '15%',
     backgroundColor: Colors.TRANSGREENBACK,

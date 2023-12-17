@@ -59,6 +59,7 @@ export default function DashBoardScreen(): JSX.Element {
             nestedScrollEnabled
           />
         </ScrollView>
+        
         <View style={styles.leaderBoardBottom}>
           <Text style={[styles.item, styles.rankItem]}>{userRankMonthly.rank}</Text>
           <Text ellipsizeMode="tail" numberOfLines={1} style={[styles.item, styles.nameItem]}>
@@ -213,7 +214,7 @@ export default function DashBoardScreen(): JSX.Element {
         </View>
         <View style={styles.leaderBoardWidgetContainer}>
           <View style={styles.headerContainer}>
-            <Text style={styles.header}>Leaderboard</Text>
+            <Text style={styles.header2}>Leaderboard</Text>
 
             <View style={styles.tabs}>
               <TouchableOpacity
@@ -243,7 +244,7 @@ export default function DashBoardScreen(): JSX.Element {
 
         <View style={styles.leaderBoardWidgetContainer}>
           <View style={styles.headerContainer}>
-            <Text style={styles.header}>All Challenges:</Text>
+            <Text style={styles.header2}>All Challenges</Text>
             <ScrollView style={styles.scrollChallengesContainer} horizontal>
               <FlatList
                 data={data}
@@ -279,8 +280,14 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     justifyContent: 'center',
   },
-  header: {
+  header:{
     fontSize: 36,
+    color: Colors.WHITE,
+    fontWeight: '700',
+  },
+  header2: {
+    fontSize: 24,
+    marginBottom: 20,
     color: Colors.WHITE,
     fontWeight: '700',
   },
@@ -302,9 +309,9 @@ const styles = StyleSheet.create({
   leaderBoardWidgetContainer: {
     backgroundColor: Colors.DARKGREEN,
     margin: 15,
-    borderRadius: 10,
+    borderRadius: 15,
     height: 400,
-    width: 325,
+    width: 350,
     alignSelf: 'center',
     marginTop: 25,
     // ios shadow
@@ -324,13 +331,14 @@ const styles = StyleSheet.create({
     borderColor: Colors.LIGHTFGREEN,
   },
   leaderBoardBottom: {
-    flexDirection: 'row',
     borderTopWidth: 1.5,
     paddingBottom: 5,
     marginBottom: 10,
     marginTop: 10,
     paddingTop: 5,
     borderColor: Colors.TRANSGREENLOGOUT,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   headerItem: {
     flex: 1,
