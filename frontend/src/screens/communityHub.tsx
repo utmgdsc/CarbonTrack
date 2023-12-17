@@ -266,17 +266,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    fontSize: 30,
+    fontSize: 36,
     color: Colors.WHITE,
-    fontFamily: 'Montserrat',
     fontWeight: '700',
   },
   discription: {
     paddingTop: 15,
     fontSize: 16,
     color: Colors.WHITE,
-    fontFamily: 'Montserrat',
-    fontWeight: '700',
+    fontWeight: '400',
   },
   headerBox: {
     backgroundColor: Colors.BLACKTRANS,
@@ -292,7 +290,16 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 10,
     height: 400,
+    width: 325,
+    alignSelf: 'center',
     marginTop: 25,
+    // ios shadow
+    shadowColor: Colors.BLACK,
+    shadowOffset: { width: 2, height: 4 },
+    shadowOpacity: 0.6,
+    shadowRadius: 15,
+    // andriod shadow
+    elevation: 5,
   },
   leaderBoardHeader: {
     flexDirection: 'row',
@@ -309,15 +316,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     paddingTop: 5,
-    borderColor: Colors.LIGHTFGREEN,
+    borderColor: Colors.TRANSGREENLOGOUT,
   },
   headerItem: {
     flex: 1,
-    fontWeight: 'bold',
+    fontWeight: '500',
     textAlign: 'center',
     color: Colors.WHITE,
-    fontFamily: 'Montserrat',
-    fontSize: 19,
+    fontSize: 16,
   },
   row: {
     flex: 1,
@@ -329,9 +335,8 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     color: Colors.WHITE,
-    fontSize: 16,
-    marginLeft: 20,
-    fontFamily: 'Montserrat',
+    fontSize: 14,
+    justifyContent: 'center'
   },
   rankItem: {
     flex: 0.5,
@@ -341,37 +346,36 @@ const styles = StyleSheet.create({
   },
   scrollLeaderBoardContainer: {
     maxHeight: 150,
-    width: 500,
+    width: 325,
   },
   scrollChallengesContainer: {
     maxHeight: 300,
-    maxWidth: 350,
     marginTop: 15,
+    width: 325,
+    
   },
   itemContainer: {
     padding: 15,
     borderRadius: 10,
-    backgroundColor: Colors.DARKGREEN2,
+    backgroundColor: Colors.DARKDARKGREEN,
     marginBottom: 10,
+    width: '80%'
   },
   itemName: {
-    fontWeight: '700',
+    fontWeight: '500',
     fontSize: 16,
-    fontFamily: 'Montserrat',
     color: Colors.WHITE,
   },
   expandedContent: {
     marginTop: 10,
-    padding: 10,
-    backgroundColor: Colors.DARKGREEN3,
+    backgroundColor: Colors.DARKGREEN2,
     borderRadius: 10,
-    width: 320,
+    padding: 10
   },
   descriptionText: {
     color: Colors.WHITE,
-    fontFamily: 'Montserrat',
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 14,
+    fontWeight: '400',
   },
   acceptButton: {
     backgroundColor: Colors.LIGHTFGREEN,
@@ -386,22 +390,26 @@ const styles = StyleSheet.create({
   tabs: {
     flexDirection: 'row',
     marginTop: 15,
-    justifyContent: 'space-between',
-    paddingHorizontal: 70,
+    alignSelf: 'center',
+    
   },
   tab: {
-    paddingVertical: 8,
-    paddingHorizontal: 20,
+    width: 100,
+    height: 40,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: Colors.LIGHTFGREEN,
+    borderColor: Colors.TRANSGREENLOGOUT,
+    marginHorizontal: '12%', 
+    justifyContent: 'center'
+
   },
   activeTab: {
-    backgroundColor: Colors.LIGHTFGREEN,
+    backgroundColor: Colors.TRANSGREENLOGOUT,
+    color: Colors.WHITE,
   },
   tabText: {
     fontWeight: '700',
-    fontFamily: 'Montserrat',
     color: Colors.WHITE,
+    alignSelf: 'center',
   },
 });

@@ -41,7 +41,7 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
 
   return (
     <View style={styles.boxContainer}>
-        <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
+        <Image source={{ uri: profilePicture ?? '' }} style={styles.profilePicture} />
         <View style={styles.nameBox}>
           <Text style={styles.name}> {user.full_name} </Text>
           <View style={styles.progressBar}>
