@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, View, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
 
@@ -27,7 +27,7 @@ export default function DashBoardScreen(): JSX.Element {
   const [transportationEntry, setTransportationEntry] = useState<TransportationEntry>();
   const [foodEntry, setFoodEntry] = useState<FoodEntry>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
-
+  const [refreshing, setRefreshing] = useState(false);
 
   const navigation = useNavigation<StackNavigation>();
 
@@ -44,47 +44,85 @@ export default function DashBoardScreen(): JSX.Element {
     });
     void TransportationAPI.getTransportationMetricForToday().then((res) => {
       if (res != null) {
-        setTransportationEntry(res)
+        setTransportationEntry(res);
       }
     });
     void FoodAPI.getFoodMetricForToday().then((res) => {
       if (res != null) {
-        setFoodEntry(res)
+        setFoodEntry(res);
       }
     });
     void EnergyAPI.getEnergyMetricForToday().then((res) => {
       if (res != null) {
-        setEnergyEntry(res)
+        setEnergyEntry(res);
       }
     });
   }, [loaded]);
 
-  if (!loaded || user === undefined || transportationEntry === undefined || foodEntry === undefined || energyEntry === undefined) {
+  const onRefresh = (): void => {
+    // Simulate a refresh action (e.g., fetch new data)
+    setRefreshing(true);
+
+    void UsersAPI.GetLoggedInUser().then((res) => {
+      if (res != null) {
+        setUser(res);
+      }
+    });
+    void TransportationAPI.getTransportationMetricForToday().then((res) => {
+      if (res != null) {
+        setTransportationEntry(res);
+      }
+    });
+    void FoodAPI.getFoodMetricForToday().then((res) => {
+      if (res != null) {
+        setFoodEntry(res);
+      }
+    });
+    void EnergyAPI.getEnergyMetricForToday().then((res) => {
+      if (res != null) {
+        setEnergyEntry(res);
+      }
+    });
+
+    setTimeout(() => {
+      setRefreshing(false); // Set refreshing to false after data is fetched
+    }, 2000); // Simulating a 2-second delay
+  };
+
+  if (
+    !loaded ||
+    user === undefined ||
+    transportationEntry === undefined ||
+    foodEntry === undefined ||
+    energyEntry === undefined
+  ) {
     return <></>;
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0000ff" />
+      }
+      style={styles.container}
+    >
       <View style={styles.profileWidgetContainer}>
         <View style={styles.widgetBoarder}>
-            <ProfileWidgetBox
-            user={user}
-            />
-          </View>
-          <View style={styles.widgetBoarder}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('FootprintDecomp');
-              }}
-            >
-              <CarbonWidgetBox carbonUser={user} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.profileWidgetContainer}>
-              <ChallengesWidget challenges={sampleChallenges}/>
-          </View>
+          <ProfileWidgetBox user={user} />
+        </View>
+        <View style={styles.widgetBoarder}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('FootprintDecomp');
+            }}
+          >
+            <CarbonWidgetBox carbonUser={user} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.profileWidgetContainer}>
+          <ChallengesWidget challenges={sampleChallenges} />
+        </View>
       </View>
-  
     </ScrollView>
   );
 }
@@ -95,8 +133,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   profileWidgetContainer: {
-    alignItems: 'center', 
-    marginHorizontal: 10
+    alignItems: 'center',
+    marginHorizontal: 10,
   },
   widgetBoarder: {
     padding: 10,
