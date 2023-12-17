@@ -44,7 +44,6 @@ export default function SignUpQuestions(): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
-
   const provinces = [
     'British Columbia',
     'Alberta',
@@ -58,16 +57,17 @@ export default function SignUpQuestions(): JSX.Element {
     'Nova Scotia',
     'Nunavut',
     'Yukon',
-    'Northwest Territories'
+    'Northwest Territories',
   ];
 
   const handleSurveySubmit = async (): Promise<void> => {
-    if ((Province === "") || numOfPpl === null || isNaN(numOfPpl) ) {
-      setGeneralError('*Please fill in required field.');
+    if (Province === '' || numOfPpl === null || isNaN(numOfPpl)) {
+      setGeneralError('*Please fill in required fields.');
       return;
     } else {
       setGeneralError(null);
     }
+
     console.log('Survey Responses:', {
       Province,
       numOfPpl,
@@ -77,37 +77,28 @@ export default function SignUpQuestions(): JSX.Element {
 
     try {
       console.log('Updating home info');
-  
+
       if (user !== undefined) {
-        let updatedUser: User | undefined;
-  
+        let updatedUser: User | undefined = { ...user }; // Make a copy of the user object
+
         if (Province !== '' && Province !== user.province) {
           console.log('Updating province');
-          updatedUser = await UsersAPI.updateUser({
-            ...user,
-            province: Province,
-          });
-          console.log('Updated province:', updatedUser?.province);
+          updatedUser.province = Province;
         }
-  
+
         if (numOfPpl !== 0 && numOfPpl !== user.household) {
           console.log('Updating occupancy');
-          updatedUser = await UsersAPI.updateUser({
-            ...user,
-            household: numOfPpl,
-          });
-          console.log('Updated occupancy:', updatedUser?.household);
+          updatedUser.household = numOfPpl;
         }
-  
+
         if (fuelEfficiency !== 0 && fuelEfficiency !== user.fuel_efficiency) {
           console.log('Updating fuel efficiency');
-          updatedUser = await UsersAPI.updateUser({
-            ...user,
-            fuel_efficiency: fuelEfficiency,
-          });
-          console.log('Updated fuel efficiency:', updatedUser?.fuel_efficiency);
+          updatedUser.fuel_efficiency = fuelEfficiency;
         }
-  
+
+        // Now update the user with all the changed fields
+        updatedUser = await UsersAPI.updateUser(updatedUser);
+
         if (updatedUser !== undefined) {
           setUser(updatedUser);
           console.log('User updated:', updatedUser);
@@ -116,11 +107,9 @@ export default function SignUpQuestions(): JSX.Element {
     } catch (e) {
       console.error('Updating Home Info error occurred:', e);
     }
-    navigation.navigate('TransportationForum');
-    return await Promise.resolve()
-    
-  };
 
+    navigation.navigate('TransportationForum');
+  };
 
   const openLink = async (url: string): Promise<void> => {
     const supported = await Linking.canOpenURL(url);
@@ -144,7 +133,7 @@ export default function SignUpQuestions(): JSX.Element {
     updatedResponses[questionId] = data[questionId].options[optionIndex];
     setResponses(updatedResponses);
   };
-  
+
   useEffect(() => {
     void UsersAPI.GetLoggedInUser().then((res) => {
       if (res != null) {
@@ -154,42 +143,41 @@ export default function SignUpQuestions(): JSX.Element {
   }, [loaded]);
 
   useEffect(() => {
-    console.log("Updated Province:", Province);
+    console.log('Updated Province:', Province);
   }, [Province]); // sanity check
 
   if (!loaded || user === undefined) {
     return <></>;
   }
 
-
   return (
     <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.pageHeader}>Before jump right in, why don&apos;t we get to know you a little more, {user.full_name}!</Text>
+      <Text style={styles.pageHeader}>
+        Before jump right in, why don&apos;t we get to know you a little more, {user.full_name}!
+      </Text>
       <View style={styles.sectionDiv}>
-      <Text style={styles.questionText}>How many people live in your household:</Text>
-        {((generalError ?? "") !== "") && (
-          <Text style={styles.errorText}>{generalError}</Text>
-        )}
-      <View style={styles.textbox}>
-        <TextInput
-          style={styles.textInputBox}
-          keyboardType="numeric"
-          placeholder="Eg. 3"
-          onChangeText={(text) => {
-            setNumOfPpl(Number(text));
-          }}
-        />
-      </View>
-      <View style={styles.provincialContainer}>
+        <Text style={styles.questionText}>How many people live in your household:</Text>
+        {(generalError ?? '') !== '' && <Text style={styles.errorText}>{generalError}</Text>}
+        <View style={styles.textbox}>
+          <TextInput
+            style={styles.textInputBox}
+            keyboardType="numeric"
+            placeholder="Eg. 3"
+            onChangeText={(text) => {
+              setNumOfPpl(Number(text));
+            }}
+          />
+        </View>
+        <View style={styles.provincialContainer}>
           <Text style={styles.questionText}>What province do you live in? </Text>
-            {((generalError ?? "") !== "") && (
-              <Text style={styles.errorText}>{generalError}</Text>
-            )}
+          {(generalError ?? '') !== '' && <Text style={styles.errorText}>{generalError}</Text>}
           <CustomDropdown
             options={provinces}
-            onSelect={(selectedProvince: React.SetStateAction<string>) => setProvince(selectedProvince)}
+            onSelect={(selectedProvince: React.SetStateAction<string>) =>
+              setProvince(selectedProvince)
+            }
           />
-          <Image source={{ uri: 'https://pngimg.com/d/frog_PNG3839.png' }} style={styles.frogie}  />
+          <Image source={{ uri: 'https://pngimg.com/d/frog_PNG3839.png' }} style={styles.frogie} />
         </View>
       </View>
       <View style={styles.questionContainer}>
@@ -214,8 +202,6 @@ export default function SignUpQuestions(): JSX.Element {
         </View>
       </View>
 
-
-
       <Text style={styles.questionText}>{data[0].question}</Text>
       {data[0].options.map((option, index) => (
         <CheckBox
@@ -238,14 +224,12 @@ export default function SignUpQuestions(): JSX.Element {
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
             <Text style={styles.infoText}>
-              If you don&apos;t know your vehicle&apos;s fuel efficiency, it&apos;s available
-              online{' '}
+              If you don&apos;t know your vehicle&apos;s fuel efficiency, it&apos;s available online{' '}
               <Text style={styles.linkText} onPress={handleLinkPress}>
                 here
               </Text>
-              . Select the &quot;combination&quot; value under Consumption in L/100km. The
-              average fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L
-              / 100 km.
+              . Select the &quot;combination&quot; value under Consumption in L/100km. The average
+              fuel consumption of non-plug-in hybrid personal vehicles in Canada is 8.9 L / 100 km.
             </Text>
             <TouchableOpacity
               style={styles.closeIcon}
@@ -256,7 +240,12 @@ export default function SignUpQuestions(): JSX.Element {
           </View>
         </View>
       </Modal>
-      <TouchableOpacity style={styles.buttoning} onPress={()  => { void handleSurveySubmit()}}>
+      <TouchableOpacity
+        style={styles.buttoning}
+        onPress={() => {
+          void handleSurveySubmit();
+        }}
+      >
         <Text style={styles.buttoningText}>Complete Sign Up</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -282,9 +271,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 18,
   },
-  frogie:{ 
-    width: 175, 
-    height: 175 
+  frogie: {
+    width: 175,
+    height: 175,
   },
   buttoningText: {
     color: Colors.WHITE,
@@ -322,7 +311,7 @@ const styles = StyleSheet.create({
   closeIcon: {
     marginLeft: 'auto',
   },
-  pageHeader:{
+  pageHeader: {
     fontSize: 26,
     fontWeight: '600',
     paddingBottom: 30,
@@ -345,7 +334,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.DARKGREEN,
   },
-  sectionDiv:{
+  sectionDiv: {
     margin: 10,
   },
   textInputBox: {
