@@ -141,14 +141,14 @@ class FoodEntryRecomendation(CARBON_MODEL):
     @staticmethod
     def from_food_entry(food_entry: FoodEntry) -> FoodEntryRecomendation:
         submetric_threshold = FoodEntry.metric_threshold/8
-        beef_recommendation = ""
-        lamb_recommendation = ""
-        pork_recommendation = ""
-        chicken_recommendation = ""
-        fish_recommendation = ""
-        cheese_recommendation = ""
-        milk_recommendation = ""
-        food_waste_recommendation = ""
+        beef_recommendation = "Beef emissions look good!"
+        lamb_recommendation = "Lamb emissions look good!"
+        pork_recommendation = "Pork emissions look good!"
+        chicken_recommendation = "Chicken emissions look good!"
+        fish_recommendation = "Fish emissions look good!"
+        cheese_recommendation = "Cheese emissions look good!"
+        milk_recommendation = "Milk emissions look good!"
+        food_waste_recommendation = "Food waste emissions look good!"
 
         beef_carbon_emissions = food_entry.beef * 15.5
         lamb_carbon_emissions = food_entry.lamb * 5.84

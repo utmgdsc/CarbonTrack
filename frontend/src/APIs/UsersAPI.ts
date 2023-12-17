@@ -34,8 +34,8 @@ export const UsersAPI = {
       return undefined;
     }
   },
-  
-  getTopUsers: async (count: number)=> {
+
+  getTopUsers: async (count: number) => {
     try {
       const res = await FLASK_HTTPS.post(routeName + '/get_top_users', {
         count,
@@ -47,7 +47,7 @@ export const UsersAPI = {
       return undefined;
     }
   },
-  
+
   getUserByEmail: async (email: string) => {
     try {
       const res = await FLASK_HTTPS.get(routeName + '/user_email/' + email);
@@ -143,10 +143,9 @@ export const UsersAPI = {
   },
   updateUserName: async (user: User, newName: string) => {
     try {
-      const res = await FLASK_HTTPS.patch(
-        routeName + `/user/update_name/${user.uid.toString()}`,
-        { newName },
-      );
+      const res = await FLASK_HTTPS.patch(routeName + `/user/update_name/${user.uid.toString()}`, {
+        newName,
+      });
 
       return res.data.user as User;
     } catch (error) {

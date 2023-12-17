@@ -115,11 +115,11 @@ class TransportationEntryRecommendation(DB_MODEL):
     @staticmethod
     def from_transportation_entry(transportation_entry: TransportationEntry) -> TransportationEntryRecommendation:
         submetric_threshold = TransportationEntry.metric_threshold/5 
-        bus_recommendation = ""
-        train_recommendation = ""
-        motorbike_recommendation = ""
-        electric_car_recommendation = ""
-        gasoline_car_recommendation = ""
+        bus_recommendation = "Bus emissions look good!"
+        train_recommendation = "Train emissions look good!"
+        motorbike_recommendation = "Motorbike emissions look good!"
+        electric_car_recommendation = "Electric car emissions look good!"
+        gasoline_car_recommendation = "Gasoline emissions look good!"
 
         bus_carbon_emissions = transportation_entry.bus * 0.103
         train_carbon_emissions = transportation_entry.train * 0.037
