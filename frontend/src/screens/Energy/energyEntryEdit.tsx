@@ -82,6 +82,7 @@ export default function EnergyEntryEdit(): JSX.Element {
               <Text style={styles.buttonText}> Your Forms </Text>
             </TouchableOpacity>
             <Text style={styles.header}>Calculate Your Energy Emissions!</Text>
+            <Text style={styles.note}>Tip💡: Check your monthly bill to find your usage or email your landlord, they should have the information you need. </Text>
             </View>
 
           <View style={styles.questionContainer}>
@@ -191,5 +192,11 @@ const styles = StyleSheet.create({
     color: Colors.DARKDARKGREEN,
     fontSize: 16,
     fontWeight: '700',
+  },
+  note:{
+    fontSize: 16, 
+    fontWeight: '500',
+    marginTop: 10,
+    color: Colors.LIGHTBLACK
   },
 });
