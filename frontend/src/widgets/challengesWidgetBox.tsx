@@ -56,7 +56,7 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
         ))}
         </View>
         <TouchableOpacity onPress={()=> navigation.navigate('CommunityHub')}>
-            <Text style={styles.viewMore}> View More </Text>
+            <Text style={styles.viewMore}> View More {`>>>`} </Text>
         </TouchableOpacity>
     </Animated.View>
     );
@@ -87,7 +87,7 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
     },
     challengeListContainer: {
         padding: 15,
-        backgroundColor: Colors.DARKTRANS,
+        backgroundColor: Colors.DARKLIGHTDARKGREEN,
         borderRadius: 10,
         marginHorizontal: 10,
         marginVertical: 5,
