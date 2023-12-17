@@ -129,6 +129,20 @@ export default function DashBoardScreen(): JSX.Element {
         'Reduce your transportation distance by 2km this week and opt out for some public transportation, biking, or struting that walk way.',
       deadline: '2024-4-31',
     },
+    {
+      id: 4,
+      name: 'Good re-Soup',
+      description:
+        'Reuse and repurpose your leftovers by turning it into stock!',
+      deadline: '2024-4-31',
+    },
+    {
+      id: 5,
+      name: 'Meatless Mondays',
+      description:
+        'Try going vegitarian (or vegan for a bigger challenge) for an entire Monday',
+      deadline: '2024-4-31',
+    },
     // Add more items here
   ];
 
