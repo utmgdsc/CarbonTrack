@@ -79,7 +79,7 @@ export default function SignUpQuestions(): JSX.Element {
       console.log('Updating home info');
 
       if (user !== undefined) {
-        let updatedUser: User | undefined = { ...user }; // Make a copy of the user object
+        let updatedUser: User | undefined = { ...user };
 
         if (Province !== '' && Province !== user.province) {
           console.log('Updating province');

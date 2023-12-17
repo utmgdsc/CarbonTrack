@@ -87,35 +87,26 @@ export default function UpdateHomeScreen(): JSX.Element {
       console.log('Updating home info');
   
       if (user !== undefined) {
-        let updatedUser: User | undefined;
-  
+        let updatedUser: User | undefined = { ...user };
+
         if (newProvince !== '' && newProvince !== user.province) {
           console.log('Updating province');
-          updatedUser = await UsersAPI.updateUser({
-            ...user,
-            province: newProvince,
-          });
-          console.log('Updated province:', updatedUser?.province);
+          updatedUser.province = newProvince;
         }
-  
+
         if (newOccupancy !== 0 && newOccupancy !== user.household) {
           console.log('Updating occupancy');
-          updatedUser = await UsersAPI.updateUser({
-            ...user,
-            household: newOccupancy,
-          });
-          console.log('Updated occupancy:', updatedUser?.household);
+          updatedUser.household = newOccupancy;
         }
-  
+
         if (newFuelEfficeincy !== 0 && newFuelEfficeincy !== user.fuel_efficiency) {
           console.log('Updating fuel efficiency');
-          updatedUser = await UsersAPI.updateUser({
-            ...user,
-            fuel_efficiency: newFuelEfficeincy,
-          });
-          console.log('Updated fuel efficiency:', updatedUser?.fuel_efficiency);
+          updatedUser.fuel_efficiency = newFuelEfficeincy;
         }
-  
+
+        // Now update the user with all the changed fields
+        updatedUser = await UsersAPI.updateUser(updatedUser);
+
         if (updatedUser !== undefined) {
           setUser(updatedUser);
           console.log('User updated:', updatedUser);
