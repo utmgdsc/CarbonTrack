@@ -21,8 +21,8 @@ class TransportationEntry(CARBON_MODEL):
     motorbike: int
     electric_car: int
     gasoline_car: int
-    fuel_efficieny: float
-    metric_threshold = 200/3
+    fuel_efficiency: float
+    metric_threshold = 200 / 3
 
     def __init__(self, oid: ObjectId, user_id: ObjectId, carbon_emissions: int, date: Union[str, datetime],
                  bus: int, train: int, motorbike: int, electric_car: int, gasoline_car: int, fuel_efficiency: float) -> None:
@@ -67,14 +67,14 @@ class TransportationEntry(CARBON_MODEL):
         bus_carbon_emissions = self.bus * 0.103
         train_carbon_emissions = self.train * 0.037
         motorbike_carbon_emissions = self.motorbike * 0.113
-        electric_car_carbon_emissions = ((self.fuel_efficiency * 8.9 * 0.4)/100) * self.electric_car
-        gasoline_car_carbon_emissions = ((self.fuel_efficiency * 2.3)/100) * self.gasoline_car 
+        electric_car_carbon_emissions = ((self.fuel_efficiency * 8.9 * 0.4) / 100) * self.electric_car
+        gasoline_car_carbon_emissions = ((self.fuel_efficiency * 2.3) / 100) * self.gasoline_car
         return int(sum([bus_carbon_emissions, train_carbon_emissions, motorbike_carbon_emissions,
                         electric_car_carbon_emissions, gasoline_car_carbon_emissions]))
 
     def __repr__(self) -> str:
         return f"Transportation ID: {self.oid.__str__()}"
-    
+
 
 class TransportationEntryRecommendation(DB_MODEL):
     bus_recommendation: str
@@ -84,14 +84,14 @@ class TransportationEntryRecommendation(DB_MODEL):
     gasoline_car_recommendation: str
     metric_threshold: int
 
-    def __init__(self, bus_recommendation: str, train_recommendation: str, motorbike_recommendation: str, 
+    def __init__(self, bus_recommendation: str, train_recommendation: str, motorbike_recommendation: str,
                  electric_car_recommendation: str, gasoline_car_recommendation: str) -> None:
+        super().__init__(ObjectId())
         self.bus_recommendation = bus_recommendation
         self.train_recommendation = train_recommendation
         self.motorbike_recommendation = motorbike_recommendation
         self.electric_car_recommendation = electric_car_recommendation
         self.gasoline_car_recommendation = gasoline_car_recommendation
-        
 
     def to_json(self) -> json:
         return {
@@ -103,18 +103,18 @@ class TransportationEntryRecommendation(DB_MODEL):
         }
 
     @staticmethod
-    def from_json(doc: json) -> TransportationEntry:
-        return TransportationEntry(
+    def from_json(doc: json) -> TransportationEntryRecommendation:
+        return TransportationEntryRecommendation(
             bus_recommendation=doc["bus_recommendation"],
             train_recommendation=doc["train_recommendation"],
             motorbike_recommendation=doc["motorbike_recommendation"],
             electric_car_recommendation=doc["electric_car_recommendation"],
             gasoline_car_recommendation=doc["gasoline_car_recommendation"]
         )
-    
+
     @staticmethod
     def from_transportation_entry(transportation_entry: TransportationEntry) -> TransportationEntryRecommendation:
-        submetric_threshold = TransportationEntry.metric_threshold/5 
+        submetric_threshold = TransportationEntry.metric_threshold / 5
         bus_recommendation = "Bus emissions look good!"
         train_recommendation = "Train emissions look good!"
         motorbike_recommendation = "Motorbike emissions look good!"
@@ -124,15 +124,15 @@ class TransportationEntryRecommendation(DB_MODEL):
         bus_carbon_emissions = transportation_entry.bus * 0.103
         train_carbon_emissions = transportation_entry.train * 0.037
         motorbike_carbon_emissions = transportation_entry.motorbike * 0.113
-        electric_car_carbon_emissions = ((transportation_entry.fuel_efficiency * 8.9 * 0.4)/100) * transportation_entry.electric_car
-        gasoline_car_carbon_emissions = ((transportation_entry.fuel_efficiency * 2.3)/100) * transportation_entry.gasoline_car 
+        electric_car_carbon_emissions = ((transportation_entry.fuel_efficiency * 8.9 * 0.4) / 100) * transportation_entry.electric_car
+        gasoline_car_carbon_emissions = ((transportation_entry.fuel_efficiency * 2.3) / 100) * transportation_entry.gasoline_car
 
         if bus_carbon_emissions > submetric_threshold:
             bus_recommendation = "Bus emissions too high"
 
         if train_carbon_emissions > submetric_threshold:
             train_recommendation = "Train emissions too high"
-        
+
         if motorbike_carbon_emissions > submetric_threshold:
             motorbike_recommendation = "Motorbike emissions too high"
 
@@ -142,11 +142,8 @@ class TransportationEntryRecommendation(DB_MODEL):
         if gasoline_car_carbon_emissions > submetric_threshold:
             gasoline_car_recommendation = "Gasoline car emissions too high"
 
-
-        return TransportationEntryRecommendation(bus_recommendation, train_recommendation, 
+        return TransportationEntryRecommendation(bus_recommendation, train_recommendation,
                                                  motorbike_recommendation, electric_car_recommendation, gasoline_car_recommendation)
-
 
     def __repr__(self) -> str:
         return f"Transportation ID: {self.oid.__str__()}"
-    
