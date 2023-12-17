@@ -11,7 +11,7 @@ from routes.users import users
 from routes.transportation import transportation_service
 from routes.food import food_service
 from routes.energy import energy_service
-
+from workers.jobs import start_jobs
 
 app = Flask(__name__)
 app.json = CustomJSONProvider(app)
@@ -24,6 +24,9 @@ app.register_blueprint(food_service, url_prefix="/food")
 app.register_blueprint(energy_service, url_prefix="/energy")
 app.register_blueprint(ct_firebase_service, url_prefix="/f")
 CORS(app)
+
+
+start_jobs()
 
 
 @app.route("/")

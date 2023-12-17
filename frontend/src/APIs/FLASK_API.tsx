@@ -27,7 +27,6 @@ const instance = axios.create({
 instance.interceptors.request.use(
   async (config) => {
     const token = await getFirebaseAuthToken();
-    console.log(token);
 
     if (token != null) {
       config.headers.Authorization = `Bearer ${token}`;

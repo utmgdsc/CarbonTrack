@@ -13,12 +13,14 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string>('https://cianmaggs.github.io/google-homepage/images/loginbutton.png');
 
   const fetchProfilePicture = useCallback(async () => {
     try {
       const picture = await firebaseService.getProfilePicture();
-      setProfilePicture(picture);
+      if (picture != null) {
+        setProfilePicture(picture);
+      }
     } catch (error) {
       console.error('Error fetching profile picture:', error);
     }
@@ -41,23 +43,26 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
 
   return (
     <View style={styles.boxContainer}>
-        <Image source={{ uri: profilePicture ?? '' }} style={styles.profilePicture} />
+        <Image
+          source={{ uri: profilePicture }}
+          style={styles.profilePicture}
+        />
         <View style={styles.nameBox}>
           <Text style={styles.name}> {user.full_name} </Text>
           <View style={styles.progressBar}>
             <ExpProgressBar thisUser={user}/>
           </View>
           <View style={styles.buttonsContainer}>
-            <TouchableOpacity style={styles.button}> 
+            <TouchableOpacity style={styles.button}>
               <Text style={styles.buttonText} > Badges </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}> 
-              <Text style={styles.buttonText}> Rank getUserRank </Text>            
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText}> Rank getUserRank </Text>
             </TouchableOpacity>
-            
+
           </View>
         </View>
-          
+
     </View>
   );
 };
