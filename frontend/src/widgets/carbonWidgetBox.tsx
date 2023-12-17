@@ -91,7 +91,7 @@ const CarbonWidgetBox: React.FC<carbonWidgetProps> = ({ carbonUser }) => {
         
         <View style={styles.carbonBox}>
         
-            <Text style={styles.footprint}> {footprint} kg CO₂ </Text>
+            <Text style={styles.footprint}> {footprint} kg CO₂ / week </Text>
 
             
         </View>

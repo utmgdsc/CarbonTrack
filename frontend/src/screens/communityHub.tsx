@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: Colors.DARKDARKGREEN,
     marginBottom: 10,
-    width: '80%'
+    width: '90%'
   },
   itemName: {
     fontWeight: '500',
