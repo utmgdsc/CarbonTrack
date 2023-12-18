@@ -382,16 +382,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderColor: Colors.LIGHTFGREEN,
   },
-  leaderBoardBottom: {
-    borderTopWidth: 1.5,
-    paddingBottom: 5,
-    marginBottom: 10,
-    marginTop: 10,
-    paddingTop: 5,
-    borderColor: Colors.TRANSGREENLOGOUT,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   headerItem: {
     flex: 1,
     fontWeight: '500',
@@ -473,7 +463,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: Colors.TRANSGREENLOGOUT,
-    marginHorizontal: '12%',
+    marginHorizontal: '2%',
     justifyContent: 'center'
 
   },
