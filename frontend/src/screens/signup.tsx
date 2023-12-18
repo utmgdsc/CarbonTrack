@@ -66,6 +66,9 @@ export default function SignUp(): JSX.Element {
         household: 0,
         fuel_efficiency: 0,
         photoURL: '',
+        monthly_emissions: 0,
+        yearly_emissions: 0,
+        overall_emissions: 0
       });
 
       if (typeof res === 'string') {

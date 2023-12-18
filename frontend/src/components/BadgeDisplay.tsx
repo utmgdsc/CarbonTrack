@@ -22,15 +22,15 @@ const BadgesDisplay: React.FC<{ user: User }> = ({ user }) => {
     },
     completed_10_weekly_entries: {
       image: require('../../assets/complete-10-badge.png'),
-      description: 'Completed 10 weekly entry!',
+      description: 'Completed 10 weekly entries!',
     },
     completed_50_weekly_entries: {
       image: require('../../assets/complete-50-badge.png'),
-      description: 'Completed 50 weekly entry!',
+      description: 'Completed 50 weekly entries!',
     },
     completed_100_weekly_entries: {
       image: require('../../assets/complete-100-badge.png'),
-      description: 'Completed 100 weekly entry!',
+      description: 'Completed 100 weekly enties!',
     },
     decreased_emissions_for_first_time: {
       image: require('../../assets/improve-footprint-badge.png'),
