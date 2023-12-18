@@ -5,7 +5,7 @@ import flask
 from bson import ObjectId
 from flask import Blueprint, Response, abort, jsonify, request
 
-from models.food import FoodEntry, FoodEntryRecomendation
+from models.food import FoodEntry, FoodEntryRecommendation
 from mongodb_api.carbon_track_db import CarbonTrackDB
 from routes import carbon_auth
 from utils.FirebaseAPI import FirebaseAPI
@@ -111,7 +111,7 @@ def get_food_recommendation_for_today() -> Response:
             return get_food_metric_for_today()
         else:
             item = FoodEntry.from_json(item)
-            food_recommendation = FoodEntryRecomendation.from_food_entry(item).to_json()
+            food_recommendation = FoodEntryRecommendation.from_food_entry(item).to_json()
             return jsonify({'food_recommendation': food_recommendation})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")

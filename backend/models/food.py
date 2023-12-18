@@ -89,7 +89,7 @@ class FoodEntry(CARBON_MODEL):
         return f'Food ID: {self.oid.__str__()}'
 
 
-class FoodEntryRecomendation(CARBON_MODEL):
+class FoodEntryRecommendation(CARBON_MODEL):
     beef_recommendation: str
     lamb_recommendation: str
     pork_recommendation: str
@@ -139,7 +139,7 @@ class FoodEntryRecomendation(CARBON_MODEL):
     
 
     @staticmethod
-    def from_food_entry(food_entry: FoodEntry) -> FoodEntryRecomendation:
+    def from_food_entry(food_entry: FoodEntry) -> FoodEntryRecommendation:
         submetric_threshold = 11
         beef_recommendation = "Looking good!"
         lamb_recommendation = "Looking good!"
