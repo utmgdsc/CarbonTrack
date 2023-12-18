@@ -9,6 +9,8 @@ from datetime import datetime
 from models.abstract_carbon_model import CARBON_MODEL
 from bson import ObjectId
 
+from models.abstract_db_model import DB_MODEL
+
 
 class EnergyEntry(CARBON_MODEL):
     oid: ObjectId
@@ -97,12 +99,13 @@ class EnergyEntry(CARBON_MODEL):
         return f'Energy ID: {self.oid.__str__()}'
 
 
-class EnergyEntryRecommendation(CARBON_MODEL):
-    heating_oil_recommendation: str  
-    natural_gas_recommendation: str 
-    electricity_recommendation: str 
+class EnergyEntryRecommendation(DB_MODEL):
+    heating_oil_recommendation: str
+    natural_gas_recommendation: str
+    electricity_recommendation: str
 
-    def __init__(self, heating_oil_recommendation: int, natural_gas_recommendation: int, electricity_recommendation: int) -> None:
+    def __init__(self, heating_oil_recommendation: str, natural_gas_recommendation: str, electricity_recommendation: str) -> None:
+        super().__init__(ObjectId())
         self.heating_oil_recommendation = heating_oil_recommendation
         self.natural_gas_recommendation = natural_gas_recommendation
         self.electricity_recommendation = electricity_recommendation
@@ -115,17 +118,18 @@ class EnergyEntryRecommendation(CARBON_MODEL):
         }
 
     @staticmethod
-    def from_json(doc: json) -> EnergyEntry:
-        return EnergyEntry(
+    def from_json(doc: json) -> EnergyEntryRecommendation:
+        return EnergyEntryRecommendation(
             heating_oil_recommendation=doc["heating_oil_recommendation"],
             natural_gas_recommendation=doc["natural_gas_recommendation"],
             electricity_recommendation=doc["electricity_recommendation"]
         )
 
+    @staticmethod
     def from_energy_entry(energy_entry: EnergyEntry) -> EnergyEntryRecommendation:
         submetric_threshold = EnergyEntry.metric_threshold/3
         heating_oil_recommendation = "Heating oil emissions look good!"
-        natural_gas_recommendation = "Natural gas emissions look good!" 
+        natural_gas_recommendation = "Natural gas emissions look good!"
         electricity_recommendation = "Electricity emissions look good!"
 
         heating_oil_carbon_emissions = energy_entry.heating_oil * 2.753
@@ -171,7 +175,6 @@ class EnergyEntryRecommendation(CARBON_MODEL):
             electricity_recommendation = "Electricity emissions too high"
 
         return EnergyEntryRecommendation(heating_oil_recommendation, natural_gas_recommendation, electricity_recommendation)
-        
 
     def __repr__(self) -> str:
         return f'Energy ID: {self.oid.__str__()}'

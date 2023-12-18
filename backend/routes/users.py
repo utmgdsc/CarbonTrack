@@ -40,7 +40,7 @@ def get_top_users() -> Response:
             user = {
                 "rank": rank,
                 "name": obj.full_name,
-                "footprint": 0,
+                "footprint": obj.monthly_emissions,
                 "score": obj.overall_score,
             }
             rank += 1
@@ -57,7 +57,7 @@ def get_top_users() -> Response:
             user = {
                 "rank": rank,
                 "name": obj.full_name,
-                "footprint": 0,
+                "footprint": obj.yearly_emissions,
                 "score": obj.overall_score,
             }
             rank += 1
@@ -74,7 +74,7 @@ def get_top_users() -> Response:
             user = {
                 "rank": rank,
                 "name": obj.full_name,
-                "footprint": 0,
+                "footprint": obj.overall_emissions,
                 "score": obj.overall_score,
             }
             rank += 1
@@ -87,7 +87,6 @@ def get_top_users() -> Response:
                 "top_overall_users": top_overall_users,
             }
         )
-
 
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
