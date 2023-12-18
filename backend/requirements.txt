@@ -7,3 +7,4 @@ ruff==0.1.4
 typing~=3.7.4.3
 werkzeug~=3.0.1
 APScheduler~=3.10.4
+gunicorn==21.2.0
