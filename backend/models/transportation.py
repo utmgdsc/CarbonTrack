@@ -4,7 +4,8 @@ Transportation Model
 
 from __future__ import annotations
 from typing import Union
-import json, random
+import json
+import random
 from datetime import datetime
 from models.abstract_carbon_model import CARBON_MODEL
 from models.abstract_db_model import DB_MODEL
