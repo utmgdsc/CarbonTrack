@@ -138,7 +138,7 @@ export default function UpdateHomeScreen(): JSX.Element {
             <Text style={styles.label}>How many people live in your home?:</Text>
             <TextInput
               keyboardType="numeric"
-              placeholder= {'Currently:'+String(user?.household)+'L/100k'}
+              placeholder= {'Currently:'+String(user?.household)}
               placeholderTextColor={Colors.LIGHTBLACK}
               onChangeText={(number) => setNewOccupancy(parseInt(number))}
               onFocus={handleFocus}
@@ -149,7 +149,7 @@ export default function UpdateHomeScreen(): JSX.Element {
           <View style={styles.textInputBox}>
             <Text style={styles.label}>Your New Fuel Efficiency:</Text>
             <TextInput
-              placeholder={'Currently: '+ String(user?.fuel_efficiency)}
+              placeholder={'Currently: '+ String(user?.fuel_efficiency)+'L/100k'}
               placeholderTextColor={Colors.LIGHTBLACK}
               onChangeText={(number) => setnewFuelEfficeincy(parseFloat(number))}
               onFocus={handleFocus3}
