@@ -82,7 +82,7 @@ export default function UpdateProfileScreen(): JSX.Element {
         aspect: [1, 1],
         quality: 1,
       });
-      if (!result.canceled) {
+      if (!(result.canceled)) {
         await firebaseService.uploadProfilePicture(userid, result.assets[0].uri);
         setPhotoURL(result.assets[0].uri);
         setRerenderKey((prevKey) => prevKey + 1);

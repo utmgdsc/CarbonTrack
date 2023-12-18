@@ -10,6 +10,9 @@ export interface User {
   monthly_score: number;
   yearly_score: number;
   overall_score: number;
+  monthly_emissions: number;
+  yearly_emissions: number;
+  overall_emissions: number;
   province: string;
   household: number;
   fuel_efficiency: number;
