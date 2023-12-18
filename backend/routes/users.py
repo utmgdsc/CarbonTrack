@@ -139,26 +139,21 @@ def get_current_user() -> Response:
 @users.route("/user", methods=["PUT"])
 @carbon_auth.auth.login_required
 def create_user() -> Response:
-    try:
-        res: dict = request.get_json()["user"]
-        user = User.from_json(res)
-        user.email = user.email.lower()
+    res: dict = request.get_json()["user"]
+    user = User.from_json(res)
+    user.email = user.email.lower()
 
-        query = {"email": user.email}
-        item = CarbonTrackDB.users_coll.find_one(query)
-        if item is None:
-            user = user.to_json()
-            inserted_id = CarbonTrackDB.users_coll.insert_one(user).inserted_id
-            user = User.from_json(
-                CarbonTrackDB.users_coll.find_one({"_id": inserted_id})
-            ).to_json()
-            return jsonify({"user": user})
-        else:
-            return jsonify({"error": "User Already Exits With Same Email, Please Log In"})
-
-
-    except CarbonTrackError as e:
-        abort(code=400, description=f"{e}")
+    query = {"email": user.email}
+    item = CarbonTrackDB.users_coll.find_one(query)
+    if item is None:
+        user = user.to_json()
+        inserted_id = CarbonTrackDB.users_coll.insert_one(user).inserted_id
+        user = User.from_json(
+            CarbonTrackDB.users_coll.find_one({"_id": inserted_id})
+        ).to_json()
+        return jsonify({"user": user})
+    else:
+        return jsonify({"error": "User Already Exits With Same Email, Please Log In"})
 
 
 @users.route("/user/<user_id>", methods=["DELETE"])
@@ -228,6 +223,6 @@ def update_user_name(user_id: str) -> Response:
 
         item = User.from_json(item).to_json()
 
-        return jsonify({"user": item}), 200
+        return jsonify({"user": item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
