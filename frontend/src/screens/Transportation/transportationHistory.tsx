@@ -192,7 +192,9 @@ export default function TransportationHistory(): JSX.Element {
                     </TouchableOpacity>
                     {Boolean(expandedStates[index]) && (
                       <View style={styles.historyExpandedContent}>
-                        <Text style={styles.tabText}>Emissions from food in {item.month}</Text>
+                        <Text style={styles.tabText}>
+                          Emissions from transportation in {item.month}
+                        </Text>
                         <View style={styles.chartContainer}>
                           <BarChart
                             style={styles.chart}
