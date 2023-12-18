@@ -134,10 +134,10 @@ export default function EnergyHistory(): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={30} color={Colors.DARKDARKGREEN} />
-        <Text style={styles.buttonText}> Decomposition </Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={30} color={Colors.DARKDARKGREEN} />
+          <Text style={styles.buttonText}> Decomposition </Text>
+        </TouchableOpacity>
         <View style={styles.halfScreen}>
           <ImageBackground
             source={{
@@ -173,7 +173,7 @@ export default function EnergyHistory(): JSX.Element {
                     </TouchableOpacity>
                     {Boolean(expandedStates[index]) && (
                       <View style={styles.historyExpandedContent}>
-                        <Text style={styles.tabText}>Emissions from energy in {item.month}</Text>
+                        <Text style={styles.tabText}>Emissions from food in {item.month}</Text>
                         <View style={styles.chartContainer}>
                           <BarChart
                             style={styles.chart}
@@ -185,7 +185,7 @@ export default function EnergyHistory(): JSX.Element {
                                 },
                               ],
                             }}
-                            width={380}
+                            width={350}
                             height={200}
                             yAxisSuffix=" k"
                             yAxisLabel="Carbon Footprint" // Add yAxisLabel here
@@ -193,6 +193,7 @@ export default function EnergyHistory(): JSX.Element {
                             chartConfig={{
                               backgroundColor: Colors.BLACK,
                               backgroundGradientFrom: Colors.WHITE,
+
                               backgroundGradientTo: Colors.WHITE,
                               decimalPlaces: 2,
                               color: (opacity = 1) => Colors.DARKLIMEGREEN,
@@ -370,7 +371,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: -50,
     borderRadius: 10,
-
   },
   tabTitle: {
     fontSize: 18,
