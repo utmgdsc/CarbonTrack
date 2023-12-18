@@ -173,7 +173,7 @@ class EnergyEntryRecommendation(DB_MODEL):
             heating_oil_recommendation = random.choice(recommendations)
 
         if natural_gas_carbon_emissions > submetric_threshold:
-            recommendation1 = "Consider replacing natural gas heating systems with electic alternatives"
+            recommendation1 = "Consider replacing natural gas heating systems with electric alternatives"
             recommendation2 = "Consider investing in ENERGY STAR certified products"
             recommendation3 = "Consider improving your home insulation, if applicable"
             recommendations = [recommendation1, recommendation2, recommendation3]
