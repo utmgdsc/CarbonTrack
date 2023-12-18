@@ -21,8 +21,6 @@ firebase_cert = {
   "universe_domain": os.environ.get("universe_domain")
 }
 
-print(firebase_cert)
-
 cred = credentials.Certificate(firebase_cert)
 APP = firebase_admin.initialize_app(cred)
 
