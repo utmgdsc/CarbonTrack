@@ -1,6 +1,6 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
-import { GoogleSVGType } from '../src/components/types';
+import { type GoogleSVGType } from '../src/components/types';
 
 
 

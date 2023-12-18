@@ -20,6 +20,9 @@ class User(DB_MODEL):
     province: str
     household: int
     fuel_efficiency: float
+    monthly_emissions: int
+    yearly_emissions: int
+    overall_emissions: int
 
     def __init__(
         self,
@@ -30,11 +33,14 @@ class User(DB_MODEL):
         badges: list[str],
         friends: list[str],
         monthly_score:int,
-        yearly_score:int, 
+        yearly_score:int,
         overall_score:int,
         province: str,
         household: int,
         fuel_efficiency: float,
+        monthly_emissions: int,
+        yearly_emissions: int,
+        overall_emissions: int,
     ) -> None:
         super().__init__(oid)
         self.full_name = str(full_name)
@@ -48,6 +54,9 @@ class User(DB_MODEL):
         self.province = province
         self.household = household
         self.fuel_efficiency = fuel_efficiency
+        self.monthly_emissions = monthly_emissions
+        self.yearly_emissions = yearly_emissions
+        self.overall_emissions = overall_emissions
 
     def to_json(self) -> json:
         return {
@@ -62,7 +71,10 @@ class User(DB_MODEL):
             'overall_score': self.overall_score,
             'province': self.province,
             'household': self.household,
-            'fuel_efficiency': self.fuel_efficiency
+            'fuel_efficiency': self.fuel_efficiency,
+            'monthly_emissions': self.monthly_emissions,
+            'yearly_emissions': self.yearly_emissions,
+            'overall_emissions': self.overall_emissions,
         }
 
     @staticmethod
@@ -80,6 +92,9 @@ class User(DB_MODEL):
             province=doc["province"],
             household=doc["household"],
             fuel_efficiency=doc["fuel_efficiency"],
+            monthly_emissions=doc["monthly_emissions"],
+            yearly_emissions=doc["yearly_emissions"],
+            overall_emissions=doc["overall_emissions"]
         )
 
     def __repr__(self) -> str:
