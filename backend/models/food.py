@@ -10,6 +10,8 @@ from datetime import datetime
 from models.abstract_carbon_model import CARBON_MODEL
 from bson import ObjectId
 
+from models.abstract_db_model import DB_MODEL
+
 
 class FoodEntry(CARBON_MODEL):
     oid: ObjectId
@@ -24,6 +26,7 @@ class FoodEntry(CARBON_MODEL):
     cheese: int
     milk: int
     food_waste: int
+
 
     # food measurements in # of 100g servings
     def __init__(self, oid: ObjectId, user_id: ObjectId, carbon_emissions: int, date: Union[str, datetime],
@@ -89,7 +92,7 @@ class FoodEntry(CARBON_MODEL):
         return f'Food ID: {self.oid.__str__()}'
 
 
-class FoodEntryRecomendation(CARBON_MODEL):
+class FoodEntryRecommendation(DB_MODEL):
     beef_recommendation: str
     lamb_recommendation: str
     pork_recommendation: str
@@ -100,9 +103,10 @@ class FoodEntryRecomendation(CARBON_MODEL):
     food_waste_recommendation: str
 
     # food measurements in # of 100g servings
-    def __init__(self, beef_recommendation: str, lamb_recommendation: str, pork_recommendation: str, chicken_recommendation: str, 
+    def __init__(self, beef_recommendation: str, lamb_recommendation: str, pork_recommendation: str, chicken_recommendation: str,
                  fish_recommendation: str, cheese_recommendation: str, milk_recommendation: str,
                  food_waste_recommendation: str) -> None:
+        super().__init__(ObjectId())
         self.beef_recommendation = beef_recommendation
         self.lamb_recommendation = lamb_recommendation
         self.pork_recommendation = pork_recommendation
@@ -125,8 +129,8 @@ class FoodEntryRecomendation(CARBON_MODEL):
         }
 
     @staticmethod
-    def from_json(doc: json) -> FoodEntry:
-        return FoodEntry(
+    def from_json(doc: json) -> FoodEntryRecommendation:
+        return FoodEntryRecommendation(
             beef_recommendation=doc['beef_recommendation'],
             lamb_recommendation=doc['lamb_recommendation'],
             pork_recommendation=doc['pork_recommendation'],
@@ -136,7 +140,6 @@ class FoodEntryRecomendation(CARBON_MODEL):
             milk_recommendation=doc['milk_recommendation'],
             food_waste_recommendation=doc['food_waste_recommendation']
         )
-    
 
     @staticmethod
     def from_food_entry(food_entry: FoodEntry) -> FoodEntryRecomendation:
@@ -156,6 +159,7 @@ class FoodEntryRecomendation(CARBON_MODEL):
         chicken_carbon_emissions = food_entry.chicken * 0.98
         fish_carbon_emissions = food_entry.fish * 1.3
         cheese_carbon_emissions = food_entry.cheese * 2.3
+
         milk_carbon_emissions = food_entry.milk * 0.8
         food_waste_carbon_emissions = food_entry.food_waste * 0.0025
 
@@ -219,6 +223,8 @@ class FoodEntryRecomendation(CARBON_MODEL):
                                       fish_recommendation, cheese_recommendation, milk_recommendation, food_waste_recommendation)
 
 
+        return FoodEntryRecommendation(beef_recommendation, lamb_recommendation, pork_recommendation, chicken_recommendation,
+                                       fish_recommendation, cheese_recommendation, milk_recommendation, food_waste_recommendation)
 
     def __repr__(self) -> str:
         return f'Food ID: {self.oid.__str__()}'
