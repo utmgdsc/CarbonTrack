@@ -88,7 +88,6 @@ def get_top_users() -> Response:
             }
         )
 
-
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
 

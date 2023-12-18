@@ -59,6 +59,7 @@ def update_user_level_and_footprint(user_id: ObjectId) -> None:
                                       if entry.calculate_carbon_emissions() != 0 and _is_within_one_month(entry.date)]
     weekly_entries_completed += transportation_entries_overall.__len__()
     if transportation_entries_overall.__len__() != 0:
+        overall_score += 25
         last_entry = transportation_entries_overall[0]
         for entry in transportation_entries_overall[1:]:
             if last_entry.calculate_carbon_emissions() > entry.calculate_carbon_emissions():
@@ -91,6 +92,7 @@ def update_user_level_and_footprint(user_id: ObjectId) -> None:
                             if entry.calculate_carbon_emissions() != 0 and _is_within_one_month(entry.date)]
     weekly_entries_completed += food_entries_overall.__len__()
     if food_entries_overall.__len__() != 0:
+        overall_score += 25
         last_entry = food_entries_overall[0]
         for entry in food_entries_overall[1:]:
             if last_entry.calculate_carbon_emissions() > entry.calculate_carbon_emissions():
@@ -123,6 +125,7 @@ def update_user_level_and_footprint(user_id: ObjectId) -> None:
                               if entry.calculate_carbon_emissions() != 0 and _is_within_one_month(entry.date)]
     weekly_entries_completed += energy_entries_overall.__len__()
     if energy_entries_overall.__len__() != 0:
+        overall_score += 25
         last_entry = energy_entries_overall[0]
         for entry in energy_entries_overall[1:]:
             if last_entry.calculate_carbon_emissions() > entry.calculate_carbon_emissions():

@@ -1,13 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../assets/colorConstants';
-import { type profileWidgetBoxProps } from '../components/types';
+import { type RootStackParamList, type profileWidgetBoxProps } from '../components/types';
 import { useFonts } from 'expo-font';
 import ExpProgressBar from '../components/expProgressBar';
 import firebaseService from '../utilities/firebase';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { type StackNavigationProp } from '@react-navigation/stack';
+export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
+  const navigation = useNavigation<StackNavigation>();
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
@@ -36,11 +39,6 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
     return <></>;
   }
 
-
-  if (!loaded) {
-    return <></>;
-  }
-
   return (
     <View style={styles.boxContainer}>
         <Image
@@ -57,7 +55,14 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
               <Text style={styles.buttonText} > Badges </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}> Rank getUserRank </Text>
+              <Text
+              style={styles.buttonText}
+              onPress={() => {
+                navigation.navigate('CommunityHub');
+              }}
+              >
+                Access Leaderboard
+              </Text>
             </TouchableOpacity>
 
           </View>

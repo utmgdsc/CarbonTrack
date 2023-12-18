@@ -61,7 +61,7 @@ const CarbonWidgetBox: React.FC<carbonWidgetProps> = ({ carbonUser }) => {
         (foodEntry?.carbon_emissions ?? 0) +
         (transportationEntry?.carbon_emissions ?? 0)).toFixed(1)
     );
-    
+
     if (
         !loaded ||
         user === undefined ||
@@ -71,11 +71,11 @@ const CarbonWidgetBox: React.FC<carbonWidgetProps> = ({ carbonUser }) => {
         ) {
         return <></>;
     }
-    
+
     const showModal = ():void => {
         setModalVisible(true);
     };
-    
+
     const hideModal = ():void => {
         setModalVisible(false);
     };
@@ -83,17 +83,17 @@ const CarbonWidgetBox: React.FC<carbonWidgetProps> = ({ carbonUser }) => {
     return (
     <View style={styles.boxContainer}>
         <Text style={styles.header}> Carbon Footprint </Text>
-        
+
         <TouchableOpacity onPress={showModal} style={styles.lightBulbButton}>
             <Text style={styles.lightBulb}>💡</Text>
-            <ModalInfo modalVisible={modalVisible} hideModal={hideModal} /> 
+            <ModalInfo modalVisible={modalVisible} hideModal={hideModal} />
         </TouchableOpacity>
-        
+
         <View style={styles.carbonBox}>
-        
+
             <Text style={styles.footprint}> {footprint} kg CO₂ / week </Text>
 
-            
+
         </View>
         <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('FootprintDecomp')}}>
             <Text style={styles.text}>View Decomposition    {`>>>`} </Text>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     },
     footprint:{
         textAlign: 'center',
-        color: Colors.WHITE, 
+        color: Colors.WHITE,
         fontSize: 20,
         fontWeight: '600'
     },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     header: {
-        color: Colors.WHITE, 
+        color: Colors.WHITE,
         fontSize: 24,
         fontWeight: '700',
         left: 20,

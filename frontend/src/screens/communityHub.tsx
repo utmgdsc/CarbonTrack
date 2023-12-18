@@ -31,14 +31,9 @@ export default function DashBoardScreen(): JSX.Element {
   });
 
   const [topUsersMonthly, setMonthlyUsers] = useState<RankUser[]>([]);
-  const [, setYearlyUsers] = useState<RankUser[]>([]);
+  const [topUsersYearly, setYearlyUsers] = useState<RankUser[]>([]);
   const [topUsersOverall, setOverallUsers] = useState<RankUser[]>([]);
   const [refreshing, setRefreshing] = useState(false);
-
-  // User's monthly rank
-  const userRankMonthly: RankUser = { rank: 89, name: 'Squishyhoshi', footprint: 200, score: 5 };
-  // User's yearly/overall rank
-  const userRankOverall: RankUser = { rank: 89, name: 'Squishyhoshi', footprint: 200, score: 5 };
 
   const MonthlyLeaderboard = (): JSX.Element => {
     return (
@@ -61,15 +56,31 @@ export default function DashBoardScreen(): JSX.Element {
             nestedScrollEnabled
           />
         </ScrollView>
-        
-        <View style={styles.leaderBoardBottom}>
-          <Text style={[styles.item, styles.rankItem]}>{userRankMonthly.rank}</Text>
-          <Text ellipsizeMode="tail" numberOfLines={1} style={[styles.item, styles.nameItem]}>
-            {userRankMonthly.name}
-          </Text>
-          <Text style={styles.item}>{userRankMonthly.footprint}</Text>
-          <Text style={styles.item}>{getUserLevel(userRankMonthly.score)}</Text>
-        </View>
+      </View>
+    );
+  };
+
+  const YearlyLeaderboard = (): JSX.Element => {
+    return (
+      <View>
+        <ScrollView style={styles.scrollLeaderBoardContainer} horizontal>
+          <FlatList
+            data={topUsersYearly}
+            keyExtractor={(item) => item.rank.toString()}
+            style={styles.flatListContainer}
+            renderItem={({ item }) => (
+              <View style={styles.row}>
+                <Text style={[styles.item, styles.rankItem]}>{item.rank}</Text>
+                <Text ellipsizeMode="tail" numberOfLines={1} style={[styles.item, styles.nameItem]}>
+                  {item.name}
+                </Text>
+                <Text style={styles.item}>{item.footprint}</Text>
+                <Text style={styles.item}>{getUserLevel(item.score)}</Text>
+              </View>
+            )}
+            nestedScrollEnabled
+          />
+        </ScrollView>
       </View>
     );
   };
@@ -95,19 +106,11 @@ export default function DashBoardScreen(): JSX.Element {
             nestedScrollEnabled
           />
         </ScrollView>
-        <View style={styles.leaderBoardBottom}>
-          <Text style={[styles.item, styles.rankItem]}>{userRankOverall.rank}</Text>
-          <Text ellipsizeMode="tail" numberOfLines={1} style={[styles.item, styles.nameItem]}>
-            {userRankOverall.name}
-          </Text>
-          <Text style={styles.item}>{userRankOverall.footprint}</Text>
-          <Text style={styles.item}>{getUserLevel(userRankOverall.score)}</Text>
-        </View>
       </View>
     );
   };
 
-  const [activeTab, setActiveTab] = useState<'monthly' | 'overall'>('monthly');
+  const [activeTab, setActiveTab] = useState<'monthly' | 'yearly' | 'overall'>('monthly');
 
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
 
@@ -259,6 +262,12 @@ export default function DashBoardScreen(): JSX.Element {
                 <Text style={styles.tabText}>Monthly</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                style={[styles.tab, activeTab === 'yearly' && styles.activeTab]}
+                onPress={() => setActiveTab('yearly')}
+              >
+                <Text style={styles.tabText}>Yearly</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={[styles.tab, activeTab === 'overall' && styles.activeTab]}
                 onPress={() => setActiveTab('overall')}
               >
@@ -273,7 +282,15 @@ export default function DashBoardScreen(): JSX.Element {
               <Text style={styles.headerItem}>Level</Text>
             </View>
 
-            <View>{activeTab === 'monthly' ? <MonthlyLeaderboard /> : <OverallLeaderboard />}</View>
+            <View>
+              {activeTab === 'monthly' ? (
+                <MonthlyLeaderboard />
+              ) : activeTab === 'yearly' ? (
+                <YearlyLeaderboard />
+              ) : (
+                <OverallLeaderboard />
+              )}
+            </View>
           </View>
         </View>
 
@@ -409,7 +426,7 @@ const styles = StyleSheet.create({
     maxHeight: 300,
     marginTop: 15,
     width: 325,
-    
+
   },
   itemContainer: {
     padding: 15,
@@ -448,7 +465,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 15,
     alignSelf: 'center',
-    
+
   },
   tab: {
     width: 100,
@@ -456,7 +473,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: Colors.TRANSGREENLOGOUT,
-    marginHorizontal: '12%', 
+    marginHorizontal: '12%',
     justifyContent: 'center'
 
   },
