@@ -3,6 +3,7 @@ Energy Model
 """
 
 from __future__ import annotations
+import random
 from typing import Union
 import json
 from datetime import datetime
@@ -161,22 +162,25 @@ class EnergyEntryRecommendation(CARBON_MODEL):
             electricity_carbon_emissions = (energy_entry.electricity * 0.84) / energy_entry.household
 
         if heating_oil_carbon_emissions > submetric_threshold:
-            recommendation1 = ""
-            recommendation2 = ""
-            recommendation3 = ""
-            heating_oil_recommendation = "Heating oil emissions too high"
+            recommendation1 = "Be conservative by opting to dress up/down instead of turning on the AC/heater."
+            recommendation2 = "Consider investing in ENERGY STAR certified products"
+            recommendation3 = "Consider improving your home insulation, if applicable"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            heating_oil_recommendation = random.choice(recommendations)
 
         if natural_gas_carbon_emissions > submetric_threshold:
-            recommendation1 = ""
-            recommendation2 = ""
-            recommendation3 = ""
-            natural_gas_recommendation = "Natural gas emissions too high"
+            recommendation1 = "Consider replacing natural gas heating systems with electic alternatives"
+            recommendation2 = "Consider investing in ENERGY STAR certified products"
+            recommendation3 = "Consider improving your home insulation, if applicable"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            natural_gas_recommendation = random.choice(recommendations)
 
         if electricity_carbon_emissions > submetric_threshold:
-            recommendation1 = "Avoid phantom power by unplugging devices you are not actually using (like your chargers or toasters!)"
+            recommendation1 = "Avoid phantom power by unplugging devices you are not actually using (ex.chargers, toasters, etc.)"
             recommendation2 = "Consider investing in ENERGY STAR certified products"
-            recommendation3 = "Be conservative by opting to dress up/down instead of turning on the AC/heater."
-            electricity_recommendation = "Electricity emissions too high"
+            recommendation3 = "Be conservative by opting to dress up/down instead of turning on the AC/heater"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            electricity_recommendation = random.choice(recommendations)
 
         return EnergyEntryRecommendation(heating_oil_recommendation, natural_gas_recommendation, electricity_recommendation)
         

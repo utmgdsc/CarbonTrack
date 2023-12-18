@@ -3,6 +3,7 @@ Food Model
 """
 
 from __future__ import annotations
+import random
 from typing import Union
 import json
 from datetime import datetime
@@ -162,49 +163,57 @@ class FoodEntryRecomendation(CARBON_MODEL):
             recommendation1 = "Try opting for white meat (fish, chicken, etc.)"
             recommendation2 = "Consider alternate forms of protein (chicken, fish, eggs, etc.)"
             recommendation3 = "Try opting for low-impact plant protein sources like peas, legumes and tofu"
-            beef_recommendation = "Beef emissions too high"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            beef_recommendation = random.choice(recommendations)
 
         if lamb_carbon_emissions > submetric_threshold:
             recommendation1 = "Try opting for white meat (fish, chicken, etc.)"
             recommendation2 = "Consider alternate forms of protein (chicken, fish, eggs, etc.)"
             recommendation3 = "Try opting for low-impact plant protein sources like peas, legumes and tofu"
-            lamb_recommendation = "Lamb emissions too high"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            lamb_recommendation = random.choice(recommendations)
         
         if pork_carbon_emissions > submetric_threshold:
             recommendation1 = "Try opting for white meat (fish, chicken, etc.)"
             recommendation2 = "Consider alternate forms of protein (chicken, fish, eggs, etc.)"
             recommendation3 = "Try opting for low-impact plant protein sources like peas, legumes and tofu"
-            pork_recommendation = "Pork emissions too high"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            pork_recommendation = random.choice(recommendations)
 
         if chicken_carbon_emissions > submetric_threshold:
             recommendation1 = "Try opting for low-impact plant protein sources (peas, legumes and tofu)"
             recommendation2 = "Consider alternate forms of protein (eggs, whey, etc.)"
             recommendation3 = "Consider opting for seitan"
-            chicken_recommendation = "Chicken emissions too high"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            chicken_recommendation = random.choice(recommendations)
 
         if fish_carbon_emissions > submetric_threshold:
             recommendation1 = "Consider alternate forms of protein (chicken, eggs, whey, etc.)"
             recommendation2 = "Try opting for low-impact plant protein sources (peas, legumes and tofu)"
             recommendation3 = ""
-            fish_recommendation = "Fish emissions too high"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            fish_recommendation = random.choice(recommendations)
 
         if cheese_carbon_emissions > submetric_threshold:
             recommendation1 = "Consider alternatives to cheese spreads (hummus, guacamole, etc.)"
             recommendation2 = "Consider plant-based cheeses (made from nuts, soy, or tapioca)"
             recommendation3 = "Consider alternatives to cheese (tofu, tempeh, etc.)"
-            cheese_recommendation = "Cheese emissions too high"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            cheese_recommendation = random.choice(recommendations)
 
         if milk_carbon_emissions > submetric_threshold:
             recommendation1 = "Consider opting for almond milk"
             recommendation2 = "Consider opting for soy milk"
             recommendation3 = "Consider opting for oat milk"
-            milk_recommendation = "Milk emissions too high"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            milk_recommendation = random.choice(recommendations)
 
         if food_waste_carbon_emissions > submetric_threshold:
             recommendation1 = "Meal planning! Create a realistic shopping list so you only buy what you need"
             recommendation2 = "Carefully assess the expiry date of all food items that you purchase"
             recommendation3 = "First in First out (FIFO)! Use older ingredients first before they expire."
-            food_waste_recommendation = "Food waste emissions too high"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            food_waste_recommendation = random.choice(recommendations)
             
         return FoodEntryRecomendation(beef_recommendation, lamb_recommendation, pork_recommendation, chicken_recommendation, 
                                       fish_recommendation, cheese_recommendation, milk_recommendation, food_waste_recommendation)
