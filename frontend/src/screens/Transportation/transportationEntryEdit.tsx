@@ -84,7 +84,7 @@ export default function TransportationEntryEdit(): JSX.Element {
         fuel_efficiency: user.fuel_efficiency,
       };
       void TransportationAPI.updateTransportation(newEntry).then(() => {
-        navigation.navigate('DashBoard');
+        navigation.navigate('YourForms');
       });
     }
   };

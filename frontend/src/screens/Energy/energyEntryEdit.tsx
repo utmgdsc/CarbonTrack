@@ -47,7 +47,7 @@ export default function EnergyEntryEdit(): JSX.Element {
         household: user.household,
       };
       void EnergyAPI.updateEnergy(newEntry).then(() => {
-        navigation.navigate('DashBoard');
+        navigation.navigate('YourForms');
       });
     }
   };

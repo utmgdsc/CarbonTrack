@@ -7,6 +7,7 @@ import {
   ScrollView,
   ImageBackground,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
@@ -32,6 +33,7 @@ export default function DashBoardScreen(): JSX.Element {
   const [topUsersMonthly, setMonthlyUsers] = useState<RankUser[]>([]);
   const [, setYearlyUsers] = useState<RankUser[]>([]);
   const [topUsersOverall, setOverallUsers] = useState<RankUser[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   // User's monthly rank
   const userRankMonthly: RankUser = { rank: 89, name: 'Squishyhoshi', footprint: 200, score: 5 };
@@ -175,15 +177,43 @@ export default function DashBoardScreen(): JSX.Element {
   useEffect(() => {
     void UsersAPI.getTopUsers(10).then(async (res) => {
       if (res != null) {
-        if (res.top_monthly_users != null && res.top_yearly_users != null && res.top_overall_users != null) {
+        if (
+          res.top_monthly_users != null &&
+          res.top_yearly_users != null &&
+          res.top_overall_users != null
+        ) {
           setMonthlyUsers(res.top_monthly_users);
           setYearlyUsers(res.top_yearly_users);
           setOverallUsers(res.top_overall_users);
-          console.log(res.top_overall_users)
+          console.log(res.top_overall_users);
         }
       }
     });
   }, [loaded]);
+
+  const onRefresh = (): void => {
+    // Simulate a refresh action (e.g., fetch new data)
+    setRefreshing(true);
+
+    void UsersAPI.getTopUsers(10).then(async (res) => {
+      if (res != null) {
+        if (
+          res.top_monthly_users != null &&
+          res.top_yearly_users != null &&
+          res.top_overall_users != null
+        ) {
+          setMonthlyUsers(res.top_monthly_users);
+          setYearlyUsers(res.top_yearly_users);
+          setOverallUsers(res.top_overall_users);
+          console.log(res.top_overall_users);
+        }
+      }
+    });
+
+    setTimeout(() => {
+      setRefreshing(false); // Set refreshing to false after data is fetched
+    }, 2000); // Simulating a 2-second delay
+  };
 
   if (!loaded) {
     return <></>;
@@ -191,7 +221,12 @@ export default function DashBoardScreen(): JSX.Element {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#0000ff" />
+        }
+        style={styles.scrollContainer}
+      >
         <View style={styles.halfScreen}>
           <ImageBackground
             source={{
