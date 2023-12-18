@@ -173,7 +173,7 @@ export default function YourForms(): JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'space-between',
     backgroundColor: Colors.LIGHTFGREEN,
   },
@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontWeight: '700',
-    fontFamily: 'Montserrat',
     color: Colors.DARKGREEN,
     textAlign: 'left',
     fontSize: 16,

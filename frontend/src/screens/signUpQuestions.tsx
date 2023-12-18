@@ -194,7 +194,7 @@ export default function SignUpQuestions(): JSX.Element {
           <TextInput
             style={styles.textInputBox}
             keyboardType="numeric"
-            placeholder="Input"
+            placeholder= {"Currently:String(user?.household) L/100km"}
             onChangeText={(text) => {
               setFuelEfficiency(Number(text));
             }}

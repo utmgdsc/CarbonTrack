@@ -17,6 +17,8 @@ import { type FoodEntry, type MonthlyEntry, type FoodEntryRecommendation } from 
 import { useNavigation } from '@react-navigation/native';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 interface Recommendation {
@@ -158,6 +160,10 @@ export default function FoodHistory(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={30} color={Colors.DARKDARKGREEN} />
+        <Text style={styles.buttonText}> Decomposition </Text>
+      </TouchableOpacity>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.halfScreen}>
           <ImageBackground
@@ -206,7 +212,7 @@ export default function FoodHistory(): JSX.Element {
                                 },
                               ],
                             }}
-                            width={380}
+                            width={350}
                             height={200}
                             yAxisSuffix=" k"
                             yAxisLabel="Carbon Footprint" // Add yAxisLabel here
@@ -214,6 +220,7 @@ export default function FoodHistory(): JSX.Element {
                             chartConfig={{
                               backgroundColor: Colors.BLACK,
                               backgroundGradientFrom: Colors.WHITE,
+                      
                               backgroundGradientTo: Colors.WHITE,
                               decimalPlaces: 2,
                               color: (opacity = 1) => Colors.DARKLIMEGREEN,
@@ -284,23 +291,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    fontSize: 30,
+    fontSize: 36,
     color: Colors.WHITE,
-    fontFamily: 'Montserrat',
     fontWeight: '700',
   },
   headerGreen: {
     fontSize: 30,
     color: Colors.DARKGREEN,
-    fontFamily: 'Montserrat',
     fontWeight: '700',
   },
   discription: {
     paddingTop: 15,
     fontSize: 16,
     color: Colors.WHITE,
-    fontFamily: 'Montserrat',
-    fontWeight: '700',
+    fontWeight: '500',
   },
   headerBox: {
     backgroundColor: Colors.BLACKTRANS,
@@ -314,14 +318,14 @@ const styles = StyleSheet.create({
   leaderBoardWidgetContainer: {
     backgroundColor: Colors.DARKGREEN,
     margin: 15,
-    borderRadius: 10,
+    borderRadius: 15,
     height: 400,
     marginTop: 25,
   },
   recommendationContainer: {
     backgroundColor: Colors.GREYGREEN,
     margin: 15,
-    borderRadius: 10,
+    borderRadius: 15,
     height: 350,
     marginTop: 25,
   },
@@ -336,15 +340,16 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   itemContainer: {
+    justifyContent: 'center',
+    width: '90%',
     padding: 15,
     borderRadius: 10,
     backgroundColor: Colors.DARKGREEN2,
     marginBottom: 10,
   },
   itemName: {
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 16,
-    fontFamily: 'Montserrat',
     color: Colors.WHITE,
   },
   expandedContent: {
@@ -352,37 +357,36 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: Colors.DARKGREEN3,
     borderRadius: 10,
-    width: 320,
+    width: '100%',
   },
   historyExpandedContent: {
+    justifyContent: 'center',
     marginTop: 10,
     padding: 10,
-    backgroundColor: Colors.DARKGREEN3,
+    backgroundColor: Colors.TRANSGREEN,
     borderRadius: 10,
-    width: 350,
+    width: '90%',
   },
   descriptionText: {
     color: Colors.WHITE,
-    fontFamily: 'Montserrat',
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '500',
   },
   flatListContainer: {
     width: 350,
   },
   tab: {
+    justifyContent: 'center',
     height: 50,
+    width: '90%',
     paddingVertical: 8,
     paddingHorizontal: 20,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: Colors.DARKGREEN2,
+    borderRadius: 10,
     backgroundColor: Colors.DARKGREEN2,
     marginTop: 15,
   },
   tabText: {
-    fontWeight: '700',
-    fontFamily: 'Montserrat',
+    fontWeight: '500',
     color: Colors.WHITE,
   },
   chartContainer: {
@@ -391,14 +395,24 @@ const styles = StyleSheet.create({
   chart: {
     marginVertical: 8,
     marginHorizontal: 8,
-    alignSelf: 'center',
+    justifyContent: 'center',
     marginLeft: -50,
+    borderRadius: 10,
+
   },
   tabTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    fontFamily: 'Montserrat',
     color: Colors.WHITE,
     textAlign: 'center',
+  },
+  backButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  buttonText: {
+    color: Colors.DARKDARKGREEN,
+    fontSize: 16,
+    fontWeight: '700',
   },
 });

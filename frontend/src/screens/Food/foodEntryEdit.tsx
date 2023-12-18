@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { type StackNavigationProp } from '@react-navigation/stack';
@@ -10,6 +10,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 import { FoodAPI } from '../../APIs/FoodAPI';
 import { type FoodEntry } from '../../models/Food';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -131,65 +133,78 @@ export default function FoodEntryEdit(): JSX.Element {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollContainer}>
-        <Text style={styles.header}>Calculate your emissions from food:</Text>
-
-        {slidersData.map((slider, index) => (
-          <View style={styles.questionContainer} key={slider.id}>
-            <Text style={styles.question}>
-              {slider.label}: {slidersData[index].initialValue} Servings
-            </Text>
-            <Slider
-              style={styles.silder}
-              minimumValue={slider.minValue}
-              maximumValue={slider.maxValue}
-              step={1}
-              minimumTrackTintColor={Colors.DARKGREEN}
-              maximumTrackTintColor={Colors.FILLGREEN}
-              thumbTintColor={Colors.WHITE}
-              value={slidersData[index].initialValue}
-              onValueChange={(value) => onSliderValueChange(value, index)}
-            />
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>{slider.minValue}</Text>
-              <Text style={styles.label}>{slider.maxValue}</Text>
-            </View>
-            {/* You can include additional components related to this slider here */}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.scrollContainer}>
+          <View style={styles.headerContainer}>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+              <Ionicons name="arrow-back" size={30} color={Colors.DARKDARKGREEN} />
+              <Text style={styles.buttonText}> Your Forms </Text>
+            </TouchableOpacity>
+            <Text style={styles.header}>Calculate Your Food Emissions!</Text>
+            <Text style={styles.note}>Note: 1 serving = 100 g</Text>
           </View>
-        ))}
+          
 
-        <View style={styles.questionContainer}>
-          <Text style={styles.question}>How many cups of milk do you drink per week:</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            placeholder={String(foodEntry?.milk)}
-            onChangeText={(text) => {
-              setMilkConsumption(Number(text));
-            }}
-          />
-        </View>
+          {slidersData.map((slider, index) => (
+            <View style={styles.questionContainer} key={slider.id}>
+              <Text style={styles.question}>
+                {slider.label}: {slidersData[index].initialValue} Servings
+              </Text>
+              <Slider
+                style={styles.silder}
+                minimumValue={slider.minValue}
+                maximumValue={slider.maxValue}
+                step={1}
+                minimumTrackTintColor={Colors.DARKGREEN}
+                maximumTrackTintColor={Colors.FILLGREEN}
+                thumbTintColor={Colors.WHITE}
+                value={slidersData[index].initialValue}
+                onValueChange={(value) => onSliderValueChange(value, index)}
+              />
+              <View style={styles.labelContainer}>
+                <Text style={styles.label}>{slider.minValue}</Text>
+                <Text style={styles.label}>{slider.maxValue}</Text>
+              </View>
+              {/* You can include additional components related to this slider here */}
+            </View>
+          ))}
 
-        <View style={styles.questionContainer}>
-          <Text style={styles.question}>
-            On average, how much food waste do you produce, in grams:
-          </Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            placeholder={String(foodEntry?.food_waste)}
-            onChangeText={(text) => {
-              setFoodWaste(Number(text) / 100);
-            }}
-          />
-        </View>
+          <View style={styles.questionContainer}>
+            <Text style={styles.question}>How many cups of milk do you drink per week:</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              placeholder={String(foodEntry?.milk)}
+              onChangeText={(text) => {
+                setMilkConsumption(Number(text));
+              }}
+            />
+          </View>
 
-        <TouchableOpacity style={styles.buttoning} onPress={handleSurveySubmit}>
-          <Text style={styles.buttoningText}>Save</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+          <View style={styles.questionContainer}>
+            <Text style={styles.question}>
+              On average, how much food waste do you produce, in grams:
+            </Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              placeholder={String(foodEntry?.food_waste)}
+              onChangeText={(text) => {
+                setFoodWaste(Number(text) / 100);
+              }}
+            />
+          </View>
+
+          <TouchableOpacity style={styles.buttoning} onPress={handleSurveySubmit}>
+            <Text style={styles.buttoningText}>Save</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -214,15 +229,17 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
   },
+  headerContainer:{
+    marginBottom: 50,
+    marginTop: 20,
+  },
   header: {
     color: Colors.DARKGREEN,
-    fontFamily: 'Montserrat',
-    fontSize: 25,
+    fontSize: 36,
     fontWeight: '700',
-    marginBottom: 50,
+    marginBottom: 10,
   },
   question: {
-    fontFamily: 'Montserrat',
     fontSize: 20,
     fontWeight: '700',
     color: Colors.DARKGREEN,
@@ -254,5 +271,20 @@ const styles = StyleSheet.create({
   silder: {
     height: 50,
     width: '100%',
+  },
+  note:{
+    fontSize: 16, 
+    fontWeight: '500',
+    marginTop: 10,
+    color: Colors.LIGHTBLACK
+  },
+  backButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  buttonText: {
+    color: Colors.DARKDARKGREEN,
+    fontSize: 16,
+    fontWeight: '700',
   },
 });

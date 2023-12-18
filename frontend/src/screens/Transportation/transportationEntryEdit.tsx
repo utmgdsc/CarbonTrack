@@ -12,6 +12,8 @@ import { TransportationAPI } from '../../APIs/TransportationAPI';
 import { type TransportationEntry } from '../../models/Transportation';
 import { UsersAPI } from '../../APIs/UsersAPI';
 import { type User } from '../../models/User';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -148,10 +150,16 @@ export default function TransportationEntryEdit(): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-        <Text style={styles.header}>Calculate your emissions from transportation:</Text>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={30} color={Colors.DARKDARKGREEN} />
+            <Text style={styles.buttonText}> Your Forms </Text>
+          </TouchableOpacity>
+          <Text style={styles.header}>Calculate Your Transportation Emissions!</Text>
+          </View>
 
-        <Text style={styles.header}>
-          On average, how much distance do you travel using the following methods per week:
+        <Text style={styles.question}>
+          On average, how much distance do you travel using the following methods per week?
         </Text>
 
         {slidersData.map((slider, index) => (
@@ -209,13 +217,11 @@ const styles = StyleSheet.create({
   },
   header: {
     color: Colors.DARKGREEN,
-    fontFamily: 'Montserrat',
-    fontSize: 25,
+    fontSize: 36,
     fontWeight: '700',
     marginBottom: 50,
   },
   question: {
-    fontFamily: 'Montserrat',
     fontSize: 20,
     fontWeight: '700',
     color: Colors.DARKGREEN,
@@ -239,5 +245,17 @@ const styles = StyleSheet.create({
   silder: {
     height: 50,
     width: '100%',
+  },
+  headerContainer:{
+    top: 20
+  },  
+  backButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  buttonText: {
+    color: Colors.DARKDARKGREEN,
+    fontSize: 16,
+    fontWeight: '700',
   },
 });

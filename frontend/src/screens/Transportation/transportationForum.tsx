@@ -190,13 +190,11 @@ const styles = StyleSheet.create({
   },
   header: {
     color: Colors.DARKGREEN,
-    fontFamily: 'Montserrat',
     fontSize: 25,
     fontWeight: '700',
     marginBottom: 50,
   },
   question: {
-    fontFamily: 'Montserrat',
     fontSize: 20,
     fontWeight: '700',
     color: Colors.DARKGREEN,

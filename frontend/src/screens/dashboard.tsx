@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { ScrollView, View, StyleSheet, RefreshControl } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
 
@@ -9,7 +9,6 @@ import ChallengesWidget from '../widgets/challengesWidgetBox';
 
 import type { RootStackParamList } from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 
 import { type User } from '../models/User';
 import { UsersAPI } from '../APIs/UsersAPI';
@@ -29,7 +28,6 @@ export default function DashBoardScreen(): JSX.Element {
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
   const [refreshing, setRefreshing] = useState(false);
 
-  const navigation = useNavigation<StackNavigation>();
 
   const [loaded] = useFonts({
     Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
@@ -108,20 +106,17 @@ export default function DashBoardScreen(): JSX.Element {
     >
       <View style={styles.profileWidgetContainer}>
         <View style={styles.widgetBoarder}>
-          <ProfileWidgetBox user={user} />
-        </View>
-        <View style={styles.widgetBoarder}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('FootprintDecomp');
-            }}
-          >
-            <CarbonWidgetBox carbonUser={user} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.profileWidgetContainer}>
-          <ChallengesWidget challenges={sampleChallenges} />
-        </View>
+
+            <ProfileWidgetBox
+            user={user}
+            />
+          </View>
+          <View style={styles.widgetBoarder}>
+              <CarbonWidgetBox carbonUser={user} />
+          </View>
+          <View style={styles.profileWidgetContainer}>
+              <ChallengesWidget challenges={sampleChallenges}/>
+          </View>
       </View>
     </ScrollView>
   );

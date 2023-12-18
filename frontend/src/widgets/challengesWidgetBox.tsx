@@ -54,10 +54,11 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
             </TouchableOpacity>
             </View>
         ))}
-        </View>
         <TouchableOpacity onPress={()=> navigation.navigate('CommunityHub')}>
-            <Text style={styles.viewMore}> View More </Text>
+            <Text style={styles.viewMore}> View More {`>>>`} </Text>
         </TouchableOpacity>
+        </View>
+
     </Animated.View>
     );
     };
@@ -67,7 +68,7 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
         backgroundColor: Colors.DARKGREEN,
         borderRadius: 15,
         justifyContent: 'center',
-        width: 325,
+        width: 350,
         flexDirection: 'column',
         // ios shadow
         shadowColor: Colors.BLACK,
@@ -80,17 +81,19 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
     },
     challengeContainer: {
         justifyContent: 'center',
-        marginTop: 30,
         paddingVertical: 10,
         marginHorizontal: 5,
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop: 60,
+
     },
     challengeListContainer: {
         padding: 15,
-        backgroundColor: Colors.DARKTRANS,
+        backgroundColor: Colors.DARKLIGHTDARKGREEN,
         borderRadius: 10,
         marginHorizontal: 10,
         marginVertical: 5,
+
     },
     challengeTitle: {
         fontSize: 16,
@@ -105,23 +108,21 @@ const ChallengesWidget: React.FC<challengesProps> = ({ challenges }) => {
     header: {
         color: Colors.WHITE,
         textAlign: 'left',
-        fontSize: 18,
-        paddingLeft: 20,
+        fontSize: 24,
+        marginBottom: 20,
+        top: 20,
+        left: 20,
         fontWeight: '700',
         paddingBottom: 10,
         position: 'absolute',
-        top: 20,
-        left: 0,
         right: 0,
         zIndex: 1,
-        marginBottom: 10
     },
     viewMore:{
         color: Colors.WHITE,
         textAlign: 'right',
         marginHorizontal: 20,
         marginBottom: 5,
-
     }
     });
 
