@@ -138,7 +138,7 @@ export default function UpdateHomeScreen(): JSX.Element {
             <Text style={styles.label}>How many people live in your home?:</Text>
             <TextInput
               keyboardType="numeric"
-              placeholder= {"Currently:String(user?.household) L/100km"}
+              placeholder= {'Currently:'+String(user?.household)+'L/100k'}
               placeholderTextColor={Colors.LIGHTBLACK}
               onChangeText={(number) => setNewOccupancy(parseInt(number))}
               onFocus={handleFocus}
