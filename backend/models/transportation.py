@@ -5,6 +5,7 @@ Transportation Model
 from __future__ import annotations
 from typing import Union
 import json
+import random
 from datetime import datetime
 from models.abstract_carbon_model import CARBON_MODEL
 from models.abstract_db_model import DB_MODEL
@@ -21,8 +22,7 @@ class TransportationEntry(CARBON_MODEL):
     motorbike: int
     electric_car: int
     gasoline_car: int
-    fuel_efficiency: float
-    metric_threshold = 200 / 3
+    fuel_efficieny: float
 
     def __init__(self, oid: ObjectId, user_id: ObjectId, carbon_emissions: int, date: Union[str, datetime],
                  bus: int, train: int, motorbike: int, electric_car: int, gasoline_car: int, fuel_efficiency: float) -> None:
@@ -82,7 +82,6 @@ class TransportationEntryRecommendation(DB_MODEL):
     motorbike_recommendation: str
     electric_car_recommendation: str
     gasoline_car_recommendation: str
-    metric_threshold: int
 
     def __init__(self, bus_recommendation: str, train_recommendation: str, motorbike_recommendation: str,
                  electric_car_recommendation: str, gasoline_car_recommendation: str) -> None:
@@ -114,12 +113,12 @@ class TransportationEntryRecommendation(DB_MODEL):
 
     @staticmethod
     def from_transportation_entry(transportation_entry: TransportationEntry) -> TransportationEntryRecommendation:
-        submetric_threshold = TransportationEntry.metric_threshold / 5
-        bus_recommendation = "Bus emissions look good!"
-        train_recommendation = "Train emissions look good!"
-        motorbike_recommendation = "Motorbike emissions look good!"
-        electric_car_recommendation = "Electric car emissions look good!"
-        gasoline_car_recommendation = "Gasoline emissions look good!"
+        submetric_threshold = 11
+        bus_recommendation = "Looking good!"
+        train_recommendation = "Looking good!"
+        motorbike_recommendation = "Looking good!"
+        electric_car_recommendation = "Looking good!"
+        gasoline_car_recommendation = "Looking good!"
 
         bus_carbon_emissions = transportation_entry.bus * 0.103
         train_carbon_emissions = transportation_entry.train * 0.037
@@ -128,19 +127,39 @@ class TransportationEntryRecommendation(DB_MODEL):
         gasoline_car_carbon_emissions = ((transportation_entry.fuel_efficiency * 2.3) / 100) * transportation_entry.gasoline_car
 
         if bus_carbon_emissions > submetric_threshold:
-            bus_recommendation = "Bus emissions too high"
+            recommendation1 = "Consider walking short distances"
+            recommendation2 = "Consider riding an E-Bike or E-scooter when possible"
+            recommendation3 = "Consider riding a bicycle when travelling short distances"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            bus_recommendation = random.choice(recommendations)
 
         if train_carbon_emissions > submetric_threshold:
-            train_recommendation = "Train emissions too high"
+            recommendation1 = "Consider walking short distances"
+            recommendation2 = "Consider local public transport when possible (buses, trams)"
+            recommendation3 = "Consider riding a bicycle, E-Bike or E-scooter when travelling short distances"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            train_recommendation = random.choice(recommendations)
 
         if motorbike_carbon_emissions > submetric_threshold:
-            motorbike_recommendation = "Motorbike emissions too high"
+            recommendation1 = "Consider walking or biking short distances"
+            recommendation2 = "Consider taking public transportation more often"
+            recommendation3 = "Consider carpooling when possible"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            motorbike_recommendation = random.choice(recommendations)
 
         if electric_car_carbon_emissions > submetric_threshold:
-            electric_car_recommendation = "Electric car emissions too high"
+            recommendation1 = "Consider taking public transportation more often"
+            recommendation2 = "Consider carpooling when possible"
+            recommendation3 = "Consider walking or biking short distances"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            electric_car_recommendation = random.choice(recommendations)
 
         if gasoline_car_carbon_emissions > submetric_threshold:
-            gasoline_car_recommendation = "Gasoline car emissions too high"
+            recommendation1 = "Consider taking public transportation more often"
+            recommendation2 = "Consider carpooling when possible"
+            recommendation3 = "Consider walking or biking short distances"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            gasoline_car_recommendation = random.choice(recommendations)
 
         return TransportationEntryRecommendation(bus_recommendation, train_recommendation,
                                                  motorbike_recommendation, electric_car_recommendation, gasoline_car_recommendation)

@@ -3,6 +3,7 @@ Food Model
 """
 
 from __future__ import annotations
+import random
 from typing import Union
 import json
 from datetime import datetime
@@ -25,7 +26,7 @@ class FoodEntry(CARBON_MODEL):
     cheese: int
     milk: int
     food_waste: int
-    metric_threshold = 200 / 3
+
 
     # food measurements in # of 100g servings
     def __init__(self, oid: ObjectId, user_id: ObjectId, carbon_emissions: int, date: Union[str, datetime],
@@ -75,20 +76,21 @@ class FoodEntry(CARBON_MODEL):
         )
 
     def calculate_carbon_emissions(self) -> float:
-        beef_carbon_emissions = self.beef * 15.5
-        lamb_carbon_emissions = self.lamb * 5.84
-        pork_carbon_emissions = self.pork * 2.4
-        chicken_carbon_emissions = self.chicken * 1.8
-        fish_carbon_emissions = self.fish * 1.8
-        cheese_carbon_emissions = self.cheese * 2.79
+        beef_carbon_emissions = self.beef * 9.9
+        lamb_carbon_emissions = self.lamb * 3.9
+        pork_carbon_emissions = self.pork * 1.2
+        chicken_carbon_emissions = self.chicken * 0.98
+        fish_carbon_emissions = self.fish * 1.3
+        cheese_carbon_emissions = self.cheese * 2.3
         milk_carbon_emissions = self.milk * 0.8
-        food_waste_carbon_emissions = self.food_waste * 0.25
+        food_waste_carbon_emissions = self.food_waste * 0.0025
         return sum([beef_carbon_emissions, lamb_carbon_emissions, pork_carbon_emissions,
                     chicken_carbon_emissions, fish_carbon_emissions, cheese_carbon_emissions,
                     milk_carbon_emissions, food_waste_carbon_emissions])
 
     def __repr__(self) -> str:
         return f'Food ID: {self.oid.__str__()}'
+
 
 
 class FoodEntryRecommendation(DB_MODEL):
@@ -142,48 +144,81 @@ class FoodEntryRecommendation(DB_MODEL):
 
     @staticmethod
     def from_food_entry(food_entry: FoodEntry) -> FoodEntryRecommendation:
-        submetric_threshold = FoodEntry.metric_threshold / 8
-        beef_recommendation = "Beef emissions look good!"
-        lamb_recommendation = "Lamb emissions look good!"
-        pork_recommendation = "Pork emissions look good!"
-        chicken_recommendation = "Chicken emissions look good!"
-        fish_recommendation = "Fish emissions look good!"
-        cheese_recommendation = "Cheese emissions look good!"
-        milk_recommendation = "Milk emissions look good!"
-        food_waste_recommendation = "Food waste emissions look good!"
+        submetric_threshold = 11
+        beef_recommendation = "Looking good!"
+        lamb_recommendation = "Looking good!"
+        pork_recommendation = "Looking good!"
+        chicken_recommendation = "Looking good!"
+        fish_recommendation = "Looking good!"
+        cheese_recommendation = "Looking good!"
+        milk_recommendation = "Looking good!"
+        food_waste_recommendation = "Looking good!"
 
-        beef_carbon_emissions = food_entry.beef * 15.5
-        lamb_carbon_emissions = food_entry.lamb * 5.84
-        pork_carbon_emissions = food_entry.pork * 2.4
-        chicken_carbon_emissions = food_entry.chicken * 1.8
-        fish_carbon_emissions = food_entry.fish * 1.8
-        cheese_carbon_emissions = food_entry.cheese * 2.79
+        beef_carbon_emissions = food_entry.beef * 9.9
+        lamb_carbon_emissions = food_entry.lamb * 3.9
+        pork_carbon_emissions = food_entry.pork * 1.2
+        chicken_carbon_emissions = food_entry.chicken * 0.98
+        fish_carbon_emissions = food_entry.fish * 1.3
+        cheese_carbon_emissions = food_entry.cheese * 2.3
+
         milk_carbon_emissions = food_entry.milk * 0.8
-        food_waste_carbon_emissions = food_entry.food_waste * 0.25
+        food_waste_carbon_emissions = food_entry.food_waste * 0.0025
 
         if beef_carbon_emissions > submetric_threshold:
-            beef_recommendation = "Beef emissions too high"
+            recommendation1 = "Try opting for white meat (fish, chicken, etc.)"
+            recommendation2 = "Consider alternate forms of protein (chicken, fish, eggs, etc.)"
+            recommendation3 = "Try opting for low-impact plant protein sources like peas, legumes and tofu"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            beef_recommendation = random.choice(recommendations)
 
         if lamb_carbon_emissions > submetric_threshold:
-            lamb_recommendation = "Lamb emissions too high"
-
+            recommendation1 = "Try opting for white meat (fish, chicken, etc.)"
+            recommendation2 = "Consider alternate forms of protein (chicken, fish, eggs, etc.)"
+            recommendation3 = "Try opting for low-impact plant protein sources like peas, legumes and tofu"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            lamb_recommendation = random.choice(recommendations)
+        
         if pork_carbon_emissions > submetric_threshold:
-            pork_recommendation = "Pork emissions too high"
+            recommendation1 = "Try opting for white meat (fish, chicken, etc.)"
+            recommendation2 = "Consider alternate forms of protein (chicken, fish, eggs, etc.)"
+            recommendation3 = "Try opting for low-impact plant protein sources like peas, legumes and tofu"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            pork_recommendation = random.choice(recommendations)
 
         if chicken_carbon_emissions > submetric_threshold:
-            chicken_recommendation = "Chicken emissions too high"
+            recommendation1 = "Try opting for low-impact plant protein sources (peas, legumes and tofu)"
+            recommendation2 = "Consider alternate forms of protein (eggs, whey, etc.)"
+            recommendation3 = "Consider opting for seitan"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            chicken_recommendation = random.choice(recommendations)
 
         if fish_carbon_emissions > submetric_threshold:
-            fish_recommendation = "Fish emissions too high"
+            recommendation1 = "Consider alternate forms of protein (chicken, eggs, whey, etc.)"
+            recommendation2 = "Try opting for low-impact plant protein sources (peas, legumes and tofu)"
+            recommendation3 = ""
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            fish_recommendation = random.choice(recommendations)
 
         if cheese_carbon_emissions > submetric_threshold:
-            cheese_recommendation = "Cheese emissions too high"
+            recommendation1 = "Consider alternatives to cheese spreads (hummus, guacamole, etc.)"
+            recommendation2 = "Consider plant-based cheeses (made from nuts, soy, or tapioca)"
+            recommendation3 = "Consider alternatives to cheese (tofu, tempeh, etc.)"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            cheese_recommendation = random.choice(recommendations)
 
         if milk_carbon_emissions > submetric_threshold:
-            milk_recommendation = "Milk emissions too high"
+            recommendation1 = "Consider opting for almond milk"
+            recommendation2 = "Consider opting for soy milk"
+            recommendation3 = "Consider opting for oat milk"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            milk_recommendation = random.choice(recommendations)
 
         if food_waste_carbon_emissions > submetric_threshold:
-            food_waste_recommendation = "Food waste emissions too high"
+            recommendation1 = "Meal planning! Create a realistic shopping list so you only buy what you need"
+            recommendation2 = "Carefully assess the expiry date of all food items that you purchase"
+            recommendation3 = "First in First out (FIFO)! Use older ingredients first before they expire."
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            food_waste_recommendation = random.choice(recommendations)
 
         return FoodEntryRecommendation(beef_recommendation, lamb_recommendation, pork_recommendation, chicken_recommendation,
                                        fish_recommendation, cheese_recommendation, milk_recommendation, food_waste_recommendation)

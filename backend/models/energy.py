@@ -3,6 +3,7 @@ Energy Model
 """
 
 from __future__ import annotations
+import random
 from typing import Union
 import json
 from datetime import datetime
@@ -22,7 +23,6 @@ class EnergyEntry(CARBON_MODEL):
     electricity: int  # measured in kWh
     province: str
     household: int
-    metric_threshold = 200/3
 
     def __init__(self, oid: ObjectId, user_id: ObjectId, carbon_emissions: int, date: Union[str, datetime],
                  heating_oil: int, natural_gas: int, province: str, household: int, electricity: int) -> None:
@@ -127,10 +127,10 @@ class EnergyEntryRecommendation(DB_MODEL):
 
     @staticmethod
     def from_energy_entry(energy_entry: EnergyEntry) -> EnergyEntryRecommendation:
-        submetric_threshold = EnergyEntry.metric_threshold/3
-        heating_oil_recommendation = "Heating oil emissions look good!"
-        natural_gas_recommendation = "Natural gas emissions look good!"
-        electricity_recommendation = "Electricity emissions look good!"
+        submetric_threshold = 11
+        heating_oil_recommendation = "Looking good!"
+        natural_gas_recommendation = "Looking good!"
+        electricity_recommendation = "Looking good!"
 
         heating_oil_carbon_emissions = energy_entry.heating_oil * 2.753
         natural_gas_carbon_emissions = energy_entry.natural_gas * 1.96
@@ -166,13 +166,25 @@ class EnergyEntryRecommendation(DB_MODEL):
             electricity_carbon_emissions = (energy_entry.electricity * 0.84) / energy_entry.household
 
         if heating_oil_carbon_emissions > submetric_threshold:
-            heating_oil_recommendation = "Heating oil emissions too high"
+            recommendation1 = "Be conservative by opting to dress up/down instead of turning on the AC/heater."
+            recommendation2 = "Consider investing in ENERGY STAR certified products"
+            recommendation3 = "Consider improving your home insulation, if applicable"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            heating_oil_recommendation = random.choice(recommendations)
 
         if natural_gas_carbon_emissions > submetric_threshold:
-            natural_gas_recommendation = "Natural gas emissions too high"
+            recommendation1 = "Consider replacing natural gas heating systems with electric alternatives"
+            recommendation2 = "Consider investing in ENERGY STAR certified products"
+            recommendation3 = "Consider improving your home insulation, if applicable"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            natural_gas_recommendation = random.choice(recommendations)
 
         if electricity_carbon_emissions > submetric_threshold:
-            electricity_recommendation = "Electricity emissions too high"
+            recommendation1 = "Avoid phantom power by unplugging devices you are not actually using (ex.chargers, toasters, etc.)"
+            recommendation2 = "Consider investing in ENERGY STAR certified products"
+            recommendation3 = "Be conservative by opting to dress up/down instead of turning on the AC/heater"
+            recommendations = [recommendation1, recommendation2, recommendation3]
+            electricity_recommendation = random.choice(recommendations)
 
         return EnergyEntryRecommendation(heating_oil_recommendation, natural_gas_recommendation, electricity_recommendation)
 
