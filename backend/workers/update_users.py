@@ -1,8 +1,6 @@
 """
 Validate all Logs Job
 """
-from pprint import pprint
-
 from bson import ObjectId
 import ct_confiq
 from mongodb_api.carbon_track_db import CarbonTrackDB
@@ -19,9 +17,9 @@ def _update_users() -> None:
     if users.__len__() == 0:
         return None
     print("===================================================")
-    print(f"| Running 'update_users'")
+    print("| Running 'update_users'")
     print("===================================================")
-    print(f"| Completed   {completed:<8}/{users.__len__():<8}| {100 * completed / users.__len__()}%")
+    print("| Completed   {completed:<8}/{users.__len__():<8}| {100 * completed / users.__len__()}%")
 
     for user in users:
 
