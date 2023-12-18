@@ -23,7 +23,6 @@ import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../../components/types';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 interface Recommendation {
   id: number;
@@ -153,10 +152,10 @@ export default function TransportationHistory(): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={30} color={Colors.DARKDARKGREEN} />
-            <Text style={styles.buttonText}> Decomposition </Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={30} color={Colors.DARKDARKGREEN} />
+          <Text style={styles.buttonText}> Decomposition </Text>
+        </TouchableOpacity>
         <View style={styles.halfScreen}>
           <ImageBackground
             source={{
@@ -207,7 +206,7 @@ export default function TransportationHistory(): JSX.Element {
                                 },
                               ],
                             }}
-                            width={380}
+                            width={350}
                             height={200}
                             yAxisSuffix=" k"
                             yAxisLabel="Carbon Footprint" // Add yAxisLabel here
@@ -215,6 +214,7 @@ export default function TransportationHistory(): JSX.Element {
                             chartConfig={{
                               backgroundColor: Colors.BLACK,
                               backgroundGradientFrom: Colors.WHITE,
+
                               backgroundGradientTo: Colors.WHITE,
                               decimalPlaces: 2,
                               color: (opacity = 1) => Colors.DARKLIMEGREEN,
@@ -392,7 +392,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: -50,
     borderRadius: 10,
-
   },
   tabTitle: {
     fontSize: 18,

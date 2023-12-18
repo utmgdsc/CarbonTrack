@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../assets/colorConstants';
 import { type RootStackParamList, type profileWidgetBoxProps } from '../components/types';
@@ -7,6 +7,10 @@ import ExpProgressBar from '../components/expProgressBar';
 import firebaseService from '../utilities/firebase';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { type StackNavigationProp } from '@react-navigation/stack';
+import { UsersAPI } from '../APIs/UsersAPI';
+import { type User } from '../models/User';
+import BadgesModal from '../components/badgesModal';
+
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
 const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
@@ -16,7 +20,9 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
     Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
-  const [profilePicture, setProfilePicture] = useState<string>('https://cianmaggs.github.io/google-homepage/images/loginbutton.png');
+  const [profilePicture, setProfilePicture] = useState<string>(
+    'https://cianmaggs.github.io/google-homepage/images/loginbutton.png'
+  );
 
   const fetchProfilePicture = useCallback(async () => {
     try {
@@ -28,6 +34,8 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
       console.error('Error fetching profile picture:', error);
     }
   }, []);
+  const [currUser, setUser] = useState<User | undefined>(undefined);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -35,39 +43,51 @@ const ProfileWidgetBox: React.FC<profileWidgetBoxProps> = ({ user }) => {
     }, [fetchProfilePicture])
   );
 
-  if (!loaded) {
+  useEffect(() => {
+    void UsersAPI.GetLoggedInUser().then((res) => {
+      if (res != null) {
+        setUser(res);
+      }
+    });
+  }, [loaded]);
+
+  if (!loaded || currUser === undefined) {
     return <></>;
   }
 
+  const showModal = (): void => {
+    setModalVisible(true);
+  };
+
+  const hideModal = (): void => {
+    setModalVisible(false);
+  };
+
   return (
     <View style={styles.boxContainer}>
-        <Image
-          source={{ uri: profilePicture }}
-          style={styles.profilePicture}
-        />
-        <View style={styles.nameBox}>
-          <Text style={styles.name}> {user.full_name} </Text>
-          <View style={styles.progressBar}>
-            <ExpProgressBar thisUser={user}/>
-          </View>
-          <View style={styles.buttonsContainer}>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText} > Badges </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Text
+      <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
+      <View style={styles.nameBox}>
+        <Text style={styles.name}> {user.full_name} </Text>
+        <View style={styles.progressBar}>
+          <ExpProgressBar thisUser={user} />
+        </View>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity onPress={showModal} style={styles.button}>
+            <Text style={styles.buttonText}> Badges </Text>
+            <BadgesModal modalVisible={modalVisible} hideModal={hideModal} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text
               style={styles.buttonText}
               onPress={() => {
                 navigation.navigate('CommunityHub');
               }}
-              >
-                Access Leaderboard
-              </Text>
-            </TouchableOpacity>
-
-          </View>
+            >
+              Access Leaderboard
+            </Text>
+          </TouchableOpacity>
         </View>
-
+      </View>
     </View>
   );
 };
@@ -89,18 +109,18 @@ const styles = StyleSheet.create({
     // andriod shadow
     elevation: 5,
   },
-  buttonsContainer:{
+  buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  button:{
+  button: {
     backgroundColor: Colors.DARKLIGHTDARKGREEN,
     marginHorizontal: 20,
     padding: 15,
     borderRadius: 10,
-    top: '5%'
+    top: '5%',
   },
-  buttonText:{
+  buttonText: {
     color: Colors.WHITE,
   },
   name: {
@@ -111,7 +131,7 @@ const styles = StyleSheet.create({
   nameBox: {
     top: '20%',
     flex: 2,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   profilePicture: {
     width: 160,
@@ -121,9 +141,7 @@ const styles = StyleSheet.create({
     top: '15%',
     backgroundColor: Colors.TRANSGREENBACK,
   },
-  progressBar:{
-  }
-
+  progressBar: {},
 });
 
 export default ProfileWidgetBox;
