@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { ScrollView, View, StyleSheet, RefreshControl } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../../assets/colorConstants';
 
@@ -27,7 +27,6 @@ export default function DashBoardScreen(): JSX.Element {
   const [foodEntry, setFoodEntry] = useState<FoodEntry>();
   const [energyEntry, setEnergyEntry] = useState<EnergyEntry>();
   const [refreshing, setRefreshing] = useState(false);
-  const navigation = useNavigation<StackNavigation>();
 
 
   const [loaded] = useFonts({
