@@ -37,7 +37,7 @@ export const UsersAPI = {
 
   deleteUser: async (userID: ObjectId) => {
     try {
-      const res = await FLASK_HTTPS.delete(routeName + '/user/' + userID.toHexString());
+      const res = await FLASK_HTTPS.delete(routeName + '/user/' + userID.toString());
       return res.data.user as User;
     } catch (error) {
       console.error('Error fetching user from Flask BE: ', error);

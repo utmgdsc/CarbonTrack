@@ -63,7 +63,7 @@ export default function SettingsScreen(): JSX.Element {
         navigation.navigate('Home');
       }
     } catch(error){
-      console.error("Loggint Out Error:", error)
+      console.error("Deleting Account Error:", error)
     }
     
   }
@@ -99,20 +99,15 @@ export default function SettingsScreen(): JSX.Element {
             <Feather name="edit-2" size={24} color={Colors.DARKDARKGREEN} style={styles.nextButton}/>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttons}>
+          <TouchableOpacity style={styles.buttons} onPress={() => {void handleDeleteAccount()}}>
             <FontAwesome name="universal-access" size={24} color={Colors.DARKDARKGREEN} style={styles.icon} />
-            <Text style={styles.labels}> Accessibility </Text>
-            <Feather name="edit-2" size={24} color={Colors.DARKDARKGREEN} style={styles.nextButton}/>
+            <Text style={styles.labels}> Delete Account </Text>
+            <Feather name="trash" size={24} color={Colors.DARKDARKGREEN} style={styles.nextButton}/>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.logOutButton} onPress={() => {void handleLogOut()}}>
             <Text style={styles.logOutLabel}> Log Out </Text>
             <Entypo name="log-out" size={24} color={Colors.WHITE} style={styles.nextButton}/>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.logOutButton} onPress={() => {void handleDeleteAccount()}}>
-            <Text style={styles.logOutLabel}> Delete Account </Text>
-            <Entypo name="trash" size={24} color={Colors.WHITE} style={styles.nextButton}/>
           </TouchableOpacity>
 
         </View>
