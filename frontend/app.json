@@ -2,15 +2,17 @@
   "expo": {
     "plugins": [
       [
-        "expo-image-picker",
+        "expo-build-properties",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "ios": {
+            "useFrameworks": "static"
+          }
         }
       ]
     ],
-    "name": "CarbonTrack",
+    "name": "CarbonTrack for Individuals",
     "slug": "CarbonTrack",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -23,7 +25,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "club.usec.carbontrack"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +34,8 @@
       },
       "permissions": [
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.carbontrack.usec"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -42,7 +46,7 @@
       }
     },
     "runtimeVersion": {
-      "policy": "appVersion"
+      "policy": "sdkVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/781935c7-2b3a-419f-853c-4e80c19ce60b"
