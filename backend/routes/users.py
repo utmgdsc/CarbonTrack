@@ -15,7 +15,7 @@ users = Blueprint("/users", __name__)
 @carbon_auth.auth.login_required
 def get_user(user_id: str) -> Response:
     try:
-        query = {"_id": ObjectId(user_id)}
+        query = {"_id": ObjectId(user_id), "archived": False}
         item = CarbonTrackDB.users_coll.find_one(query)
         item = User.from_json(item).to_json()
         return jsonify({"user": item})
@@ -31,7 +31,7 @@ def get_top_users() -> Response:
 
         # Monthly
         _top_monthly_users = (
-            CarbonTrackDB.users_coll.find().sort("monthly_score", -1).limit(count)
+            CarbonTrackDB.users_coll.find({"archived": False}).sort("monthly_score", -1).limit(count)
         )
         top_monthly_users = []
         rank = 1
@@ -96,7 +96,7 @@ def get_top_users() -> Response:
 @carbon_auth.auth.login_required
 def get_user_by_email(user_email: str) -> Response:
     try:
-        query = {"email": user_email}
+        query = {"email": user_email, "archived": False}
         item = CarbonTrackDB.users_coll.find_one(query)
         item = User.from_json(item).to_json()
         return jsonify({"user": item})
@@ -113,7 +113,7 @@ def get_current_user() -> Response:
         print(current_user)
 
         # Construct the query to find the user in MongoDB
-        query = {"uid": current_user["uid"]}
+        query = {"uid": current_user["uid"], "archived": False}
 
         # Fetch user data from MongoDB
         mongo_user = CarbonTrackDB.users_coll.find_one(query)
@@ -160,11 +160,15 @@ def create_user() -> Response:
 @carbon_auth.auth.login_required
 def delete_user(user_id: str) -> Response:
     try:
-        query = {"_id": ObjectId(user_id)}
+        query = {"_id": ObjectId(user_id), "archived": False}
         item = CarbonTrackDB.users_coll.find_one(query)
-        item = User.from_json(item).to_json()
-        CarbonTrackDB.users_coll.delete_one(query)
-        return jsonify({"deleted user": item})
+        item = User.from_json(item)
+        CarbonTrackDB.users_coll.update_one(query, {
+            '$set': {
+                'archived': True
+            }
+        })
+        return jsonify({"user": item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
 
@@ -173,7 +177,7 @@ def delete_user(user_id: str) -> Response:
 @carbon_auth.auth.login_required
 def update_user(user_id: str) -> Response:
     try:
-        query = {"_id": ObjectId(user_id)}
+        query = {"_id": ObjectId(user_id), "archived": False}
         user = User.from_json(request.get_json()["user"]).to_json()
         del user["_id"]
         del user["email"]
@@ -189,7 +193,7 @@ def update_user(user_id: str) -> Response:
 @carbon_auth.auth.login_required
 def update_user_email(uid: str) -> Response:
     try:
-        query = {"uid": uid}
+        query = {"uid": uid, "archived": False}
         new_email = request.get_json().get("email", "")
 
         current_user = carbon_auth.auth.current_user()
@@ -212,7 +216,7 @@ def update_user_name(user_id: str) -> Response:
     try:
         new_name = request.get_json().get("newName", "")
 
-        query = {"uid": user_id}
+        query = {"uid": user_id, "archived": False}
 
         current_user = carbon_auth.auth.current_user()
         print(current_user)

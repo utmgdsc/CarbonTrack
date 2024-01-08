@@ -93,7 +93,7 @@ class EnergyEntry(CARBON_MODEL):
             electricity_carbon_emissions = (self.electricity * 0.17) / self.household
         else:  # self.province == "Nunavut"
             electricity_carbon_emissions = (self.electricity * 0.84) / self.household
-        return sum([heating_oil_carbon_emissions, natural_gas_carbon_emissions, electricity_carbon_emissions])
+        return int(sum([heating_oil_carbon_emissions, natural_gas_carbon_emissions, electricity_carbon_emissions]))
 
     def __repr__(self) -> str:
         return f'Energy ID: {self.oid.__str__()}'

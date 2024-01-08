@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import Colors from '../../assets/colorConstants';
+import Colors from '../../../assets/colorConstants';
 import { useFonts } from 'expo-font';
-import {type RootStackParamList} from '../components/types';
+import {type RootStackParamList} from '../../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { Entypo,FontAwesome, Feather } from '@expo/vector-icons'; 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import firebaseService from '../utilities/firebase';
-import { UsersAPI } from '../APIs/UsersAPI';
-import { type User } from '../models/User';
+import firebaseService from '../../utilities/firebase';
+import { UsersAPI } from '../../APIs/UsersAPI';
+import { type User } from '../../models/User';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 export default function SettingsScreen(): JSX.Element {
@@ -20,8 +20,8 @@ export default function SettingsScreen(): JSX.Element {
 
 
   const [loaded] = useFonts({
-    Montserrat: require('../../assets/fonts/MontserratThinRegular.ttf'),
-    Josefin: require('../../assets/fonts/JosefinSansThinRegular.ttf'),
+    Montserrat: require('../../../assets/fonts/MontserratThinRegular.ttf'),
+    Josefin: require('../../../assets/fonts/JosefinSansThinRegular.ttf'),
   });
 
   const auth = getAuth();
@@ -55,6 +55,21 @@ export default function SettingsScreen(): JSX.Element {
     
   }
 
+  const handleDeleteAccount =async ():Promise<void> => {
+    try{
+      if (user !== undefined || user != null){
+        await UsersAPI.deleteUser(user._id);
+        console.log("User has been deleted!")
+        navigation.navigate('Home');
+      }
+    } catch(error){
+      console.error("Deleting Account Error:", error)
+    }
+    
+  }
+
+
+
 
   if (!loaded) {
     return <></>;
@@ -84,10 +99,10 @@ export default function SettingsScreen(): JSX.Element {
             <Feather name="edit-2" size={24} color={Colors.DARKDARKGREEN} style={styles.nextButton}/>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttons}>
+          <TouchableOpacity style={styles.buttons} onPress={() => {void handleDeleteAccount()}}>
             <FontAwesome name="universal-access" size={24} color={Colors.DARKDARKGREEN} style={styles.icon} />
-            <Text style={styles.labels}> Accessibility </Text>
-            <Feather name="edit-2" size={24} color={Colors.DARKDARKGREEN} style={styles.nextButton}/>
+            <Text style={styles.labels}> Delete Account </Text>
+            <Feather name="trash" size={24} color={Colors.DARKDARKGREEN} style={styles.nextButton}/>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.logOutButton} onPress={() => {void handleLogOut()}}>
