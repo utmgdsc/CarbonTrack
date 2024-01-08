@@ -22,7 +22,7 @@ import DashBoardScreen from '../screens/dashboard';
 import CommunityHub from '../screens/communityHub';
 import FootprintDecomp from '../screens/footpringDecomp';
 
-import SettingsScreen from '../screens/settings';
+import SettingsScreen from '../screens/settings/settings';
 import UpdatePasswordScreen from '../screens/settings/updatePassword';
 import UpdateProfileScreen from '../screens/settings/updateProfile';
 import UpdateHomeScreen from '../screens/settings/updateHomeScreen';

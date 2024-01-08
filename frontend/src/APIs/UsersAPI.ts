@@ -35,6 +35,16 @@ export const UsersAPI = {
     }
   },
 
+  deleteUser: async (userID: ObjectId) => {
+    try {
+      const res = await FLASK_HTTPS.delete(routeName + '/user/' + userID.toHexString());
+      return res.data.user as User;
+    } catch (error) {
+      console.error('Error fetching user from Flask BE: ', error);
+      return undefined;
+    }
+  },
+
   getTopUsers: async (count: number) => {
     try {
       const res = await FLASK_HTTPS.post(routeName + '/get_top_users', {

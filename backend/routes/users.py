@@ -165,7 +165,7 @@ def delete_user(user_id: str) -> Response:
         item = User.from_json(item).to_json()
         CarbonTrackDB.archived_users_coll.insert_one(query)
         CarbonTrackDB.users_coll.delete_one(query)
-        return jsonify({"deleted user": item})
+        return jsonify({"user": item})
     except CarbonTrackError as e:
         abort(code=400, description=f"{e}")
 
