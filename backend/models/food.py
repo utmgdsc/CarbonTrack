@@ -27,7 +27,6 @@ class FoodEntry(CARBON_MODEL):
     milk: int
     food_waste: int
 
-
     # food measurements in # of 100g servings
     def __init__(self, oid: ObjectId, user_id: ObjectId, carbon_emissions: int, date: Union[str, datetime],
                  beef: int, lamb: int, pork: int, chicken: int, fish: int, cheese: int, milk: int,
@@ -84,13 +83,12 @@ class FoodEntry(CARBON_MODEL):
         cheese_carbon_emissions = self.cheese * 2.3
         milk_carbon_emissions = self.milk * 0.8
         food_waste_carbon_emissions = self.food_waste * 0.0025
-        return sum([beef_carbon_emissions, lamb_carbon_emissions, pork_carbon_emissions,
-                    chicken_carbon_emissions, fish_carbon_emissions, cheese_carbon_emissions,
-                    milk_carbon_emissions, food_waste_carbon_emissions])
+        return int(sum([beef_carbon_emissions, lamb_carbon_emissions, pork_carbon_emissions,
+                        chicken_carbon_emissions, fish_carbon_emissions, cheese_carbon_emissions,
+                        milk_carbon_emissions, food_waste_carbon_emissions]))
 
     def __repr__(self) -> str:
         return f'Food ID: {self.oid.__str__()}'
-
 
 
 class FoodEntryRecommendation(DB_MODEL):
@@ -177,7 +175,7 @@ class FoodEntryRecommendation(DB_MODEL):
             recommendation3 = "Try opting for low-impact plant protein sources like peas, legumes and tofu"
             recommendations = [recommendation1, recommendation2, recommendation3]
             lamb_recommendation = random.choice(recommendations)
-        
+
         if pork_carbon_emissions > submetric_threshold:
             recommendation1 = "Try opting for white meat (fish, chicken, etc.)"
             recommendation2 = "Consider alternate forms of protein (chicken, fish, eggs, etc.)"
