@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-unused-styles */
 import * as React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import CheckBox from 'expo-checkbox';
 import { useFonts } from 'expo-font';
 import { type RootStackParamList } from '../components/types';
 import { type StackNavigationProp } from '@react-navigation/stack';
@@ -13,6 +14,7 @@ import * as Yup from 'yup';
 import FormTextField from '../components/forms/formTextField';
 import { type ObjectId } from 'mongodb';
 import ObjectID from 'bson-objectid';
+import { useState } from 'react';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -32,6 +34,7 @@ const SignUpSchema = Yup.object().shape({
 });
 
 export default function SignUp(): JSX.Element {
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const navigation = useNavigation<StackNavigation>();
 
   // TODO: fonts should be loaded at the global level, and not at the component level.
@@ -68,7 +71,7 @@ export default function SignUp(): JSX.Element {
         photoURL: '',
         monthly_emissions: 0,
         yearly_emissions: 0,
-        overall_emissions: 0
+        overall_emissions: 0,
       });
 
       if (typeof res === 'string') {
@@ -87,7 +90,6 @@ export default function SignUp(): JSX.Element {
       <Formik
         initialValues={{ fullName: '', email: '', password: '', repeatPassword: '' }}
         validationSchema={SignUpSchema}
-        
         onSubmit={async (values) => await handleSignUp(values)}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -114,7 +116,7 @@ export default function SignUp(): JSX.Element {
                 touchedValue={touched.email}
                 errorValue={errors.email}
                 secureTextEntry={false}
-                styling={styles.texts}               
+                styling={styles.texts}
               />
 
               <FormTextField
@@ -139,6 +141,16 @@ export default function SignUp(): JSX.Element {
                 styling={styles.texts}
               />
 
+              <View style={styles.checkboxContainer}>
+                <CheckBox
+                  disabled={false}
+                  value={toggleCheckBox}
+                  onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                  style={styles.checkbox}
+                />
+                <Text style={styles.label}>Remember Me</Text>
+              </View>
+
               <TouchableOpacity style={styles.buttoning} onPress={() => handleSubmit()}>
                 <Text style={styles.altContainerText}>Next</Text>
               </TouchableOpacity>
@@ -154,6 +166,17 @@ export default function SignUp(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  checkbox: {
+    alignSelf: 'center',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  label: {
+    margin: 8,
+    fontSize: 16,
+  },
   altContainerText: {
     color: Colors.WHITE,
     fontSize: 18,
@@ -167,13 +190,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 18,
   },
-  texts:{
+  texts: {
     fontSize: 14,
     fontWeight: '600',
     justifyContent: 'center',
   },
-  container:{
-    backgroundColor: Colors.LIGHTFGREEN
+  container: {
+    backgroundColor: Colors.LIGHTFGREEN,
   },
   header: {
     color: Colors.DARKGREEN,
@@ -193,6 +216,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
     textAlign: 'center',
-    textDecorationLine:'underline',
+    textDecorationLine: 'underline',
   },
 });

@@ -19,72 +19,79 @@ export default function HomeScreen(): JSX.Element {
   }
 
   return (
-  <View style={styles.pageContainer}>
-    <View style={styles.pagePadding}>
+    <View style={styles.pageContainer}>
+      <View style={styles.pagePadding}>
+        <View style={styles.centering}>
+          <Text style={styles.text}> Carbon Track </Text>
+        </View>
 
-      <View style={styles.centering}>
-        <Text style={styles.text}> Carbon Track </Text>
+        <TouchableOpacity
+          style={styles.signUpButtoning}
+          onPress={() => {
+            navigation.navigate('SignUp');
+          }}
+        >
+          <Text style={styles.buttoningText}> Sign Up</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.logInButtoning}
+          onPress={() => {
+            navigation.navigate('LogIn');
+          }}
+        >
+          <Text style={styles.logInButtoningText}> Log In</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity style={styles.signUpButtoning} onPress={() => {navigation.navigate('SignUp');}}>
-        <Text style={styles.buttoningText}> Sign Up</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.logInButtoning} onPress={() => {navigation.navigate('LogIn');}}> 
-        <Text style={styles.logInButtoningText}> Log In</Text>
-      </TouchableOpacity>
     </View>
-  </View>
   );
 }
 
 const styles = StyleSheet.create({
-  buttoningText:{
+  buttoningText: {
     color: Colors.WHITE,
-    fontFamily: 'Montserrat', 
-    fontSize: 16, 
-    fontWeight: '700', 
-    textAlign: 'center', 
+    fontFamily: 'Montserrat',
+    fontSize: 16,
+    fontWeight: '700',
+    textAlign: 'center',
   },
 
   centering: {
     alignItems: 'center',
   },
   logInButtoning: {
-    backgroundColor: Colors.WHITE, 
-    borderColor: Colors.DARKGREEN, 
-    borderRadius: 10, 
-    borderWidth: 3, 
-    marginBottom: 20, 
-    padding: 15, 
+    backgroundColor: Colors.WHITE,
+    borderColor: Colors.DARKGREEN,
+    borderRadius: 10,
+    borderWidth: 3,
+    marginBottom: 20,
+    padding: 15,
   },
   logInButtoningText: {
     color: Colors.DARKGREEN,
-    fontFamily: 'Montserrat', 
+    fontFamily: 'Montserrat',
     fontSize: 16,
     fontWeight: '700',
-    textAlign: 'center',  
+    textAlign: 'center',
   },
-  pageContainer:{
-    flex: 1, 
-    justifyContent: 'center'
+  pageContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
   pagePadding: {
     paddingHorizontal: 20,
   },
   signUpButtoning: {
-    backgroundColor: Colors.DARKGREEN, 
-    borderRadius: 10, 
-    marginBottom: 20, 
-    padding: 18,  
+    backgroundColor: Colors.DARKGREEN,
+    borderRadius: 10,
+    marginBottom: 20,
+    padding: 18,
   },
 
   text: {
-    fontFamily: 'Montserrat', 
-    fontSize: 30, 
-    fontWeight: '700', 
-    marginBottom: 30
-  }
-
-  });
-  
+    fontFamily: 'Montserrat',
+    fontSize: 30,
+    fontWeight: '700',
+    marginBottom: 30,
+  },
+});

@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import CheckBox from 'expo-checkbox';
 import { useFonts } from 'expo-font';
 import type { RootStackParamList } from '../components/types';
 import type { StackNavigationProp } from '@react-navigation/stack';
@@ -8,6 +9,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import FormTextField from '../components/forms/formTextField';
 import { UsersAPI } from '../APIs/UsersAPI';
+import { useState } from 'react';
 
 export type StackNavigation = StackNavigationProp<RootStackParamList>;
 
@@ -25,6 +27,7 @@ const LogInSchema = Yup.object().shape({
 });
 
 export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Element {
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const handleLogIn = async (fields: ILogInFields): Promise<void> => {
     const { email, password } = fields;
     try {
@@ -55,6 +58,23 @@ export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Eleme
   if (!loaded) {
     return <></>;
   }
+
+  const autoLogIn = async (): Promise<void> => {
+    const res = await UsersAPI.GetLoggedInUser();
+    // When user clicks "Remember Me" before logging in, we mark somewhere that
+    // this user wants to be remembered. This must last even when the user
+    // closes the app. Then, when the user opens the app again and tries to login,
+    // we check if this user has chosen to be remembered. if so, we auto login
+
+    // need to create a variable whose value persists when app is reloaded
+
+    // when the user logs out, this variable is set to false
+    if (res != null && toggleCheckBox) {
+      navigation.navigate('MainApp', { screen: 'DashBoard' });
+    }
+  };
+
+  void autoLogIn();
 
   return (
     <>
@@ -90,6 +110,16 @@ export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Eleme
                 styling={styles.texts}
               />
 
+              <View style={styles.checkboxContainer}>
+                <CheckBox
+                  disabled={false}
+                  value={toggleCheckBox}
+                  onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                  style={styles.checkbox}
+                />
+                <Text style={styles.label}>Remember Me</Text>
+              </View>
+
               <TouchableOpacity style={styles.buttoning} onPress={() => handleSubmit()}>
                 <Text style={styles.buttoningText}> Log In</Text>
               </TouchableOpacity>
@@ -113,6 +143,17 @@ export default function LogInScreen({ navigation }: LoginScreenProps): JSX.Eleme
 }
 
 const styles = StyleSheet.create({
+  checkbox: {
+    alignSelf: 'center',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  label: {
+    margin: 8,
+    fontSize: 16,
+  },
   buttoning: {
     backgroundColor: Colors.DARKGREEN,
     borderRadius: 10,
@@ -125,19 +166,19 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  container:{
-    backgroundColor: Colors.LIGHTFGREEN
+  container: {
+    backgroundColor: Colors.LIGHTFGREEN,
   },
   footer: {
     color: Colors.DARKLIMEGREEN,
     fontSize: 18,
     marginBottom: 30,
     textAlign: 'center',
-    fontWeight: '500'
+    fontWeight: '500',
   },
   footerBold: {
     color: Colors.DARKLIMEGREEN,
-    textDecorationLine:'underline',
+    textDecorationLine: 'underline',
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 30,
@@ -160,7 +201,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  texts:{
+  texts: {
     fontSize: 14,
     fontWeight: '600',
     justifyContent: 'center',
